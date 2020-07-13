@@ -20,28 +20,46 @@
   "dependencies": {
     "@apollo/react-hooks": "3.1.5",
     "@apollo/react-ssr": "3.1.5",
+    "@elastic/datemath": "^5.0.3",
+    "@elastic/eui": "^27.0.0",
     "@nexus/schema": "0.14.0",
     "@prisma/client": "2.2.1",
     "apollo-boost": "0.4.9",
     "apollo-link-http": "1.5.17",
     "apollo-link-schema": "1.2.5",
     "express": "4.17.1",
+    "glob": "^7.1.6",
     "graphql": "15.3.0",
     "graphql-iso-date": "3.6.1",
     "graphql-tag": "2.10.4",
+    "imagemin-mozjpeg": "^9.0.0",
+    "imagemin-optipng": "^8.0.0",
     "isomorphic-unfetch": "3.0.0",
+    "moment": "^2.27.0",
     "next": "9.4.4",
+    "next-optimized-images": "^2.6.1",
     "nexus-prisma": "^0.12.0",
     "react": "16.13.1",
     "react-apollo": "3.1.5",
     "react-dom": "16.13.1",
-    "react-markdown": "4.3.1"
+    "react-markdown": "4.3.1",
+    "typescript-plugin-css-modules": "^2.4.0"
   },
   "devDependencies": {
     "@prisma/cli": "2.2.1",
     "@types/graphql": "14.5.0",
     "@types/node": "13.13.12",
     "@types/react": "16.9.41",
+    "copy-webpack-plugin": "^6.0.3",
+    "null-loader": "^4.0.0",
+    "prettier": "^2.0.5",
     "typescript": "3.9.6"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "semi": false,
+    "jsxSingleQuote": true,
+    "arrowParens": "avoid"
   }
 }
