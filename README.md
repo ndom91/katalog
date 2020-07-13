@@ -4,8 +4,8 @@ All in one Warehouse / Inventory Management Application
 
 ### 🚀 Getting Started
 
-1. Clone repo - `git clone https://github.com/ndom91/lagerify`
-2. Install dependencies - `cd lagerify && npm i`
+1. Clone repo `git clone https://github.com/ndom91/lagerify`
+2. Install dependencies `cd lagerify && npm i`
 3. Develop!
 
 ### 👋 Contributing
