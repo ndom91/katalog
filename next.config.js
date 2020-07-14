@@ -1,4 +1,5 @@
 const withLess = require('@zeit/next-less')
+const withCss = require('@zeit/next-css')
 const withReactSvg = require('next-react-svg')
 const path = require('path')
 
@@ -12,4 +13,4 @@ const nextConfig = {
   },
 }
 
-module.exports = withReactSvg(withLess(nextConfig))
+module.exports = withReactSvg(withCss(withLess(nextConfig)))
