@@ -3,18 +3,37 @@ import Head from 'next/head'
 import React, { FunctionComponent } from 'react'
 import '../style/lagerify.less'
 
-/**
- * Next.js uses the App component to initialize pages. You can override it
- * and control the page initialization. Here use use it to render the
- * `Chrome` component on each page, and apply an error boundary.
- *
- * @see https://nextjs.org/docs/advanced-features/custom-app
- */
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => (
   <>
     <Head>
-      {/* You can override this in other pages - see page-2.tsx for an example */}
-      <title>Next.js EUI Starter</title>
+      <title>Katalog | Manage Your S#!t</title>
+      <link
+        rel='apple-touch-icon'
+        sizes='180x180'
+        href='/favicons/apple-touch-icon.png'
+      />
+      <link
+        rel='icon'
+        type='image/png'
+        sizes='32x32'
+        href='/favicons/favicon-32x32.png'
+      />
+      <link
+        rel='icon'
+        type='image/png'
+        sizes='16x16'
+        href='/favicons/favicon-16x16.png'
+      />
+      <link rel='manifest' href='/favicons/site.webmanifest' />
+      <link
+        rel='mask-icon'
+        href='/favicons/safari-pinned-tab.svg'
+        color='#e890c5'
+      />
+      <link rel='shortcut icon' href='/favicons/favicon.ico' />
+      <meta name='msapplication-TileColor' content='#e890c5' />
+      <meta name='msapplication-config' content='/favicons/browserconfig.xml' />
+      <meta name='theme-color' content='#ffffff' />
     </Head>
     <Component {...pageProps} />
   </>
