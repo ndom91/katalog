@@ -34,6 +34,10 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => (
       <meta name='msapplication-TileColor' content='#e890c5' />
       <meta name='msapplication-config' content='/favicons/browserconfig.xml' />
       <meta name='theme-color' content='#ffffff' />
+      <link
+        href='https://fonts.googleapis.com/css2?family=Fira+Sans:wght@200;300;400&display=swap'
+        rel='stylesheet'
+      />
     </Head>
     <Component {...pageProps} />
   </>
