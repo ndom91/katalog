@@ -1,8 +1,15 @@
 import React, { useState } from 'react'
 import { Layout, Menu, Breadcrumb } from 'antd'
+import styled from 'styled-components'
 
 const { Header, Content, Footer, Sider } = Layout
 const { SubMenu } = Menu
+
+const Logo = styled.div`
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
+`
 
 const Wrapper = ({ children }) => {
   const [collapsed, setCollapsed] = useState(false)
@@ -13,8 +20,8 @@ const Wrapper = ({ children }) => {
         collapsed={collapsed}
         onCollapse={() => setCollapsed(!collapsed)}
       >
-        <div className='logo' />
-        <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
+        <Logo />
+        <Menu theme='light' defaultSelectedKeys={['1']} mode='inline'>
           <Menu.Item key='1'>Option 1</Menu.Item>
           <Menu.Item key='2'>Option 2</Menu.Item>
           <SubMenu key='sub1' title='User'>
@@ -43,9 +50,7 @@ const Wrapper = ({ children }) => {
             Bill is a cat.
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©2018 Created by Ant UED
-        </Footer>
+        <Footer style={{ textAlign: 'center' }}>Lagerify - ndomino</Footer>
       </Layout>
     </Layout>
   )

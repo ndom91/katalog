@@ -1,7 +1,7 @@
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import React, { FunctionComponent } from 'react'
-import 'antd/dist/antd.css'
+import '../style/lagerify.less'
 
 /**
  * Next.js uses the App component to initialize pages. You can override it
