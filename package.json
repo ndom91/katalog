@@ -25,6 +25,7 @@
     "@prisma/client": "2.2.1",
     "@zeit/next-less": "^1.0.1",
     "antd": "^4.4.2",
+    "antd-img-crop": "^3.9.0",
     "apollo-boost": "0.4.9",
     "apollo-link-http": "1.5.17",
     "apollo-link-schema": "1.2.5",

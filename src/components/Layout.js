@@ -1,22 +1,59 @@
 import React from 'react'
-import { Layout, Breadcrumb } from 'antd'
+import styled from 'styled-components'
+import { Layout, Input, Avatar, Badge } from 'antd'
 import GlobalStyle from '../style/global.js'
 import Sidebar from './Sidebar'
 
 const { Header, Content, Footer } = Layout
+const { Search } = Input
 
-const Wrapper = ({ children }) => {
+const SearchBar = styled(Search)`
+  margin-left: 10px;
+  background-color: #002140;
+  border: 1px solid #000c1a;
+  .ant-input-search-icon::before {
+    border-color: #000c1a;
+  }
+  input {
+    background-color: #002140;
+    color: #fff;
+  }
+  svg {
+    fill: #fff;
+  }
+`
+
+const Wrapper = ({ children, breadcrumb }) => {
   return (
     <Layout style={{ minHeight: '100vh' }} hasSider>
       <GlobalStyle />
       <Sidebar />
       <Layout className='site-layout'>
-        <Header className='site-layout-background' style={{ padding: 0 }} />
+        <Header
+          className='site-layout-background'
+          style={{
+            padding: '15px',
+            display: 'flex',
+            width: '100%',
+            justifyContent: 'space-between',
+          }}
+        >
+          <SearchBar
+            placeholder=''
+            onSearch={value => console.log(value)}
+            style={{ width: '20rem' }}
+          />
+          <Badge count={1}>
+            <Avatar
+              shape='square'
+              style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}
+            >
+              U
+            </Avatar>
+          </Badge>
+        </Header>
         <Content style={{ margin: '0 16px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
+          {breadcrumb}
           <div
             className='site-layout-background'
             style={{ padding: 24, minHeight: 360 }}
