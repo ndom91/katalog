@@ -8,7 +8,7 @@ const { Header, Content, Footer } = Layout
 const { Search } = Input
 
 const SearchBar = styled(Search)`
-  margin-left: 10px;
+  margin-right: 20px;
   background-color: #002140;
   border: 1px solid #000c1a;
   .ant-input-search-icon::before {
@@ -35,7 +35,7 @@ const Wrapper = ({ children, breadcrumb }) => {
             padding: '15px',
             display: 'flex',
             width: '100%',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-end',
           }}
         >
           <SearchBar
