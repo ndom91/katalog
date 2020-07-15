@@ -1,6 +1,11 @@
 import React, { useState } from 'react'
-import { Upload } from 'antd'
+import { Upload, message } from 'antd'
 import ImgCrop from 'antd-img-crop'
+import { FileImageOutlined } from '@ant-design/icons'
+
+const { Dragger } = Upload
+
+const props = {}
 
 const ImageUpload = () => {
   const [fileList, setFileList] = useState([
@@ -34,15 +39,22 @@ const ImageUpload = () => {
 
   return (
     <ImgCrop rotate>
-      <Upload
-        action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+      <Dragger
+        name='file'
+        multiple
         listType='picture-card'
-        fileList={fileList}
+        action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
         onChange={onChange}
         onPreview={onPreview}
       >
-        {fileList.length < 5 && '+ Upload'}
-      </Upload>
+        <p className='ant-upload-drag-icon'>
+          <FileImageOutlined />
+        </p>
+        <p className='ant-upload-text'>
+          Click or drag image to this area to upload
+        </p>
+        <p className='ant-upload-hint'>Support for a single or bulk upload.</p>
+      </Dragger>
     </ImgCrop>
   )
 }

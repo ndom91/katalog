@@ -16,7 +16,10 @@ import {
   Radio,
   Slider,
   InputNumber,
+  InputGroup,
   Select,
+  DatePicker,
+  Space,
 } from 'antd'
 import {
   ApiTwoTone,
@@ -35,23 +38,18 @@ const ItemsAdd = () => {
     title: 'New Title',
     desc: '',
     qty: 0,
+    price: 0.0,
+    purchaseDate: '',
   })
 
-  const updateTitle = title => {
-    setItem({
-      ...item,
-      title: title.title,
-    })
-  }
-  const updateQty = qty => {
-    setItem({
-      ...item,
-      qty,
-    })
-  }
-  const updateAsset = data => {
-    console.log(data)
-  }
+  const currencySuffix = (
+    <Form.Item name='suffix' noStyle>
+      <Select style={{ width: 40 }}>
+        <Option value='EUR'>EUR</Option>
+        <Option value='USD'>USD</Option>
+      </Select>
+    </Form.Item>
+  )
 
   return (
     <Wrapper>
@@ -74,7 +72,7 @@ const ItemsAdd = () => {
                 <Card>
                   <Title level={3}>Item Details</Title>
                   <Form layout='vertical' form={form}>
-                    <Form.Item label='Item Type' name='item-type'>
+                    <Form.Item label='Item Type' name='item-type' required>
                       <Radio.Group className='itemType-wrapper'>
                         <Radio.Button className='itemType-radio' value='net'>
                           Network
@@ -97,24 +95,12 @@ const ItemsAdd = () => {
                         </Radio.Button>
                       </Radio.Group>
                     </Form.Item>
-                    <Form.Item label='Asset Type' name='asset-type'>
-                      <Select defaultValue='' onChange={updateAsset}>
-                        <Option value='cash'>Cash +</Option>
-                        <Option value='inventory'>Inventory</Option>
-                        <Option value='investment'>Investment</Option>
-                        <Option value='ppe'>Plant / Equipment</Option>
-                        <Option value='vehicles'>Vehicle</Option>
-                        <Option value='furniture'>Furniture</Option>
-                        <Option value='patents'>Intangible</Option>
-                        <Option value='stock'>Stock</Option>
-                      </Select>
-                    </Form.Item>
-                    <Form.Item label='Title'>
+                    <Form.Item label='Title' required>
                       <RIEInput
                         className='rieInput'
                         classEditing='rieInput-editing'
                         value={item.title}
-                        change={updateTitle}
+                        change={chg => setItem({ ...item, title: chg.title })}
                         validate={() => {
                           return true
                         }}
@@ -122,13 +108,13 @@ const ItemsAdd = () => {
                         propName='title'
                       />
                     </Form.Item>
-                    <Form.Item label='Quantity'>
+                    <Form.Item label='Quantity' required>
                       <Row>
                         <Col span={18}>
                           <Slider
                             min={1}
                             max={20}
-                            onChange={updateQty}
+                            onChange={qty => setItem({ ...item, qty })}
                             value={typeof item.qty === 'number' ? item.qty : 0}
                           />
                         </Col>
@@ -137,7 +123,7 @@ const ItemsAdd = () => {
                             min={1}
                             style={{ margin: '0 16px' }}
                             value={item.qty}
-                            onChange={updateQty}
+                            onChange={qty => setItem({ ...item, qty })}
                           />
                         </Col>
                       </Row>
@@ -151,11 +137,75 @@ const ItemsAdd = () => {
                   </Form>
                 </Card>
               </Col>
-              <Col span={12}>
-                <Card>
-                  <Title level={3}>Images</Title>
-                  <ImageUpload />
-                </Card>
+              <Col span={12} gutter={[16, 16]}>
+                <Space
+                  direction='vertical'
+                  size='middle'
+                  style={{ width: '100%' }}
+                >
+                  <Card>
+                    <Title level={3}>Financial Details</Title>
+                    <Form layout='vertical' form={form}>
+                      <Row>
+                        <Col span={12}>
+                          <Form.Item label='Purchase Price'>
+                            <Input.Group compact>
+                              <InputNumber
+                                defaultValue={1000}
+                                formatter={value =>
+                                  `$ ${value}`.replace(
+                                    /\B(?=(\d{3})+(?!\d))/g,
+                                    ','
+                                  )
+                                }
+                                parser={value =>
+                                  value.replace(/\$\s?|(,*)/g, '')
+                                }
+                                value={item.price}
+                                onChange={price => setItem({ ...item, price })}
+                                addonBefore={<currencySuffix />}
+                                style={{ width: 'calc( 95% - 80px)' }}
+                              />
+                              <Select style={{ width: 80 }} defaultValue='EUR'>
+                                <Option value='EUR'>EUR</Option>
+                                <Option value='USD'>USD</Option>
+                              </Select>
+                            </Input.Group>
+                          </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                          <Form.Item label='Purchase Date'>
+                            <DatePicker
+                              style={{ width: '100%' }}
+                              onChange={date =>
+                                setItem({ ...item, purchaseDate: date })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                      <Form.Item label='Asset Type' name='asset-type'>
+                        <Select
+                          defaultValue=''
+                          onChange={data => console.log(data)}
+                        >
+                          <Option value='cash'>Cash +</Option>
+                          <Option value='inventory'>Inventory</Option>
+                          <Option value='investment'>Investment</Option>
+                          <Option value='ppe'>Plant / Equipment</Option>
+                          <Option value='vehicles'>Vehicle</Option>
+                          <Option value='furniture'>Furniture</Option>
+                          <Option value='patents'>Intangible</Option>
+                          <Option value='stock'>Stock</Option>
+                        </Select>
+                      </Form.Item>
+                    </Form>
+                  </Card>
+                  <Card>
+                    <Title level={3}>Images</Title>
+                    <ImageUpload />
+                  </Card>
+                </Space>
               </Col>
             </Row>
           </TabPane>
