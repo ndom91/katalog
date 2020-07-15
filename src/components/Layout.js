@@ -23,7 +23,7 @@ const SearchBar = styled(Search)`
   }
 `
 
-const Wrapper = ({ children, breadcrumb }) => {
+const Wrapper = ({ children }) => {
   return (
     <Layout style={{ minHeight: '100vh' }} hasSider>
       <GlobalStyle />
@@ -53,7 +53,6 @@ const Wrapper = ({ children, breadcrumb }) => {
           </Badge>
         </Header>
         <Content style={{ margin: '0 16px' }}>
-          {breadcrumb}
           <div
             className='site-layout-background'
             style={{ padding: 24, minHeight: 360 }}

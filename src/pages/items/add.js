@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Wrapper from '../../components/Layout'
 import ImageUpload from '../../components/Items/ImageUpload'
-import { RIEInput } from 'riek'
 import './items.module.css'
 import {
   Row,
@@ -16,7 +15,6 @@ import {
   Radio,
   Slider,
   InputNumber,
-  InputGroup,
   Select,
   DatePicker,
   Space,
@@ -35,21 +33,12 @@ const { Option } = Select
 const ItemsAdd = () => {
   const [form] = Form.useForm()
   const [item, setItem] = useState({
-    title: 'New Title',
+    title: '',
     desc: '',
     qty: 0,
     price: 0.0,
     purchaseDate: '',
   })
-
-  const currencySuffix = (
-    <Form.Item name='suffix' noStyle>
-      <Select style={{ width: 40 }}>
-        <Option value='EUR'>EUR</Option>
-        <Option value='USD'>USD</Option>
-      </Select>
-    </Form.Item>
-  )
 
   return (
     <Wrapper>
@@ -96,16 +85,9 @@ const ItemsAdd = () => {
                       </Radio.Group>
                     </Form.Item>
                     <Form.Item label='Title' required>
-                      <RIEInput
-                        className='rieInput'
-                        classEditing='rieInput-editing'
+                      <Input
                         value={item.title}
-                        change={chg => setItem({ ...item, title: chg.title })}
-                        validate={() => {
-                          return true
-                        }}
-                        shouldRemainWhileInvalid={true}
-                        propName='title'
+                        onChange={chg => setItem({ ...item, title: chg.title })}
                       />
                     </Form.Item>
                     <Form.Item label='Quantity' required>

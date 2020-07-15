@@ -30,7 +30,7 @@ const Sidebar = () => {
       collapsible
       collapsed={collapsed}
       onCollapse={() => setCollapsed(!collapsed)}
-      theme='light'
+      theme='dark'
     >
       <Logo>
         {collapsed ? (
@@ -39,7 +39,7 @@ const Sidebar = () => {
           <KatalogLogo style={{ height: '35px', stroke: '#002140' }} />
         )}
       </Logo>
-      <Menu theme='light' defaultSelectedKeys={['1']} mode='inline'>
+      <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
         <Menu.Item icon={<ShopOutlined />} key='1'>
           <Link href='/'>Dashboard</Link>
         </Menu.Item>
