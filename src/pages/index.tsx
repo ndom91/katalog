@@ -18,7 +18,7 @@ const Homepage = () => {
 
   return (
     <>
-      {!session ? (
+      {session ? (
         <LoginRequired />
       ) : (
         <Wrapper>

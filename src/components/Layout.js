@@ -10,7 +10,7 @@ const { Search } = Input
 const SearchBar = styled(Search)`
   margin-right: 20px;
   background-color: #002140;
-  border: 1px solid ##fff;
+  border: 1px solid #fff;
   .ant-input-search-icon::before {
     border-color: #fff;
   }

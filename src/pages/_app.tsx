@@ -6,7 +6,7 @@ import '../style/lagerify.less'
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => (
   <>
     <Head>
-      <title>Katalog | Manage Your S#!t</title>
+      <title>Katalog | Home</title>
       <link
         rel='apple-touch-icon'
         sizes='180x180'
