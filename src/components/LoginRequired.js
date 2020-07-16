@@ -32,7 +32,9 @@ const LoginRequired = () => {
                   </Button>
                 </a>
               </Link>,
-              <Button key='tryagain'>Try Again</Button>,
+              <Button onClick={() => window.location.reload()} key='tryagain'>
+                Try Again
+              </Button>,
             ]}
           ></Result>
         </div>

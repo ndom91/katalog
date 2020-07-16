@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Layout, Input, Avatar, Badge } from 'antd'
+import { Layout, Input, Avatar, Badge, Menu, Dropdown, Tooltip } from 'antd'
 import GlobalStyle from '../style/global.js'
+import { UserOutlined } from '@ant-design/icons'
+import { signOut, useSession } from 'next-auth/client'
 import Sidebar from './Sidebar'
 
 const { Header, Content, Footer } = Layout
@@ -24,6 +26,8 @@ const SearchBar = styled(Search)`
 `
 
 const Wrapper = ({ children }) => {
+  const [session, loading] = useSession()
+
   return (
     <Layout style={{ minHeight: '100vh' }} hasSider>
       <GlobalStyle />
@@ -43,18 +47,41 @@ const Wrapper = ({ children }) => {
             onSearch={value => console.log(value)}
             style={{ width: '20rem' }}
           />
-          <Badge count={1}>
-            <Avatar
-              shape='square'
-              style={{
-                color: '#3a64d5',
-                backgroundColor: '#002140',
-                border: '1px solid #fff',
-              }}
-            >
-              U
-            </Avatar>
-          </Badge>
+          <Dropdown
+            css={`
+              &:hover {
+                cursor: pointer;
+              }
+            `}
+            trigger='click'
+            overlay={() => (
+              <Menu>
+                <Menu.Item key='1' icon={<UserOutlined />}>
+                  <a
+                    href={`/api/auth/signout`}
+                    onClick={() => {
+                      signOut()
+                    }}
+                  >
+                    Sign out
+                  </a>
+                </Menu.Item>
+              </Menu>
+            )}
+          >
+            <Badge count={1}>
+              <Avatar
+                shape='square'
+                style={{
+                  color: '#3a64d5',
+                  backgroundColor: '#002140',
+                  border: '1px solid #fff',
+                }}
+              >
+                U
+              </Avatar>
+            </Badge>
+          </Dropdown>
         </Header>
         <Content style={{ margin: '0 16px' }}>
           <div
