@@ -24,11 +24,12 @@ const Logo = styled.div`
 `
 
 const Sidebar = () => {
-  const [collapsed, setCollapsed] = useState(true)
+  const [collapsed, setCollapsed] = useState(false)
   return (
     <Sider
       collapsible
       collapsed={collapsed}
+      defaultCollapsed={false}
       onCollapse={() => setCollapsed(!collapsed)}
       theme='dark'
     >
@@ -39,7 +40,12 @@ const Sidebar = () => {
           <KatalogLogo style={{ height: '35px', stroke: '#fff' }} />
         )}
       </Logo>
-      <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
+      <Menu
+        theme='dark'
+        defaultSelectedKeys={['1']}
+        mode='inline'
+        defaultOpenKeys={['sub1']}
+      >
         <Menu.Item icon={<ShopOutlined />} key='1'>
           <Link href='/'>Dashboard</Link>
         </Menu.Item>
