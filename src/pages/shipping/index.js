@@ -24,12 +24,7 @@ const Shipping = () => (
           <Row gutter={[16, 16]}>
             <Col span={12}>
               <Card>
-                <Title level={3}>Location Details</Title>
-              </Card>
-            </Col>
-            <Col span={12}>
-              <Card>
-                <Title level={3}>Images</Title>
+                <Title level={3}>Shipping</Title>
               </Card>
             </Col>
           </Row>

@@ -36,7 +36,7 @@ const Sidebar = () => {
         {collapsed ? (
           <KatalogLogoSmall style={{ height: '35px', fill: '#002140' }} />
         ) : (
-          <KatalogLogo style={{ height: '35px', stroke: '#002140' }} />
+          <KatalogLogo style={{ height: '35px', stroke: '#fff' }} />
         )}
       </Logo>
       <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
