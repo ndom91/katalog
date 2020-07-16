@@ -10,9 +10,9 @@ const { Search } = Input
 const SearchBar = styled(Search)`
   margin-right: 20px;
   background-color: #002140;
-  border: 1px solid #000c1a;
+  border: 1px solid ##fff;
   .ant-input-search-icon::before {
-    border-color: #000c1a;
+    border-color: #fff;
   }
   input {
     background-color: #002140;
@@ -46,7 +46,11 @@ const Wrapper = ({ children }) => {
           <Badge count={1}>
             <Avatar
               shape='square'
-              style={{ color: '#f56a00', backgroundColor: '#fde3cf' }}
+              style={{
+                color: '#3a64d5',
+                backgroundColor: '#002140',
+                border: '1px solid #fff',
+              }}
             >
               U
             </Avatar>

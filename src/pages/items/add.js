@@ -18,6 +18,7 @@ import {
   Select,
   DatePicker,
   Space,
+  Collapse,
 } from 'antd'
 import {
   ApiTwoTone,
@@ -29,12 +30,23 @@ import {
 const { TabPane } = Tabs
 const { Title } = Typography
 const { Option } = Select
+const { Panel } = Collapse
 
 const ItemsAdd = () => {
   const [form] = Form.useForm()
+  const [loc, setLoc] = useState({
+    title: '',
+  })
   const [item, setItem] = useState({
+    company: '',
     title: '',
     desc: '',
+    assetTag: '',
+    serial: '',
+    status: '',
+    supplier: '',
+    orderNr: '',
+    notes: '',
     qty: 0,
     price: 0.0,
     purchaseDate: '',
@@ -192,10 +204,33 @@ const ItemsAdd = () => {
             </Row>
           </TabPane>
           <TabPane tab='Location' key='2'>
-            <Row>
-              <Col span={24}>
+            <Row gutter={[16, 16]}>
+              <Col span={12}>
                 <Card>
-                  <Title level={3}>Assign Location</Title>
+                  <Title level={3}>Select Location</Title>
+                </Card>
+              </Col>
+              <Col span={12}>
+                <Card>
+                  <Title level={3}>Create New Location</Title>
+                  <Form layout='vertical' form={form}>
+                    <Form.Item label='Name' name='loc-name'>
+                      <Input
+                        value={loc.title}
+                        onChange={chg => setLoc({ ...item, title: chg.title })}
+                      />
+                    </Form.Item>
+                    <Form.Item label='Area' name='loc-area'>
+                      <Select
+                        defaultValue=''
+                        onChange={data => console.log(data)}
+                      >
+                        <Option value='office'>Office</Option>
+                        <Option value='itenos'>Itenos</Option>
+                        <Option value='equinix'>Equinix</Option>
+                      </Select>
+                    </Form.Item>
+                  </Form>
                 </Card>
               </Col>
             </Row>
