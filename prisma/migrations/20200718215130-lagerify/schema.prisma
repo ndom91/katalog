@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url = "***"
+}
+
+model Item {
+  id                   Int      @default(autoincrement()) @id
+	qty									 Int?
+	title								 String
+  description          String?
+  type          			 String?
+  serialNo             String?
+  inventarNr           String?
+  kontoNr              String?
+  date_added           DateTime
+  date_updated         DateTime @default(now())
+  updated_by           String
+  ahk_date             DateTime?
+  ahk_wj_ende          String?
+  buchw_wj_ende        String?
+  n_afa_wj_ende        String?
+  sonder_abs_wj_ende   String?
+  nutzungsdauer        String?
+  afa_art              String?
+  afa_percent          String?
+  lieferantNr          String?
+  ahk_wj_beginn        String?
+  buchwert_wj_beginn   String?
+  n_afa_wj_beginn      String?
+  sonder_abs_wj_beginn String?
+  sonder_abs_art       String?
+  sonder_abs_percent   String?
+  restbeguenstigung    String?
+  sonder_abs_verteil   Boolean?
+  abgang               DateTime?
+  lebenslaufakte       Boolean?
+  bestelldatum         DateTime?
+  erl_afa_art          String?
+  herkunftsart         String?
+  wkn_isin             String?
+  erfassungsart        String?
+	images							 Image[]  @relation(references: [id])
+	location						 Location
+}
+
+model Image {
+  id                  Int      @default(autoincrement()) @id
+	url									String	
+	title								String
+	item								Item[]		 @relation(references: [id])
+}
+
+model Location {
+  id                  Int      @default(autoincrement()) @id
+	description					String
+	item								Item		 @relation(fields: [itemId], references: [id])
+	itemId							Int
+}

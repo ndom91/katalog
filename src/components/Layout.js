@@ -40,8 +40,7 @@ const Wrapper = ({ children }) => {
             display: 'flex',
             width: '100%',
             justifyContent: 'flex-end',
-            background:
-              'linear-gradient(45.34deg, #002140 5.66%, #9EADC8 94.35%)',
+            background: '#002140',
           }}
         >
           <SearchBar
