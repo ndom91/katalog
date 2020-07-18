@@ -11,17 +11,17 @@ const { Search } = Input
 
 const SearchBar = styled(Search)`
   margin-right: 20px;
-  background-color: #002140;
-  border: 1px solid #fff;
+  background-color: #fff;
+  border: 1px solid #002140;
   .ant-input-search-icon::before {
-    border-color: #fff;
+    border-color: #002140;
   }
   input {
-    background-color: #002140;
-    color: #fff;
+    background-color: #fff;
+    color: #002140;
   }
   svg {
-    fill: #fff;
+    fill: #002140;
   }
 `
 
@@ -40,6 +40,8 @@ const Wrapper = ({ children }) => {
             display: 'flex',
             width: '100%',
             justifyContent: 'flex-end',
+            background:
+              'linear-gradient(45.34deg, #002140 5.66%, #9EADC8 94.35%)',
           }}
         >
           <SearchBar
