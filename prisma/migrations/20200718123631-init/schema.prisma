@@ -4,13 +4,11 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
-model Item {
+model items {
   id                   Int      @default(autoincrement()) @id
-	qty									 Int?
-	title								 String
   description          String?
   serialNo             String?
   inventarNr           String?
@@ -42,20 +40,4 @@ model Item {
   herkunftsart         String?
   wkn_isin             String?
   erfassungsart        String?
-	images							 Image[]  @relation(references: [id])
-	location						 Location
-}
-
-model Image {
-  id                  Int      @default(autoincrement()) @id
-	url									String	
-	title								String
-	item								Item[]		 @relation(references: [id])
-}
-
-model Location {
-  id                  Int      @default(autoincrement()) @id
-	description					String
-	item								Item		 @relation(fields: [itemId], references: [id])
-	itemId							Int
 }
