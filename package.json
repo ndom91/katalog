@@ -1,6 +1,6 @@
 {
   "name": "katalog",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Inventory Management Application",
   "scripts": {
     "dev": "next",
@@ -8,7 +8,9 @@
     "start": "next start",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "prisma generate",
-    "generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json src/pages/api"
+    "generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json src/pages/api",
+    "prisma:migrate:save": "prisma migrate save --name lagerify --experimental",
+    "prisma:migrate:up": "prisma migrate up --experimental"
   },
   "keywords": [
     "warehouse",
