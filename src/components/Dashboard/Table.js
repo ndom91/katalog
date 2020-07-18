@@ -89,8 +89,9 @@ const data = [
   },
 ]
 
-const RecentsTable = () => (
-  <Table style={{ width: '100%' }} columns={columns} dataSource={data} />
-)
+const RecentsTable = ({ items }) => {
+  console.log(items)
+  return <Table style={{ width: '100%' }} columns={columns} dataSource={data} />
+}
 
 export default RecentsTable

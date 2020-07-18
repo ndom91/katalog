@@ -3,22 +3,41 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = "mysql://katalog:cbujc6azyoh8r5rr@db-mysql-fra1-08906-do-user-6985817-0.db.ondigitalocean.com:25060/katalog_dev"
 }
 
-model User {
-  email String  @unique
-  id    Int     @default(autoincrement()) @id
-  name  String?
-  posts Post[]
-}
-
-model Post {
-  authorId  Int?
-  content   String?
-  id        Int     @default(autoincrement()) @id
-  published Boolean @default(false)
-  title     String
-  author    User?   @relation(fields: [authorId], references: [id])
+model items {
+  id                   Int      @default(autoincrement()) @id
+  description          String?
+  serialNo             String?
+  inventarNr           String
+  kontoNr              String
+  date_added           DateTime
+  date_updated         DateTime @default(now())
+  updated_by           String
+  ahk_date             DateTime
+  ahk_wj_ende          String
+  buchw_wj_ende        String
+  n_afa_wj_ende        String
+  sonder_abs_wj_ende   String
+  nutzungsdauer        String
+  afa_art              String
+  afa_percent          String
+  lieferantNr          String
+  ahk_wj_beginn        String
+  buchwert_wj_beginn   String
+  n_afa_wj_beginn      String
+  sonder_abs_wj_beginn String
+  sonder_abs_art       String
+  sonder_abs_percent   String
+  restbeguenstigung    String
+  sonder_abs_verteil   Boolean
+  abgang               DateTime
+  lebenslaufakte       Boolean
+  bestelldatum         DateTime
+  erl_afa_art          String
+  herkunftsart         String
+  wkn_isin             String
+  erfassungsart        String
 }

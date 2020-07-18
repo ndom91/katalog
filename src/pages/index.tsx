@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/client'
+import { PrismaClient } from '@prisma/client'
 import Wrapper from '../components/Layout'
 import RecentsTable from '../components/Dashboard/Table'
 import LoginRequired from '../components/LoginRequired'
@@ -13,8 +14,18 @@ import {
 
 const { Title } = Typography
 
+const prisma = new PrismaClient()
 const Homepage = () => {
   const [session, loading] = useSession()
+  const [newItems, setNewItems] = useState([])
+
+  /* const getItems = async () => { */
+  /*   return await prisma.items.findMany() */
+  /* } */
+
+  /* useEffect(() => { */
+  /*   setNewItems(getItems()) */
+  /* }, []) */
 
   return (
     <>
@@ -74,7 +85,7 @@ const Homepage = () => {
           </Row>
           <Row>
             <Title level={3}>Recent Items</Title>
-            <RecentsTable />
+            <RecentsTable items={newItems} />
           </Row>
         </Wrapper>
       )}
