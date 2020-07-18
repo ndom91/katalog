@@ -46,7 +46,7 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
           rel='stylesheet'
         />
       </Head>
-      <Provider options={{ site: process.env.SITE }} session={session}>
+      <Provider session={session}>
         <Component {...pageProps} />
       </Provider>
     </>
