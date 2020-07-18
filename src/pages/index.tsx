@@ -24,7 +24,9 @@ const ItemQuery = gql`
       title
       qty
       description
+      type
       date_added
+      updated_by
     }
   }
 `
@@ -34,10 +36,8 @@ const Homepage: React.FC = () => {
   const { loading, error, data } = useQuery(ItemQuery)
   const [items, setItems] = useState([])
 
-  console.log(loading, error, data)
-
   useEffect(() => {
-    setItems(data.items)
+    data && setItems(data.items)
   }, [data])
 
   return (

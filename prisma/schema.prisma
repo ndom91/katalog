@@ -12,6 +12,7 @@ model Item {
 	qty									 Int?
 	title								 String
   description          String?
+  type          			 String?
   serialNo             String?
   inventarNr           String?
   kontoNr              String?
@@ -43,7 +44,8 @@ model Item {
   wkn_isin             String?
   erfassungsart        String?
 	images							 Image[]  @relation(references: [id])
-	location						 Location
+	location						 Location? @relation(fields: [locationId], references: [id])
+	locationId					 Int?
 }
 
 model Image {
@@ -56,6 +58,4 @@ model Image {
 model Location {
   id                  Int      @default(autoincrement()) @id
 	description					String
-	item								Item		 @relation(fields: [itemId], references: [id])
-	itemId							Int
 }

@@ -4,6 +4,9 @@ import Wrapper from '../../components/Layout'
 import ImageUpload from '../../components/Items/ImageUpload'
 import LoginRequired from '../../components/LoginRequired'
 import './items.module.css'
+import { withApollo } from '../../../apollo/client'
+import gql from 'graphql-tag'
+import { useQuery, useMutation } from '@apollo/react-hooks'
 import {
   Row,
   Col,
@@ -20,7 +23,6 @@ import {
   Select,
   DatePicker,
   Space,
-  Collapse,
 } from 'antd'
 import {
   ApiTwoTone,
@@ -33,13 +35,43 @@ const { TabPane } = Tabs
 const { Title } = Typography
 const { Option } = Select
 
+const addItemMutation = gql`
+  mutation CreateItemMutation(
+    $title: String!
+    $qty: Int
+    $desc: String
+    $location: Int
+    $updated_by: String!
+    $date_added: DateTime!
+  ) {
+    createOneItem(
+      data: {
+        title: $title
+        qty: $qty
+        description: $desc
+        updated_by: $updated_by
+        date_added: $date_added
+        location: { connect: { id: $location } }
+      }
+    ) {
+      id
+    }
+  }
+`
+
+const getLocationsQuery = gql`
+  query getAllLocation {
+    allLocations {
+      id
+      description
+    }
+  }
+`
+
 const ItemsAdd = () => {
-  const [session, loading] = useSession()
+  const [session] = useSession()
   const [form] = Form.useForm()
-  const [loc, setLoc] = useState({
-    title: '',
-  })
-  const [item, setItem] = useState({
+  const initialItem = {
     company: '',
     title: '',
     desc: '',
@@ -49,10 +81,30 @@ const ItemsAdd = () => {
     supplier: '',
     orderNr: '',
     notes: '',
+    type: '',
     qty: 0,
     price: 0.0,
     purchaseDate: '',
-  })
+    location: '',
+  }
+  const [item, setItem] = useState(initialItem)
+
+  const { locLoading, locError, data } = useQuery(getLocationsQuery)
+  const [createItem, { mutLoading, mutError, mutData }] = useMutation(
+    addItemMutation
+  )
+
+  const saveItem = async () => {
+    const date = new Date()
+    const currentUser = session.user.email
+    await createItem({
+      variables: {
+        ...item,
+        date_added: date.toISOString(),
+        updated_by: currentUser,
+      },
+    })
+  }
 
   return (
     <>
@@ -66,10 +118,14 @@ const ItemsAdd = () => {
             title='Item'
             subTitle='Create New'
             extra={[
-              <Button key='2'>Clear</Button>,
-              <Button key='1' type='primary'>
-                Save
-              </Button>,
+              <>
+                <Button key='2' onClick={() => setItem(initialItem)}>
+                  Clear
+                </Button>
+                <Button key='1' type='primary' onClick={saveItem}>
+                  Save
+                </Button>
+              </>,
             ]}
           >
             <Tabs defaultActiveKey='1'>
@@ -80,7 +136,13 @@ const ItemsAdd = () => {
                       <Title level={3}>Item Details</Title>
                       <Form layout='vertical' form={form}>
                         <Form.Item label='Item Type' name='item-type' required>
-                          <Radio.Group className='itemType-wrapper'>
+                          <Radio.Group
+                            className='itemType-wrapper'
+                            value={item.type}
+                            onChange={event =>
+                              setItem({ ...item, type: event.target.value })
+                            }
+                          >
                             <Radio.Button
                               className='itemType-radio'
                               value='net'
@@ -114,8 +176,8 @@ const ItemsAdd = () => {
                         <Form.Item label='Title' required>
                           <Input
                             value={item.title}
-                            onChange={chg =>
-                              setItem({ ...item, title: chg.title })
+                            onChange={event =>
+                              setItem({ ...item, title: event.target.value })
                             }
                           />
                         </Form.Item>
@@ -142,10 +204,34 @@ const ItemsAdd = () => {
                           </Row>
                         </Form.Item>
                         <Form.Item label='Description'>
-                          <Input placeholder='input placeholder' />
+                          <Input
+                            placeholder=''
+                            value={item.desc}
+                            onChange={event =>
+                              setItem({ ...item, desc: event.target.value })
+                            }
+                          />
                         </Form.Item>
-                        <Form.Item>
-                          <Button type='primary'>Submit</Button>
+                        <Form.Item label='Location'>
+                          <Select
+                            showSearch
+                            placeholder='Select a location'
+                            optionFilterProp='children'
+                            onChange={value =>
+                              setItem({ ...item, location: value })
+                            }
+                            filterOption={(input, option) =>
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
+                            }
+                          >
+                            {data.allLocations.map(location => (
+                              <Option value={location.id}>
+                                {location.description}
+                              </Option>
+                            ))}
+                          </Select>
                         </Form.Item>
                       </Form>
                     </Card>
@@ -156,6 +242,10 @@ const ItemsAdd = () => {
                       size='middle'
                       style={{ width: '100%' }}
                     >
+                      <Card>
+                        <Title level={3}>Images</Title>
+                        <ImageUpload />
+                      </Card>
                       <Card>
                         <Title level={3}>Financial Details</Title>
                         <Form layout='vertical' form={form}>
@@ -219,10 +309,6 @@ const ItemsAdd = () => {
                           </Form.Item>
                         </Form>
                       </Card>
-                      <Card>
-                        <Title level={3}>Images</Title>
-                        <ImageUpload />
-                      </Card>
                     </Space>
                   </Col>
                 </Row>
@@ -240,9 +326,9 @@ const ItemsAdd = () => {
                       <Form layout='vertical' form={form}>
                         <Form.Item label='Name' name='loc-name'>
                           <Input
-                            value={loc.title}
-                            onChange={chg =>
-                              setLoc({ ...item, title: chg.title })
+                            value={item.location}
+                            onChange={event =>
+                              setItem({ ...item, location: event.target.value })
                             }
                           />
                         </Form.Item>
@@ -269,4 +355,4 @@ const ItemsAdd = () => {
   )
 }
 
-export default ItemsAdd
+export default withApollo(ItemsAdd)

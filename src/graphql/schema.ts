@@ -9,6 +9,7 @@ schema.objectType({
     t.model.id()
     t.model.title()
     t.model.qty()
+    t.model.type()
     t.model.description()
     t.model.serialNo()
     t.model.inventarNr()
@@ -39,6 +40,7 @@ schema.objectType({
     t.model.erfassungsart()
     t.model.images()
     t.model.location()
+    t.model.locationId()
   },
 })
 
@@ -57,8 +59,6 @@ schema.objectType({
   definition(t) {
     t.model.id()
     t.model.description()
-    t.model.item()
-    t.model.itemId()
   },
 })
 

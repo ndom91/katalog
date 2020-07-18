@@ -29,6 +29,12 @@ const columns = [
     render: text => <>{dayjs(text).format('DD.MM.YYYY HH:mm:ss')}</>,
   },
   {
+    title: 'Added By',
+    dataIndex: 'updated_by',
+    key: 'updated_by',
+    render: text => <>{text}</>,
+  },
+  {
     title: 'Action',
     key: 'action',
     render: record => (

@@ -161,7 +161,8 @@ type Item {
   kontoNr: String
   lebenslaufakte: Boolean
   lieferantNr: String
-  location: Location!
+  location: Location
+  locationId: Int
   n_afa_wj_ende: String
   nutzungsdauer: String
   qty: Int
@@ -173,6 +174,7 @@ type Item {
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
   title: String!
+  type: String
   updated_by: String!
   wkn_isin: String
 }
@@ -198,7 +200,7 @@ input ItemCreateInput {
   kontoNr: String
   lebenslaufakte: Boolean
   lieferantNr: String
-  location: LocationCreateOneWithoutItemInput!
+  location: LocationCreateOneWithoutItemInput
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
@@ -211,6 +213,7 @@ input ItemCreateInput {
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
   title: String!
+  type: String
   updated_by: String!
   wkn_isin: String
 }
@@ -220,9 +223,9 @@ input ItemCreateManyWithoutImagesInput {
   create: [ItemCreateWithoutImagesInput!]
 }
 
-input ItemCreateOneWithoutLocationInput {
-  connect: ItemWhereUniqueInput
-  create: ItemCreateWithoutLocationInput
+input ItemCreateManyWithoutLocationInput {
+  connect: [ItemWhereUniqueInput!]
+  create: [ItemCreateWithoutLocationInput!]
 }
 
 input ItemCreateWithoutImagesInput {
@@ -245,7 +248,7 @@ input ItemCreateWithoutImagesInput {
   kontoNr: String
   lebenslaufakte: Boolean
   lieferantNr: String
-  location: LocationCreateOneWithoutItemInput!
+  location: LocationCreateOneWithoutItemInput
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
@@ -258,6 +261,7 @@ input ItemCreateWithoutImagesInput {
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
   title: String!
+  type: String
   updated_by: String!
   wkn_isin: String
 }
@@ -295,6 +299,7 @@ input ItemCreateWithoutLocationInput {
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
   title: String!
+  type: String
   updated_by: String!
   wkn_isin: String
 }
@@ -326,6 +331,7 @@ input ItemOrderByInput {
   kontoNr: OrderByArg
   lebenslaufakte: OrderByArg
   lieferantNr: OrderByArg
+  locationId: OrderByArg
   n_afa_wj_beginn: OrderByArg
   n_afa_wj_ende: OrderByArg
   nutzungsdauer: OrderByArg
@@ -338,6 +344,7 @@ input ItemOrderByInput {
   sonder_abs_wj_beginn: OrderByArg
   sonder_abs_wj_ende: OrderByArg
   title: OrderByArg
+  type: OrderByArg
   updated_by: OrderByArg
   wkn_isin: OrderByArg
 }
@@ -365,6 +372,7 @@ input ItemScalarWhereInput {
   kontoNr: NullableStringFilter
   lebenslaufakte: NullableBooleanFilter
   lieferantNr: NullableStringFilter
+  locationId: NullableIntFilter
   n_afa_wj_beginn: NullableStringFilter
   n_afa_wj_ende: NullableStringFilter
   NOT: [ItemScalarWhereInput!]
@@ -379,6 +387,7 @@ input ItemScalarWhereInput {
   sonder_abs_wj_beginn: NullableStringFilter
   sonder_abs_wj_ende: NullableStringFilter
   title: StringFilter
+  type: NullableStringFilter
   updated_by: StringFilter
   wkn_isin: NullableStringFilter
 }
@@ -405,7 +414,7 @@ input ItemUpdateInput {
   kontoNr: String
   lebenslaufakte: Boolean
   lieferantNr: String
-  location: LocationUpdateOneRequiredWithoutItemInput
+  location: LocationUpdateOneWithoutItemInput
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
@@ -418,6 +427,7 @@ input ItemUpdateInput {
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
   title: String
+  type: String
   updated_by: String
   wkn_isin: String
 }
@@ -455,6 +465,7 @@ input ItemUpdateManyDataInput {
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
   title: String
+  type: String
   updated_by: String
   wkn_isin: String
 }
@@ -492,6 +503,7 @@ input ItemUpdateManyMutationInput {
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
   title: String
+  type: String
   updated_by: String
   wkn_isin: String
 }
@@ -508,16 +520,21 @@ input ItemUpdateManyWithoutImagesInput {
   upsert: [ItemUpsertWithWhereUniqueWithoutImagesInput!]
 }
 
+input ItemUpdateManyWithoutLocationInput {
+  connect: [ItemWhereUniqueInput!]
+  create: [ItemCreateWithoutLocationInput!]
+  delete: [ItemWhereUniqueInput!]
+  deleteMany: [ItemScalarWhereInput!]
+  disconnect: [ItemWhereUniqueInput!]
+  set: [ItemWhereUniqueInput!]
+  update: [ItemUpdateWithWhereUniqueWithoutLocationInput!]
+  updateMany: [ItemUpdateManyWithWhereNestedInput!]
+  upsert: [ItemUpsertWithWhereUniqueWithoutLocationInput!]
+}
+
 input ItemUpdateManyWithWhereNestedInput {
   data: ItemUpdateManyDataInput!
   where: ItemScalarWhereInput!
-}
-
-input ItemUpdateOneRequiredWithoutLocationInput {
-  connect: ItemWhereUniqueInput
-  create: ItemCreateWithoutLocationInput
-  update: ItemUpdateWithoutLocationDataInput
-  upsert: ItemUpsertWithoutLocationInput
 }
 
 input ItemUpdateWithoutImagesDataInput {
@@ -541,7 +558,7 @@ input ItemUpdateWithoutImagesDataInput {
   kontoNr: String
   lebenslaufakte: Boolean
   lieferantNr: String
-  location: LocationUpdateOneRequiredWithoutItemInput
+  location: LocationUpdateOneWithoutItemInput
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
@@ -554,6 +571,7 @@ input ItemUpdateWithoutImagesDataInput {
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
   title: String
+  type: String
   updated_by: String
   wkn_isin: String
 }
@@ -592,6 +610,7 @@ input ItemUpdateWithoutLocationDataInput {
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
   title: String
+  type: String
   updated_by: String
   wkn_isin: String
 }
@@ -601,14 +620,20 @@ input ItemUpdateWithWhereUniqueWithoutImagesInput {
   where: ItemWhereUniqueInput!
 }
 
-input ItemUpsertWithoutLocationInput {
-  create: ItemCreateWithoutLocationInput!
-  update: ItemUpdateWithoutLocationDataInput!
+input ItemUpdateWithWhereUniqueWithoutLocationInput {
+  data: ItemUpdateWithoutLocationDataInput!
+  where: ItemWhereUniqueInput!
 }
 
 input ItemUpsertWithWhereUniqueWithoutImagesInput {
   create: ItemCreateWithoutImagesInput!
   update: ItemUpdateWithoutImagesDataInput!
+  where: ItemWhereUniqueInput!
+}
+
+input ItemUpsertWithWhereUniqueWithoutLocationInput {
+  create: ItemCreateWithoutLocationInput!
+  update: ItemUpdateWithoutLocationDataInput!
   where: ItemWhereUniqueInput!
 }
 
@@ -636,6 +661,7 @@ input ItemWhereInput {
   lebenslaufakte: NullableBooleanFilter
   lieferantNr: NullableStringFilter
   location: LocationWhereInput
+  locationId: NullableIntFilter
   n_afa_wj_beginn: NullableStringFilter
   n_afa_wj_ende: NullableStringFilter
   NOT: [ItemWhereInput!]
@@ -650,6 +676,7 @@ input ItemWhereInput {
   sonder_abs_wj_beginn: NullableStringFilter
   sonder_abs_wj_ende: NullableStringFilter
   title: StringFilter
+  type: NullableStringFilter
   updated_by: StringFilter
   wkn_isin: NullableStringFilter
 }
@@ -666,13 +693,11 @@ scalar Json
 type Location {
   description: String!
   id: Int!
-  item: Item!
-  itemId: Int!
 }
 
 input LocationCreateInput {
   description: String!
-  item: ItemCreateOneWithoutLocationInput!
+  Item: ItemCreateManyWithoutLocationInput
 }
 
 input LocationCreateOneWithoutItemInput {
@@ -687,13 +712,12 @@ input LocationCreateWithoutItemInput {
 input LocationOrderByInput {
   description: OrderByArg
   id: OrderByArg
-  itemId: OrderByArg
 }
 
 input LocationUpdateInput {
   description: String
   id: Int
-  item: ItemUpdateOneRequiredWithoutLocationInput
+  Item: ItemUpdateManyWithoutLocationInput
 }
 
 input LocationUpdateManyMutationInput {
@@ -701,9 +725,11 @@ input LocationUpdateManyMutationInput {
   id: Int
 }
 
-input LocationUpdateOneRequiredWithoutItemInput {
+input LocationUpdateOneWithoutItemInput {
   connect: LocationWhereUniqueInput
   create: LocationCreateWithoutItemInput
+  delete: Boolean
+  disconnect: Boolean
   update: LocationUpdateWithoutItemDataInput
   upsert: LocationUpsertWithoutItemInput
 }
@@ -722,8 +748,7 @@ input LocationWhereInput {
   AND: [LocationWhereInput!]
   description: StringFilter
   id: IntFilter
-  item: ItemWhereInput
-  itemId: IntFilter
+  Item: ItemFilter
   NOT: [LocationWhereInput!]
   OR: [LocationWhereInput!]
 }
