@@ -1,7 +1,6 @@
 import React, { Dispatch } from 'react'
 import Link from 'next/link'
 import { Table, Space, Popconfirm, message } from 'antd'
-import { WithApolloClient } from 'react-apollo'
 import { withApollo } from '../../../apollo/client'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
@@ -104,4 +103,4 @@ const RecentsTable = ({ items, setItems }: RecentsProps) => {
   )
 }
 
-export default withApollo<{}, {}>(RecentsTable)
+export default withApollo(RecentsTable)

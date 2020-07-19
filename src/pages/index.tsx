@@ -116,6 +116,7 @@ const Homepage: React.FC = () => {
               {loading ? (
                 <Skeleton loading={loading} active />
               ) : (
+                  // @ts-ignore
                   <RecentsTable items={items} setItems={setItems} />
                 )}
             </Row>
