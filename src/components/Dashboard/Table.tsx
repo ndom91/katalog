@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Dispatch } from 'react'
 import Link from 'next/link'
 import { Table, Space, Popconfirm, message } from 'antd'
 import { WithApolloClient } from 'react-apollo'
@@ -6,6 +6,21 @@ import { withApollo } from '../../../apollo/client'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
 import dayjs from 'dayjs'
+
+type ItemType = {
+  id: number
+  title: string
+  qty?: number
+  description?: string
+  type?: string
+  date_added?: string
+  updated_by?: string
+}[]
+
+type RecentsProps = {
+  items: ItemType
+  setItems: Dispatch<ItemType>
+}
 
 const deleteItemMutation = gql`
   mutation deleteItemMutation($itemId: Int!) {
@@ -15,8 +30,7 @@ const deleteItemMutation = gql`
     }
   }
 `
-
-const RecentsTable = ({ items, setItems }: WithApolloClient<{}>) => {
+const RecentsTable = ({ items, setItems }: RecentsProps) => {
   const [deleteItem] = useMutation(deleteItemMutation, {
     onCompleted: data => {
       const newItems = items.filter(item => item.id !== data.deleteOneItem.id)
@@ -90,4 +104,4 @@ const RecentsTable = ({ items, setItems }: WithApolloClient<{}>) => {
   )
 }
 
-export default withApollo(RecentsTable)
+export default withApollo<{}, {}>(RecentsTable)
