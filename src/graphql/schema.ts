@@ -59,6 +59,13 @@ schema.objectType({
   definition(t) {
     t.model.id()
     t.model.description()
+    t.field('total', {
+      type: 'Int',
+      resolve: async (parent, args, ctx) => {
+        let count = await ctx.db.location.count()
+        return count
+      },
+    })
   },
 })
 

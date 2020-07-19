@@ -693,6 +693,7 @@ scalar Json
 type Location {
   description: String!
   id: Int!
+  total: Int
 }
 
 input LocationCreateInput {

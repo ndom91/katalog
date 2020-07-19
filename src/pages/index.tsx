@@ -28,6 +28,9 @@ const ItemQuery = gql`
       date_added
       updated_by
     }
+    locations(first: 1) {
+      total
+    }
   }
 `
 
@@ -35,9 +38,11 @@ const Homepage: React.FC = () => {
   const [session] = useSession()
   const { loading, error, data } = useQuery(ItemQuery)
   const [items, setItems] = useState([])
+  const [locationCount, setLocationCount] = useState(0)
 
   useEffect(() => {
     data && setItems(data.items)
+    data && setLocationCount(data.locations[0].total)
   }, [data])
 
   return (
@@ -63,7 +68,7 @@ const Homepage: React.FC = () => {
               <Card>
                 <Statistic
                   title='Locations'
-                  value={58}
+                  value={locationCount}
                   precision={0}
                   valueStyle={{ color: '#3f8600' }}
                   prefix={<TableOutlined />}
