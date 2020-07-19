@@ -26,7 +26,7 @@ const LoginRequired = () => {
             subTitle='You must be logged in to view this page'
             extra={[
               <Link href='/auth/signin'>
-                <a href='' alt=''>
+                <a>
                   <Button type='primary' key='login'>
                     Login
                   </Button>

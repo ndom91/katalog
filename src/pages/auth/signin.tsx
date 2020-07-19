@@ -38,7 +38,13 @@ const CardWrapper = styled.div`
   margin-left: 15%;
 `
 
-export default ({ csrfToken, session, providers }) => {
+type Props = {
+  csrfToken: any
+  session: any
+  providers: { id: number; name: string; signinUrl: string }[]
+}
+
+export default ({ csrfToken, session, providers }: Props) => {
   const [form] = Form.useForm()
   if (typeof window !== 'undefined' && session) {
     Router.push('/')
