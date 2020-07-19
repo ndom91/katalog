@@ -1,7 +1,7 @@
 import React from 'react'
 import Router from 'next/router'
 import { Card, Form, Input, Button } from 'antd'
-import { csrfToken, signin, getSession } from 'next-auth/client'
+import { csrfToken, signin, getSession, getProviders } from 'next-auth/client'
 import styled from 'styled-components'
 import KatalogLogo from '../../assets/svg/katalog_full.svg'
 
@@ -38,7 +38,7 @@ const CardWrapper = styled.div`
   margin-left: 15%;
 `
 
-export default ({ csrfToken, session }) => {
+export default ({ csrfToken, session, providers }) => {
   const [form] = Form.useForm()
   if (typeof window !== 'undefined' && session) {
     Router.push('/')
@@ -82,6 +82,19 @@ export default ({ csrfToken, session }) => {
                   Submit
                 </Button>
               </Form.Item>
+              {providers &&
+                Object.values(providers).map(provider => {
+                  if (provider.name === 'Email') return null
+                  return (
+                    <Form.Item key={provider.name}>
+                      <a href={provider.signinUrl}>
+                        <Button type='default' block>
+                          Sign in with {provider.name}
+                        </Button>
+                      </a>
+                    </Form.Item>
+                  )
+                })}
             </Form>
           </Card>
         </CardWrapper>
@@ -95,6 +108,7 @@ export async function getServerSideProps(context) {
     props: {
       csrfToken: await csrfToken(context),
       session: await getSession(context),
+      providers: await getProviders(context),
     },
   }
 }

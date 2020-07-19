@@ -10,10 +10,10 @@ const options = {
       server: process.env.EMAIL_SERVER,
       from: process.env.EMAIL_FROM,
     }),
-    // Providers.Google({
-    // clientId: process.env.GOOGLE_ID,
-    // clientSecret: process.env.GOOGLE_SECRET
-    // }),
+    Providers.Google({
+      clientId: process.env.GOOGLE_ID,
+      clientSecret: process.env.GOOGLE_SECRET,
+    }),
   ],
   // Database optional. MySQL, Maria DB, Postgres and MongoDB are supported.
   // https://next-auth.js.org/configuration/database
@@ -62,7 +62,7 @@ const options = {
   // pages is not specified for that route.
   // https://next-auth.js.org/configuration/pages
   pages: {
-    signIn: '/api/auth/email-signin', // Displays signin buttons
+    signIn: '/auth/signin', // Displays signin buttons
     // signOut: '/api/auth/signout', // Displays form with sign out button
     // error: '/api/auth/error', // Error code passed in query string as ?error=
     // verifyRequest: '/api/auth/verify-request', // Used for check email page
@@ -79,7 +79,7 @@ const options = {
   events: {},
 
   // Enable debug messages in the console if you are having problems
-  debug: false,
+  debug: true,
 }
 
 export default (req, res) => NextAuth(req, res, options)

@@ -23,30 +23,25 @@ const ItemsLoader = () => {
             extra={[
               <Button key='2'>Clear</Button>,
               <Button key='1' type='primary'>
-                Save
+                Import
               </Button>,
             ]}
           >
             <Tabs defaultActiveKey='1'>
-              <TabPane tab='Details' key='1'>
+              <TabPane tab='Import' key='1'>
                 <Row gutter={[16, 16]}>
-                  <Col span={12}>
+                  <Col span={24}>
                     <Card>
-                      <Title level={3}>Item Details</Title>
-                    </Card>
-                  </Col>
-                  <Col span={12}>
-                    <Card>
-                      <Title level={3}>Images</Title>
+                      <Title level={3}>Import Items</Title>
                     </Card>
                   </Col>
                 </Row>
               </TabPane>
-              <TabPane tab='Location' key='2'>
+              <TabPane tab='Export' key='2'>
                 <Row>
                   <Col span={24}>
                     <Card>
-                      <Title level={3}>Assign Location</Title>
+                      <Title level={3}>Export Items Data</Title>
                     </Card>
                   </Col>
                 </Row>

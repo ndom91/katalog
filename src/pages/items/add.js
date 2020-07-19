@@ -226,11 +226,12 @@ const ItemsAdd = () => {
                                 .indexOf(input.toLowerCase()) >= 0
                             }
                           >
-                            {data.allLocations.map(location => (
-                              <Option value={location.id}>
-                                {location.description}
-                              </Option>
-                            ))}
+                            {data &&
+                              data.allLocations.map(location => (
+                                <Option value={location.id}>
+                                  {location.description}
+                                </Option>
+                              ))}
                           </Select>
                         </Form.Item>
                       </Form>
