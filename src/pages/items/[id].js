@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/client'
+import { useRouter } from 'next/router'
 import Wrapper from '../../components/Layout'
 import ImageUpload from '../../components/Items/ImageUpload'
 import LoginRequired from '../../components/LoginRequired'
@@ -41,25 +42,93 @@ const { Title, Link } = Typography
 const { Option } = Select
 const { Panel } = Collapse
 
-const addItemMutation = gql`
-  mutation CreateItemMutation(
+const UpdateItemMutation = gql`
+  mutation UpdateItemMutation(
+    $id: Int!
     $title: String!
     $qty: Int
     $desc: String
-    $type: String
     $location: Int
     $updated_by: String!
-    $date_added: DateTime!
+    $type:  String
+    $serialNo:  String
+    $inventarNr:  String
+    $kontoNr:  String
+    $date_updated:  DateTime 
+    $ahk_date:  DateTime
+    $ahk_wj_ende:  String
+    $buchw_wj_ende:  String
+    $n_afa_wj_ende:  String
+    $sonder_abs_wj_ende:  String
+    $nutzungsdauer:  String
+    $afa_art:  String
+    $afa_percent:  String
+    $kost1:  Int
+    $kost2:  Int
+    $filiale:  String
+    $lieferantNr:  String
+    $anlag_lieferant:  String
+    $ahk_wj_beginn:  String
+    $buchwert_wj_beginn:  String
+    $n_afa_wj_beginn:  String
+    $sonder_abs_wj_beginn: String
+    $sonder_abs_art:   String
+    $sonder_abs_percent:   String
+    $restbeguenstigung:  String
+    $sonder_abs_verteil: Boolean
+    $abgang:       DateTime
+    $lebenslaufakte:       Boolean
+    $bestelldatum:        DateTime
+    $erl_afa_art:        String
+    $herkunftsart:        String
+    $wkn_isin:        String
+    $erfassungsart:        String
   ) {
-    createOneItem(
+    updateOneItem(
       data: {
         title: $title
         qty: $qty
-        type: $type
         description: $desc
         updated_by: $updated_by
-        date_added: $date_added
-        location: { connect: { id: $location } }
+        type:  $type
+        serialNo:  $serialNo
+        inventarNr:  $inventarNr
+        kontoNr:  $kontoNr
+        date_updated:  $date_updated
+        ahk_date:  $ahk_date
+        ahk_wj_ende:  $ahk_wj_ende
+        buchw_wj_ende:  $buchw_wj_ende
+        n_afa_wj_ende:  $n_afa_wj_ende
+        sonder_abs_wj_ende:  $sonder_abs_wj_ende
+        nutzungsdauer:  $nutzungsdauer
+        afa_art:  $afa_art
+        afa_percent:  $afa_percent
+        kost1:  $kost1
+        kost2:  $kost2
+        filiale:  $filiale
+        lieferantNr:  $lieferantNr
+        anlag_lieferant:  $anlag_lieferant
+        ahk_wj_beginn:  $ahk_wj_beginn
+        buchwert_wj_beginn:  $buchwert_wj_beginn
+        n_afa_wj_beginn:  $n_afa_wj_beginn
+        sonder_abs_wj_beginn: $sonder_abs_wj_beginn
+        sonder_abs_art:   $sonder_abs_art
+        sonder_abs_percent:   $sonder_abs_percent
+        restbeguenstigung:  $restbeguenstigung
+        sonder_abs_verteil: $sonder_abs_verteil
+        abgang:       $abgang
+        lebenslaufakte:     $lebenslaufakte
+        bestelldatum:        $bestelldatum
+        erl_afa_art:        $erl_afa_art
+        herkunftsart:        $herkunftsart
+        wkn_isin:        $wkn_isin
+        erfassungsart:        $erfassungsart
+        location: {
+          connect: { id: $location }
+        }
+      },
+      where: {
+        id: $id
       }
     ) {
       id
@@ -68,8 +137,55 @@ const addItemMutation = gql`
   }
 `
 
-const getLocationsQuery = gql`
-  query getAllLocation {
+const getItemQuery = gql`
+  query getItem( $id: Int!){
+    item (where: { id: $id }) {
+      id                
+      qty                
+      title               
+      description          
+      type      
+      serialNo   
+      inventarNr  
+      kontoNr      
+      date_added    
+      date_updated   
+      updated_by       
+      ahk_date          
+      ahk_wj_ende     
+      buchw_wj_ende      
+      n_afa_wj_ende       
+      sonder_abs_wj_ende   
+      nutzungsdauer  
+      afa_art         
+      afa_percent      
+      kost1             
+      kost2              
+      filiale             
+      lieferantNr          
+      anlag_lieferant 
+      ahk_wj_beginn    
+      buchwert_wj_beginn
+      n_afa_wj_beginn    
+      sonder_abs_wj_beginn 
+      sonder_abs_art      
+      sonder_abs_percent
+      restbeguenstigung  
+      sonder_abs_verteil  
+      abgang               
+      lebenslaufakte
+      bestelldatum   
+      erl_afa_art     
+      herkunftsart     
+      wkn_isin          
+      erfassungsart      
+      images {
+        id 
+        title 
+        url
+      }
+      locationId          
+    }
     allLocations {
       id
       description
@@ -77,35 +193,115 @@ const getLocationsQuery = gql`
   }
 `
 
-const ItemsAdd = () => {
+const ItemEdit = () => {
+  const router = useRouter()
+  const { id } = router.query
   const [session] = useSession()
   const [form] = Form.useForm()
-  const initialItem = {
-    title: '',
-    desc: '',
-    type: '',
-    qty: 0,
-    location: '',
-  }
-  const [item, setItem] = useState(initialItem)
+  const [item, setItem] = useState({})
   const [fibu, setFibu] = useState({})
 
-  const { data } = useQuery(getLocationsQuery)
-  const [createItem] = useMutation(addItemMutation, {
+  const { loading, data } = useQuery(getItemQuery, {
+    variables: { id: parseInt(id) }
+  })
+  const [updateItem] = useMutation(UpdateItemMutation, {
     onCompleted: data => {
       console.log('completeAdd', data)
-      message.success(`${data.createOneItem.title} created`)
+      message.success(`${data.updateOneItem.title} updated`)
     },
   })
+  useEffect(() => {
+    console.log(loading, data)
+    if (data) {
+      setItem({
+        qty: data.item.qty,
+        title: data.item.title,
+        description: data.item.description,
+        type: data.item.type,
+        updated_by: data.item.updated_by,
+        location: data.item.locationId,
+      })
+      setFibu({
+        serialNo: data.item.serialNo,
+        inventory: data.item.inventarNr,
+        account: data.item.kontoNr,
+        ahkDatum: data.item.ahk_date,
+        ahkWjEnde: data.item.ahk_wj_ende,
+        buchWjEnde: data.item.buchw_wj_ende,
+        nAfaWjEnde: data.item.n_afa_wj_ende,
+        sAbschrWjEnde: data.item.sonder_abs_wj_ende,
+        nutzungsDauer: data.item.nutzungsdauer,
+        afaArt: data.item.afa_art,
+        afaPerc: data.item.afa_percent,
+        kost1: data.item.kost1,
+        kost2: data.item.kost2,
+        filiale: data.item.filiale,
+        lieferantNr: data.item.lieferantNr,
+        anlagLieferant: data.item.anlag_lieferant,
+        ahkWjBeginn: data.item.ahk_wj_beginn,
+        buchWjBeginn: data.item.buchwert_wj_beginn,
+        nAfaWjBeginn: data.item.n_afa_wj_beginn,
+        sAbschrWjBeginn: data.item.sonder_abs_wj_beginn,
+        sAbschrArt: data.item.sonder_abs_art,
+        sAbschrPerc: data.item.sonder_abs_percent,
+        restbeguenstigung: data.item.restbeguenstigung,
+        sAbschrVerteil: data.item.sonder_abs_verteil,
+        abgang: data.item.abgang,
+        lebenslaufAkte: data.item.lebenslaufakte,
+        bestellDatum: data.item.bestelldatum,
+        erlAfaArt: data.item.erl_afa_art,
+        herkunftsart: data.item.herkunftsart,
+        wknIsin: data.item.wkn_isin,
+        erfassungsart: data.item.erfassungsart,
+      })
+      // set images = data.item.images               
+    }
+  }, [data])
 
   const saveItem = async () => {
     const date = new Date()
     const currentUser = session.user.email
-    await createItem({
+    await updateItem({
       variables: {
-        ...item,
-        date_added: date.toISOString(),
+        qty: item.qty,
+        title: item.title,
+        description: item.description,
+        type: item.type,
+        location: item.location,
+        serialNo: fibu.serial,
+        inventarNr: fibu.inventory,
+        kontoNr: fibu.account,
+        ahk_date: fibu.ahkDatum,
+        ahk_wj_ende: fibu.ahkWjEnde.toString(),
+        buchw_wj_ende: fibu.buchWjEnde,
+        n_afa_wj_ende: fibu.nAfaWjEnde,
+        sonder_abs_wj_ende: fibu.sAbschrWjEnde,
+        nutzungsdauer: fibu.nutzungsDauer,
+        afa_art: fibu.afaArt,
+        afa_percent: fibu.afaPerc,
+        kost1: fibu.kost1,
+        kost2: fibu.kost2,
+        filiale: fibu.filiale,
+        lieferantNr: fibu.lieferant,
+        anlag_lieferant: fibu.anlagLieferant,
+        ahk_wj_beginn: fibu.ahkWjBeginn,
+        buchwert_wj_beginn: fibu.buchWjBeginn,
+        n_afa_wj_beginn: fibu.nAfaWjBeginn,
+        sonder_abs_wj_beginn: fibu.sAbschrWjBeginn,
+        sonder_abs_art: fibu.sAbschrArt,
+        sonder_abs_percent: fibu.sAbschrPerc,
+        restbeguenstigung: fibu.restbeguenstigung,
+        sonder_abs_verteil: fibu.sAbschrVerteil,
+        abgang: fibu.abgang,
+        lebenslaufakte: fibu.lebenslaufAkte,
+        bestelldatum: fibu.bestellDatum,
+        erl_afa_art: fibu.erlAfaArt,
+        herkunftsart: fibu.herkunftsart,
+        wkn_isin: fibu.wknIsin,
+        erfassungsart: fibu.erfassungsart,
+        date_updated: date.toISOString(),
         updated_by: currentUser,
+        id: parseInt(id)
       },
     })
   }
@@ -636,40 +832,6 @@ const ItemsAdd = () => {
                     </Col>
                   </Row>
                 </TabPane>
-                {/* <TabPane tab='Location' key='2'>
-                <Row gutter={[16, 16]}>
-                  <Col span={12}>
-                    <Card>
-                      <Title level={3}>Select Location</Title>
-                    </Card>
-                  </Col>
-                  <Col span={12}>
-                    <Card>
-                      <Title level={3}>Create New Location</Title>
-                      <Form layout='vertical' form={form}>
-                        <Form.Item label='Name' name='loc-name'>
-                          <Input
-                            value={item.location}
-                            onChange={event =>
-                              setItem({ ...item, location: event.target.value })
-                            }
-                          />
-                        </Form.Item>
-                        <Form.Item label='Area' name='loc-area'>
-                          <Select
-                            defaultValue=''
-                            onChange={data => console.log(data)}
-                          >
-                            <Option value='office'>Office</Option>
-                            <Option value='itenos'>Itenos</Option>
-                            <Option value='equinix'>Equinix</Option>
-                          </Select>
-                        </Form.Item>
-                      </Form>
-                    </Card>
-                  </Col>
-                </Row>
-              </TabPane> */}
               </Tabs>
             </PageHeader>
           </Wrapper>
@@ -678,4 +840,4 @@ const ItemsAdd = () => {
   )
 }
 
-export default withApollo(ItemsAdd)
+export default withApollo(ItemEdit)

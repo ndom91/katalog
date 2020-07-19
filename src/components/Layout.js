@@ -70,7 +70,7 @@ const Wrapper = ({ children }) => {
               </Menu>
             )}
           >
-            <Badge count={1}>
+            <Badge count={0}>
               <Avatar
                 shape='square'
                 style={{

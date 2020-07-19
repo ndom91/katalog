@@ -148,21 +148,28 @@ type Item {
   ahk_date: DateTime
   ahk_wj_beginn: String
   ahk_wj_ende: String
+  anlag_lieferant: String
   bestelldatum: DateTime
   buchw_wj_ende: String
+  buchwert_wj_beginn: String
   date_added: DateTime!
+  date_updated: DateTime!
   description: String
   erfassungsart: String
   erl_afa_art: String
+  filiale: String
   herkunftsart: String
   id: Int!
   images(after: ImageWhereUniqueInput, before: ImageWhereUniqueInput, first: Int, last: Int): [Image!]!
   inventarNr: String
   kontoNr: String
+  kost1: Int
+  kost2: Int
   lebenslaufakte: Boolean
   lieferantNr: String
   location: Location
   locationId: Int
+  n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
   qty: Int
@@ -186,6 +193,7 @@ input ItemCreateInput {
   ahk_date: DateTime
   ahk_wj_beginn: String
   ahk_wj_ende: String
+  anlag_lieferant: String
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
@@ -194,10 +202,13 @@ input ItemCreateInput {
   description: String
   erfassungsart: String
   erl_afa_art: String
+  filiale: String
   herkunftsart: String
   images: ImageCreateManyWithoutItemInput
   inventarNr: String
   kontoNr: String
+  kost1: Int
+  kost2: Int
   lebenslaufakte: Boolean
   lieferantNr: String
   location: LocationCreateOneWithoutItemInput
@@ -235,6 +246,7 @@ input ItemCreateWithoutImagesInput {
   ahk_date: DateTime
   ahk_wj_beginn: String
   ahk_wj_ende: String
+  anlag_lieferant: String
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
@@ -243,9 +255,12 @@ input ItemCreateWithoutImagesInput {
   description: String
   erfassungsart: String
   erl_afa_art: String
+  filiale: String
   herkunftsart: String
   inventarNr: String
   kontoNr: String
+  kost1: Int
+  kost2: Int
   lebenslaufakte: Boolean
   lieferantNr: String
   location: LocationCreateOneWithoutItemInput
@@ -273,6 +288,7 @@ input ItemCreateWithoutLocationInput {
   ahk_date: DateTime
   ahk_wj_beginn: String
   ahk_wj_ende: String
+  anlag_lieferant: String
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
@@ -281,10 +297,13 @@ input ItemCreateWithoutLocationInput {
   description: String
   erfassungsart: String
   erl_afa_art: String
+  filiale: String
   herkunftsart: String
   images: ImageCreateManyWithoutItemInput
   inventarNr: String
   kontoNr: String
+  kost1: Int
+  kost2: Int
   lebenslaufakte: Boolean
   lieferantNr: String
   n_afa_wj_beginn: String
@@ -317,6 +336,7 @@ input ItemOrderByInput {
   ahk_date: OrderByArg
   ahk_wj_beginn: OrderByArg
   ahk_wj_ende: OrderByArg
+  anlag_lieferant: OrderByArg
   bestelldatum: OrderByArg
   buchw_wj_ende: OrderByArg
   buchwert_wj_beginn: OrderByArg
@@ -325,10 +345,13 @@ input ItemOrderByInput {
   description: OrderByArg
   erfassungsart: OrderByArg
   erl_afa_art: OrderByArg
+  filiale: OrderByArg
   herkunftsart: OrderByArg
   id: OrderByArg
   inventarNr: OrderByArg
   kontoNr: OrderByArg
+  kost1: OrderByArg
+  kost2: OrderByArg
   lebenslaufakte: OrderByArg
   lieferantNr: OrderByArg
   locationId: OrderByArg
@@ -357,6 +380,7 @@ input ItemScalarWhereInput {
   ahk_wj_beginn: NullableStringFilter
   ahk_wj_ende: NullableStringFilter
   AND: [ItemScalarWhereInput!]
+  anlag_lieferant: NullableStringFilter
   bestelldatum: NullableDateTimeFilter
   buchw_wj_ende: NullableStringFilter
   buchwert_wj_beginn: NullableStringFilter
@@ -365,11 +389,14 @@ input ItemScalarWhereInput {
   description: NullableStringFilter
   erfassungsart: NullableStringFilter
   erl_afa_art: NullableStringFilter
+  filiale: NullableStringFilter
   herkunftsart: NullableStringFilter
   id: IntFilter
   images: ImageFilter
   inventarNr: NullableStringFilter
   kontoNr: NullableStringFilter
+  kost1: NullableIntFilter
+  kost2: NullableIntFilter
   lebenslaufakte: NullableBooleanFilter
   lieferantNr: NullableStringFilter
   locationId: NullableIntFilter
@@ -399,6 +426,7 @@ input ItemUpdateInput {
   ahk_date: DateTime
   ahk_wj_beginn: String
   ahk_wj_ende: String
+  anlag_lieferant: String
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
@@ -407,11 +435,14 @@ input ItemUpdateInput {
   description: String
   erfassungsart: String
   erl_afa_art: String
+  filiale: String
   herkunftsart: String
   id: Int
   images: ImageUpdateManyWithoutItemInput
   inventarNr: String
   kontoNr: String
+  kost1: Int
+  kost2: Int
   lebenslaufakte: Boolean
   lieferantNr: String
   location: LocationUpdateOneWithoutItemInput
@@ -439,6 +470,7 @@ input ItemUpdateManyDataInput {
   ahk_date: DateTime
   ahk_wj_beginn: String
   ahk_wj_ende: String
+  anlag_lieferant: String
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
@@ -447,10 +479,13 @@ input ItemUpdateManyDataInput {
   description: String
   erfassungsart: String
   erl_afa_art: String
+  filiale: String
   herkunftsart: String
   id: Int
   inventarNr: String
   kontoNr: String
+  kost1: Int
+  kost2: Int
   lebenslaufakte: Boolean
   lieferantNr: String
   n_afa_wj_beginn: String
@@ -477,6 +512,7 @@ input ItemUpdateManyMutationInput {
   ahk_date: DateTime
   ahk_wj_beginn: String
   ahk_wj_ende: String
+  anlag_lieferant: String
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
@@ -485,10 +521,13 @@ input ItemUpdateManyMutationInput {
   description: String
   erfassungsart: String
   erl_afa_art: String
+  filiale: String
   herkunftsart: String
   id: Int
   inventarNr: String
   kontoNr: String
+  kost1: Int
+  kost2: Int
   lebenslaufakte: Boolean
   lieferantNr: String
   n_afa_wj_beginn: String
@@ -544,6 +583,7 @@ input ItemUpdateWithoutImagesDataInput {
   ahk_date: DateTime
   ahk_wj_beginn: String
   ahk_wj_ende: String
+  anlag_lieferant: String
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
@@ -552,10 +592,13 @@ input ItemUpdateWithoutImagesDataInput {
   description: String
   erfassungsart: String
   erl_afa_art: String
+  filiale: String
   herkunftsart: String
   id: Int
   inventarNr: String
   kontoNr: String
+  kost1: Int
+  kost2: Int
   lebenslaufakte: Boolean
   lieferantNr: String
   location: LocationUpdateOneWithoutItemInput
@@ -583,6 +626,7 @@ input ItemUpdateWithoutLocationDataInput {
   ahk_date: DateTime
   ahk_wj_beginn: String
   ahk_wj_ende: String
+  anlag_lieferant: String
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
@@ -591,11 +635,14 @@ input ItemUpdateWithoutLocationDataInput {
   description: String
   erfassungsart: String
   erl_afa_art: String
+  filiale: String
   herkunftsart: String
   id: Int
   images: ImageUpdateManyWithoutItemInput
   inventarNr: String
   kontoNr: String
+  kost1: Int
+  kost2: Int
   lebenslaufakte: Boolean
   lieferantNr: String
   n_afa_wj_beginn: String
@@ -645,6 +692,7 @@ input ItemWhereInput {
   ahk_wj_beginn: NullableStringFilter
   ahk_wj_ende: NullableStringFilter
   AND: [ItemWhereInput!]
+  anlag_lieferant: NullableStringFilter
   bestelldatum: NullableDateTimeFilter
   buchw_wj_ende: NullableStringFilter
   buchwert_wj_beginn: NullableStringFilter
@@ -653,11 +701,14 @@ input ItemWhereInput {
   description: NullableStringFilter
   erfassungsart: NullableStringFilter
   erl_afa_art: NullableStringFilter
+  filiale: NullableStringFilter
   herkunftsart: NullableStringFilter
   id: IntFilter
   images: ImageFilter
   inventarNr: NullableStringFilter
   kontoNr: NullableStringFilter
+  kost1: NullableIntFilter
+  kost2: NullableIntFilter
   lebenslaufakte: NullableBooleanFilter
   lieferantNr: NullableStringFilter
   location: LocationWhereInput
