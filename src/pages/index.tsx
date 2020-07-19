@@ -101,7 +101,7 @@ const Homepage: React.FC = () => {
             {loading ? (
               <Skeleton loading={loading} active />
             ) : (
-              <RecentsTable items={items} />
+              <RecentsTable items={items} setItems={setItems} />
             )}
           </Row>
         </Wrapper>

@@ -23,6 +23,7 @@ import {
   Select,
   DatePicker,
   Space,
+  message,
 } from 'antd'
 import {
   ApiTwoTone,
@@ -55,6 +56,7 @@ const addItemMutation = gql`
       }
     ) {
       id
+      title
     }
   }
 `
@@ -89,10 +91,13 @@ const ItemsAdd = () => {
   }
   const [item, setItem] = useState(initialItem)
 
-  const { locLoading, locError, data } = useQuery(getLocationsQuery)
-  const [createItem, { mutLoading, mutError, mutData }] = useMutation(
-    addItemMutation
-  )
+  const { data } = useQuery(getLocationsQuery)
+  const [createItem] = useMutation(addItemMutation, {
+    onCompleted: data => {
+      console.log('completeAdd', data)
+      message.success(`${data.createOneItem.title} created`)
+    },
+  })
 
   const saveItem = async () => {
     const date = new Date()
