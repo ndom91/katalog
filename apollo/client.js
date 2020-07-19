@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { ApolloProvider } from '@apollo/react-hooks'
 import { ApolloClient } from 'apollo-client'
 import { InMemoryCache } from 'apollo-cache-inmemory'
-import fetch from 'isomorphic-unfetch';
+import fetch from 'isomorphic-unfetch'
 
 let apolloClient = null
 
@@ -135,7 +135,7 @@ function createApolloClient(initialState = {}) {
 function createIsomorphLink() {
   const { HttpLink } = require('apollo-link-http')
   return new HttpLink({
-    uri: 'http://localhost:3000/api',
+    uri: '/api',
     credentials: 'same-origin',
   })
 }
