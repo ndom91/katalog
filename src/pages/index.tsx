@@ -18,11 +18,11 @@ import { useQuery } from '@apollo/react-hooks'
 type ItemType = {
   id: number
   title: string
-  qty: number
-  description: string
-  type: string
-  date_added: string
-  updated_by: string
+  qty?: number
+  description?: string
+  type?: string
+  date_added?: string
+  updated_by?: string
 }[]
 
 const { Title } = Typography
