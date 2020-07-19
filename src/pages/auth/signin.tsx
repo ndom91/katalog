@@ -85,10 +85,18 @@ export default ({ csrfToken, session, providers }) => {
               {providers &&
                 Object.values(providers).map(provider => {
                   if (provider.name === 'Email') return null
+                  console.log(provider)
                   return (
                     <Form.Item key={provider.name}>
-                      <a href={provider.signinUrl}>
-                        <Button type='default' block>
+                      <a
+                        href={provider.signinUrl}
+                        onClick={e => e.preventDefault()}
+                      >
+                        <Button
+                          type='default'
+                          block
+                          onClick={() => signin(provider.id)}
+                        >
                           Sign in with {provider.name}
                         </Button>
                       </a>
