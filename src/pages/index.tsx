@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/client'
+import { WithApolloClient } from 'react-apollo'
 import Wrapper from '../components/Layout'
 import RecentsTable from '../components/Dashboard/Table'
 import LoginRequired from '../components/LoginRequired'
@@ -13,7 +14,17 @@ import {
 
 import { withApollo } from '../../apollo/client'
 import gql from 'graphql-tag'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useQuery } from '@apollo/react-hooks'
+
+type ItemType = {
+  id: number
+  title: string
+  qty: number
+  description: string
+  type: string
+  date_added: string
+  updated_by: string
+}[]
 
 const { Title } = Typography
 
@@ -36,8 +47,8 @@ const ItemQuery = gql`
 
 const Homepage: React.FC = () => {
   const [session] = useSession()
-  const { loading, error, data } = useQuery(ItemQuery)
-  const [items, setItems] = useState([])
+  const { loading, data } = useQuery(ItemQuery)
+  const [items, setItems] = useState<ItemType>([])
   const [locationCount, setLocationCount] = useState(0)
 
   useEffect(() => {

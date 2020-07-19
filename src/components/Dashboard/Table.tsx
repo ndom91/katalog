@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { Table, Space, Popconfirm, message } from 'antd'
+import { WithApolloClient } from 'react-apollo'
 import { withApollo } from '../../../apollo/client'
 import gql from 'graphql-tag'
 import { useMutation } from '@apollo/react-hooks'
@@ -15,18 +16,15 @@ const deleteItemMutation = gql`
   }
 `
 
-const RecentsTable = ({ items, setItems }) => {
-  const [deleteItem, { loading, error, data }] = useMutation(
-    deleteItemMutation,
-    {
-      onCompleted: data => {
-        const newItems = items.filter(item => item.id !== data.deleteOneItem.id)
-        setItems(newItems)
-        message.success('Item Deleted')
-      },
-    }
-  )
-  const confirmDelete = async id => {
+const RecentsTable = ({ items, setItems }: WithApolloClient<{}>) => {
+  const [deleteItem] = useMutation(deleteItemMutation, {
+    onCompleted: data => {
+      const newItems = items.filter(item => item.id !== data.deleteOneItem.id)
+      setItems(newItems)
+      message.success('Item Deleted')
+    },
+  })
+  const confirmDelete = async (id: number) => {
     await deleteItem({
       variables: {
         itemId: id,
@@ -39,31 +37,33 @@ const RecentsTable = ({ items, setItems }) => {
       title: 'Name',
       dataIndex: 'title',
       key: 'title',
-      render: text => <>{text}</>,
+      render: (text: string) => <>{text}</>,
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
-      render: text => <>{text}</>,
+      render: (text: string) => <>{text}</>,
     },
     {
       title: 'Quantity',
       dataIndex: 'qty',
       key: 'qty',
-      render: text => <>{text}</>,
+      render: (text: string) => <>{text}</>,
     },
     {
       title: 'Date Added',
       dataIndex: 'date_added',
       key: 'date_added',
-      render: text => <>{dayjs(text).format('DD.MM.YYYY HH:mm:ss')}</>,
+      render: (text: string) => (
+        <>{dayjs(text).format('DD.MM.YYYY HH:mm:ss')}</>
+      ),
     },
     {
       title: 'Added By',
       dataIndex: 'updated_by',
       key: 'updated_by',
-      render: text => <>{text}</>,
+      render: (text: string) => <>{text}</>,
     },
     {
       title: 'Action',
