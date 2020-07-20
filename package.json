@@ -1,6 +1,6 @@
 {
   "name": "katalog",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Inventory Management Application",
   "scripts": {
     "dev": "next",
