@@ -631,10 +631,6 @@ const ItemsAdd = () => {
                       </Space>
                     </Col>
                   </Row>
-                  <Row gutter={16}>
-                    <Col span={24}>
-                    </Col>
-                  </Row>
                 </TabPane>
                 {/* <TabPane tab='Location' key='2'>
                 <Row gutter={[16, 16]}>

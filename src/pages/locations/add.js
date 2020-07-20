@@ -85,4 +85,4 @@ const LocationsAdd = () => {
   )
 }
 
-export default LocationsAdd
+export default withApollo(LocationsAdd)

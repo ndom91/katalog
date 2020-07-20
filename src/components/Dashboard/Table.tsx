@@ -103,4 +103,4 @@ const RecentsTable = ({ items, setItems }: RecentsProps) => {
   )
 }
 
-export default withApollo(RecentsTable)
+export default RecentsTable
