@@ -9,7 +9,7 @@ import {
   ShoppingOutlined,
   TableOutlined,
   TagOutlined,
-  ReloadOutlined
+  ReloadOutlined,
 } from '@ant-design/icons'
 
 import { withApollo } from '../../apollo/client'
@@ -60,73 +60,81 @@ const Homepage: React.FC = () => {
       {!session ? (
         <LoginRequired />
       ) : (
-          <Wrapper>
-            <Row gutter={[16, 16]}>
-              <Col span={6}>
-                <Card>
-                  <Statistic
-                    title='Items'
-                    value={items.length}
-                    precision={0}
-                    valueStyle={{ color: '#3f8600' }}
-                    prefix={<TagOutlined />}
-                    suffix=''
-                  />
-                </Card>
-              </Col>
-              <Col span={6}>
-                <Card>
-                  <Statistic
-                    title='Locations'
-                    value={locationCount}
-                    precision={0}
-                    valueStyle={{ color: '#3f8600' }}
-                    prefix={<TableOutlined />}
-                    suffix=''
-                  />
-                </Card>
-              </Col>
-              <Col span={6}>
-                <Card>
-                  <Statistic
-                    title='Active Shipments'
-                    value={6}
-                    precision={0}
-                    valueStyle={{ color: '#3f8600' }}
-                    prefix={<ShoppingOutlined />}
-                    suffix=''
-                  />
-                </Card>
-              </Col>
-              <Col span={6}>
-                <Card>
-                  <Statistic
-                    title='Notifications'
-                    value={3}
-                    precision={0}
-                    valueStyle={{ color: '#3f8600' }}
-                    prefix={<BellOutlined />}
-                    suffix=''
-                  />
-                </Card>
-              </Col>
-            </Row>
-            <Row>
-              <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                <Title level={3}>Recent Items</Title>
-                <Button onClick={() => refetch()} loading={loading}><ReloadOutlined /></Button>
-              </div>
-              {loading ? (
-                <Card>
-                  <Skeleton loading={loading} active />
-                </Card>
-              ) : (
-                  // @ts-ignore
-                  <RecentsTable items={items} setItems={setItems} />
-                )}
-            </Row>
-          </Wrapper>
-        )}
+        <Wrapper>
+          <Row gutter={[16, 16]}>
+            <Col span={6}>
+              <Card>
+                <Statistic
+                  title='Items'
+                  value={items.length}
+                  precision={0}
+                  valueStyle={{ color: '#3f8600' }}
+                  prefix={<TagOutlined />}
+                  suffix=''
+                />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card>
+                <Statistic
+                  title='Locations'
+                  value={locationCount}
+                  precision={0}
+                  valueStyle={{ color: '#3f8600' }}
+                  prefix={<TableOutlined />}
+                  suffix=''
+                />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card>
+                <Statistic
+                  title='Active Shipments'
+                  value={6}
+                  precision={0}
+                  valueStyle={{ color: '#3f8600' }}
+                  prefix={<ShoppingOutlined />}
+                  suffix=''
+                />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card>
+                <Statistic
+                  title='Notifications'
+                  value={3}
+                  precision={0}
+                  valueStyle={{ color: '#3f8600' }}
+                  prefix={<BellOutlined />}
+                  suffix=''
+                />
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}
+            >
+              <Title level={3}>Recent Items</Title>
+              <Button onClick={() => refetch()} loading={loading}>
+                <ReloadOutlined />
+              </Button>
+            </div>
+            {loading ? (
+              <Card style={{ width: '100%' }}>
+                <Skeleton loading={loading} active />
+              </Card>
+            ) : (
+              // @ts-ignore
+              <RecentsTable items={items} setItems={setItems} />
+            )}
+          </Row>
+        </Wrapper>
+      )}
     </>
   )
 }
