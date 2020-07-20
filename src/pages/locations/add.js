@@ -12,11 +12,11 @@ const { Title } = Typography
 
 const addLocationMutation = gql`
   mutation CreateLocationMutation(
-    $desc: String
+    $description: String
   ) {
     createOneLocation(
       data: {
-        description: $desc
+        description: $description
       }
     ) {
       id
@@ -27,7 +27,7 @@ const addLocationMutation = gql`
 
 const LocationsAdd = () => {
   const [session, loading] = useSession()
-  const [location, setLocation] = useState({})
+  const [location, setLocation] = useState({ description: '' })
   const [createLocation] = useMutation(addLocationMutation, {
     onCompleted: data => {
       console.log('completeAdd', data)
@@ -67,9 +67,9 @@ const LocationsAdd = () => {
                       <Card title="Location Details" headStyle={{ fontSize: '1.5rem' }}>
                         <Form layout='vertical' form={form}>
                           <Form.Item label='Item Type' name='item-type' required>
-                            <Input name='loc-description' value={location.desc}
+                            <Input name='loc-description' value={location.description}
                               onChange={event =>
-                                setLocation({ ...location, desc: event.target.value })
+                                setLocation({ ...location, description: event.target.value })
                               } />
                           </Form.Item>
                         </Form>
