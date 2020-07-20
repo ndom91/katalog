@@ -45,6 +45,7 @@ const ItemQuery = gql`
 `
 
 const Homepage: React.FC = () => {
+  console.log('dummy')
   const [session] = useSession()
   const { loading, data } = useQuery(ItemQuery)
   const [items, setItems] = useState<ItemType>([])
