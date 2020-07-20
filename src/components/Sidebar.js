@@ -71,10 +71,15 @@ const Sidebar = () => {
             <Link href='/locations/loader'>Import/Export</Link>
           </Menu.Item>
         </SubMenu>
-        <Menu.Item icon={<GlobalOutlined />} key='10'>
-          <Link href='/shipping'>Shipping</Link>
-        </Menu.Item>
-        <Menu.Item icon={<ControlOutlined />} key='11'>
+        <SubMenu key='sub3' icon={<GlobalOutlined />} title='Shipping'>
+          <Menu.Item key='10'>
+            <Link href='/shipping/inbound'>Inbound</Link>
+          </Menu.Item>
+          <Menu.Item key='11'>
+            <Link href='/shipping/outbound'>Outbound</Link>
+          </Menu.Item>
+        </SubMenu>
+        <Menu.Item icon={<ControlOutlined />} key='12'>
           <Link href='/settings'>Settings</Link>
         </Menu.Item>
       </Menu>
