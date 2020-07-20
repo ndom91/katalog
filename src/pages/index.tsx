@@ -46,7 +46,7 @@ const ItemQuery = gql`
 
 const Homepage: React.FC = () => {
   const [session] = useSession()
-  const { loading, data, refetch } = useQuery(ItemQuery)
+  const { loading, error, data, refetch } = useQuery(ItemQuery)
   const [items, setItems] = useState<ItemType>([])
   const [locationCount, setLocationCount] = useState(0)
 
@@ -114,7 +114,7 @@ const Homepage: React.FC = () => {
             <Row>
               <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
                 <Title level={3}>Recent Items</Title>
-                <Button onClick={refetch}><ReloadOutlined /></Button>
+                <Button onClick={() => refetch()} loading={loading}><ReloadOutlined /></Button>
               </div>
               {loading ? (
                 <Card>

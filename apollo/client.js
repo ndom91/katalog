@@ -132,9 +132,9 @@ function createApolloClient(initialState = {}) {
 }
 
 function createIsomorphLink() {
-  // const { HttpLink } = require('apollo-link-http')
+  console.log(process.env.SITE)
   return new HttpLink({
-    uri: `${process.env.SITE}/api`,
+    uri: `/api`,
     credentials: 'same-origin',
   })
 }
