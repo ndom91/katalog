@@ -114,7 +114,9 @@ const Homepage: React.FC = () => {
             <Row>
               <Title level={3}>Recent Items</Title>
               {loading ? (
-                <Skeleton loading={loading} active />
+                <Card>
+                  <Skeleton loading={loading} active />
+                </Card>
               ) : (
                   // @ts-ignore
                   <RecentsTable items={items} setItems={setItems} />
