@@ -6,8 +6,7 @@ import ImageUpload from '../../components/Items/ImageUpload'
 import LoginRequired from '../../components/LoginRequired'
 import './items.module.css'
 import { withApollo } from '../../../apollo/client'
-import gql from 'graphql-tag'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useQuery, useMutation, gql } from '@apollo/client'
 import {
   Row,
   Col,

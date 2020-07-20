@@ -3,17 +3,17 @@ import { useSession } from 'next-auth/client'
 import Wrapper from '../components/Layout'
 import RecentsTable from '../components/Dashboard/Table'
 import LoginRequired from '../components/LoginRequired'
-import { Row, Col, Statistic, Card, Skeleton, Typography } from 'antd'
+import { Row, Col, Statistic, Card, Skeleton, Typography, Button } from 'antd'
 import {
   BellOutlined,
   ShoppingOutlined,
   TableOutlined,
   TagOutlined,
+  ReloadOutlined
 } from '@ant-design/icons'
 
 import { withApollo } from '../../apollo/client'
-import gql from 'graphql-tag'
-import { useQuery } from '@apollo/react-hooks'
+import { useQuery, gql } from '@apollo/client'
 
 type ItemType = {
   id: number
@@ -45,9 +45,8 @@ const ItemQuery = gql`
 `
 
 const Homepage: React.FC = () => {
-  console.log('dummy')
   const [session] = useSession()
-  const { loading, data } = useQuery(ItemQuery)
+  const { loading, data, refetch } = useQuery(ItemQuery)
   const [items, setItems] = useState<ItemType>([])
   const [locationCount, setLocationCount] = useState(0)
 
@@ -113,7 +112,10 @@ const Homepage: React.FC = () => {
               </Col>
             </Row>
             <Row>
-              <Title level={3}>Recent Items</Title>
+              <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                <Title level={3}>Recent Items</Title>
+                <Button onClick={refetch}><ReloadOutlined /></Button>
+              </div>
               {loading ? (
                 <Card>
                   <Skeleton loading={loading} active />

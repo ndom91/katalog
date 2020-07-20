@@ -1,9 +1,7 @@
 import React, { Dispatch } from 'react'
 import Link from 'next/link'
 import { Table, Space, Popconfirm, message } from 'antd'
-import { withApollo } from '../../../apollo/client'
-import gql from 'graphql-tag'
-import { useMutation } from '@apollo/react-hooks'
+import { useMutation, gql } from '@apollo/client'
 import dayjs from 'dayjs'
 
 type ItemType = {

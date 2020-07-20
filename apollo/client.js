@@ -1,8 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
-import { ApolloProvider } from '@apollo/react-hooks'
-import { ApolloClient } from 'apollo-client'
-import { InMemoryCache } from 'apollo-cache-inmemory'
+import { ApolloClient, ApolloProvider, HttpLink } from '@apollo/client'
+import { InMemoryCache } from '@apollo/client/cache'
 import fetch from 'isomorphic-unfetch'
 
 let apolloClient = null
@@ -63,7 +62,7 @@ export function withApollo(PageComponent, { ssr = true } = {}) {
         if (ssr) {
           try {
             // Run all GraphQL queries
-            const { getDataFromTree } = await import('@apollo/react-ssr')
+            const { getDataFromTree } = await import('@apollo/client/react/ssr')
             await getDataFromTree(
               <AppTree
                 pageProps={{
@@ -133,7 +132,7 @@ function createApolloClient(initialState = {}) {
 }
 
 function createIsomorphLink() {
-  const { HttpLink } = require('apollo-link-http')
+  // const { HttpLink } = require('apollo-link-http')
   return new HttpLink({
     uri: `${process.env.SITE}/api`,
     credentials: 'same-origin',

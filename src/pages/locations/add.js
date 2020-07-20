@@ -4,8 +4,7 @@ import { useSession } from 'next-auth/client'
 import LoginRequired from '../../components/LoginRequired'
 import { Row, Col, Card, PageHeader, Tabs, Button, Typography, message } from 'antd'
 import { withApollo } from '../../../apollo/client'
-import gql from 'graphql-tag'
-import { useQuery, useMutation } from '@apollo/react-hooks'
+import { useQuery, useMutation, gql } from '@apollo/client'
 
 const { TabPane } = Tabs
 const { Title } = Typography
