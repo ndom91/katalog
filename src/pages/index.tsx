@@ -3,7 +3,16 @@ import { useSession } from 'next-auth/client'
 import Wrapper from '../components/Layout'
 import RecentsTable from '../components/Dashboard/Table'
 import LoginRequired from '../components/LoginRequired'
-import { Row, Col, Statistic, Card, Skeleton, Typography, Button } from 'antd'
+import {
+  Row,
+  Col,
+  Statistic,
+  Card,
+  Skeleton,
+  Typography,
+  Button,
+  Tooltip,
+} from 'antd'
 import {
   BellOutlined,
   ShoppingOutlined,
@@ -120,9 +129,11 @@ const Homepage: React.FC = () => {
               }}
             >
               <Title level={3}>Recent Items</Title>
-              <Button onClick={() => refetch()} loading={loading}>
-                <ReloadOutlined />
-              </Button>
+              <Tooltip title='Reload List'>
+                <Button onClick={() => refetch()} loading={loading}>
+                  <ReloadOutlined />
+                </Button>
+              </Tooltip>
             </div>
             {loading ? (
               <Card style={{ width: '100%' }}>
@@ -138,4 +149,5 @@ const Homepage: React.FC = () => {
     </>
   )
 }
+
 export default withApollo(Homepage)

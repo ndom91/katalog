@@ -27,6 +27,18 @@ const SearchBar = styled(Search)`
 
 const Wrapper = ({ children }) => {
   const [session, loading] = useSession()
+  const getInitials = string =>
+    string
+      .split(' ')
+      .map(([firstLetter]) => firstLetter)
+      .filter((_, index, array) => index === 0 || index === array.length - 1)
+      .join('')
+      .toUpperCase()
+
+  let initials = 'NT'
+  if (!session.user.image && session.user.name) {
+    initials = getInitials(session.user.name)
+  }
 
   return (
     <Layout style={{ minHeight: '100vh' }} hasSider>
@@ -72,6 +84,7 @@ const Wrapper = ({ children }) => {
           >
             <Badge count={0}>
               <Avatar
+                src={session.user.image ? session.user.image : ''}
                 shape='square'
                 style={{
                   color: '#3a64d5',
@@ -79,7 +92,7 @@ const Wrapper = ({ children }) => {
                   border: '1px solid #fff',
                 }}
               >
-                U
+                {initials}
               </Avatar>
             </Badge>
           </Dropdown>

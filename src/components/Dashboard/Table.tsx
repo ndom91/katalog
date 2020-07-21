@@ -1,6 +1,11 @@
 import React, { Dispatch } from 'react'
 import Link from 'next/link'
-import { Table, Space, Popconfirm, message } from 'antd'
+import { Table, Space, Popconfirm, message, Button } from 'antd'
+import {
+  DeleteOutlined,
+  EditOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons'
 import { useMutation, gql } from '@apollo/client'
 import dayjs from 'dayjs'
 
@@ -82,15 +87,28 @@ const RecentsTable = ({ items, setItems }: RecentsProps) => {
       render: record => (
         <Space size='middle'>
           <Link href={`/items/${record.id}`}>
-            <a>Edit</a>
+            <Button
+              type='primary'
+              ghost
+              style={{ width: '36px', height: '36px', padding: '0px' }}
+            >
+              <EditOutlined style={{ fontSize: '1.0rem' }} />
+            </Button>
           </Link>
           <Popconfirm
-            title='Are you sure delete this item?'
+            title='Are you sure?'
             onConfirm={() => confirmDelete(record.id)}
+            icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
             okText='Yes'
             cancelText='No'
           >
-            <a href='#'>Delete</a>
+            <Button
+              danger
+              type='default'
+              style={{ width: '36px', height: '36px', padding: '0px' }}
+            >
+              <DeleteOutlined style={{ fontSize: '1.0rem' }} />
+            </Button>
           </Popconfirm>
         </Space>
       ),
