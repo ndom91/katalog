@@ -244,6 +244,13 @@ const ItemEdit = () => {
   const [fibuCurrentStep, setFibuCurrentStep] = useState(0)
   const [item, setItem] = useState({})
   const [fibu, setFibu] = useState({})
+  const [stepStatus, setStepStatus] = useState({
+    stamm: 'wait',
+    afaVorschau: 'wait',
+    abschreibung: 'wait',
+    sonder: 'wait',
+    bewegung: 'wait',
+  })
   const carouselRef = useRef()
 
   const { loading, data } = useQuery(getItemQuery, {
@@ -354,6 +361,18 @@ const ItemEdit = () => {
     setFibu({})
   }
 
+  const sonderabschreibungFormChange = data => {
+    console.log(data)
+    if (
+      fibu.sAbschrWjBeginn &&
+      fibu.sAbschrArt &&
+      fibu.sAbschrPerc &&
+      fibu.restbeg
+    ) {
+      setStepStatus({ ...stepStatus, sonder: 'finished' })
+    }
+  }
+
   return (
     <>
       {!session ? (
@@ -387,7 +406,6 @@ const ItemEdit = () => {
                             className='itemType-wrapper'
                             name='item-type'
                             value={item.type}
-                            defaultValue={item.type}
                             onChange={event =>
                               setItem({ ...item, type: event.target.value })
                             }
@@ -517,7 +535,6 @@ const ItemEdit = () => {
                                 </Tooltip>
                                 <Input.Group compact>
                                   <InputNumber
-                                    defaultValue={1000}
                                     formatter={value =>
                                       `${value}`.replace(
                                         /\B(?=(\d{3})+(?!\d))/g,
@@ -656,13 +673,7 @@ const ItemEdit = () => {
                     dots={false}
                     className='fibu-carousel'
                   >
-                    <Form
-                      layout='horizontal'
-                      labelAlign='left'
-                      labelCol={{ span: 8 }}
-                      wrapperCol={{ push: 4, span: 12 }}
-                      colon={false}
-                    >
+                    <Form layout='vertical' labelAlign='left' colon={false}>
                       <Form.Item label='Kostenstelle 1'>
                         <Input
                           name='fibu-kost1'
@@ -793,13 +804,7 @@ const ItemEdit = () => {
                         />
                       </Form.Item>
                     </Form>
-                    <Form
-                      layout='horizontal'
-                      labelAlign='left'
-                      labelCol={{ span: 8 }}
-                      wrapperCol={{ push: 4, span: 12 }}
-                      colon={false}
-                    >
+                    <Form layout='vertical' labelAlign='left' colon={false}>
                       <Form.Item label='Buchwert Wj-Ende'>
                         <Input
                           name='fibu-buch-wj-ende'
@@ -849,22 +854,16 @@ const ItemEdit = () => {
                         />
                       </Form.Item>
                     </Form>
-                    <Form
-                      layout='horizontal'
-                      labelAlign='left'
-                      labelCol={{ span: 7 }}
-                      wrapperCol={{ push: 5, span: 12 }}
-                      colon={false}
-                    >
+                    <Form layout='vertical' labelAlign='left' colon={false}>
                       <Form.Item label='AHK-Datum'>
                         <DatePicker
                           name='fibu-ahk-datum'
                           style={{ width: '100%' }}
                           value={fibu.ahkDatum}
-                          onChange={event =>
+                          onChange={date =>
                             setFibu({
                               ...fibu,
-                              ahkDatum: event.target.value,
+                              ahkDatum: date,
                             })
                           }
                         />
@@ -943,11 +942,11 @@ const ItemEdit = () => {
                       </Form.Item>
                     </Form>
                     <Form
-                      layout='horizontal'
+                      layout='vertical'
                       labelAlign='left'
-                      labelCol={{ span: 13 }}
-                      wrapperCol={{ push: 3, span: 8 }}
                       colon={false}
+                      status={stepStatus.sonder}
+                      onFieldsChange={() => sonderabschreibungFormChange()}
                     >
                       <Form.Item label='Sonderabschreibung Wj-Beginn'>
                         <Input
@@ -1007,22 +1006,16 @@ const ItemEdit = () => {
                         />
                       </Form.Item>
                     </Form>
-                    <Form
-                      layout='horizontal'
-                      labelAlign='left'
-                      labelCol={{ span: 7 }}
-                      wrapperCol={{ push: 5, span: 12 }}
-                      colon={false}
-                    >
+                    <Form layout='vertical' labelAlign='left' colon={false}>
                       <Form.Item label='Abgang'>
                         <DatePicker
                           name='fibu-abgang'
                           style={{ width: '100%' }}
                           value={fibu.abgang}
-                          onChange={event =>
+                          onChange={date =>
                             setFibu({
                               ...fibu,
-                              abgang: event.target.value,
+                              abgang: date,
                             })
                           }
                         />
