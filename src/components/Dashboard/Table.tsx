@@ -1,13 +1,13 @@
-import React, { Dispatch } from 'react'
-import Link from 'next/link'
-import { Table, Space, Popconfirm, message, Button } from 'antd'
 import {
   DeleteOutlined,
   EditOutlined,
   QuestionCircleOutlined,
 } from '@ant-design/icons'
-import { useMutation, gql } from '@apollo/client'
+import { gql, useMutation } from '@apollo/client'
+import { Button, message, Popconfirm, Space, Table } from 'antd'
 import dayjs from 'dayjs'
+import Link from 'next/link'
+import React, { Dispatch } from 'react'
 
 type ItemType = {
   id: number

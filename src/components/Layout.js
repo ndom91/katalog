@@ -1,9 +1,9 @@
+import { UserOutlined } from '@ant-design/icons'
+import { Avatar, Badge, Dropdown, Input, Layout, Menu } from 'antd'
+import { signOut, useSession } from 'next-auth/client'
 import React from 'react'
 import styled from 'styled-components'
-import { Layout, Input, Avatar, Badge, Menu, Dropdown, Tooltip } from 'antd'
 import GlobalStyle from '../style/global.js'
-import { UserOutlined } from '@ant-design/icons'
-import { signOut, useSession } from 'next-auth/client'
 import Sidebar from './Sidebar'
 
 const { Header, Content, Footer } = Layout
