@@ -132,7 +132,6 @@ function createApolloClient(initialState = {}) {
 }
 
 function createIsomorphLink() {
-  console.log(process.env.SITE)
   return new HttpLink({
     uri: `/api`,
     credentials: 'same-origin',

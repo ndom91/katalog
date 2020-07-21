@@ -1,4 +1,5 @@
 import React from 'react'
+import Router from 'next/router'
 import { useSession } from 'next-auth/client'
 import LoginRequired from '../../components/LoginRequired'
 import Wrapper from '../../components/Layout'
@@ -14,28 +15,24 @@ const Shipping = () => {
       {!session ? (
         <LoginRequired />
       ) : (
-          <Wrapper>
-            <PageHeader
-              className='site-page-header-responsive'
-              onBack={() => window.history.back()}
-              title='Shipping'
-              subTitle='Outbound'
-            >
-              <Row gutter={[16, 16]}>
-                <Col span={12}>
-                  <Card title='New Outbound'>
-                    Test
-                    </Card>
-                </Col>
-                <Col span={12}>
-                  <Card title='Open Shipments'>
-                    Test
-                    </Card>
-                </Col>
-              </Row>
-            </PageHeader>
-          </Wrapper>
-        )}
+        <Wrapper>
+          <PageHeader
+            className='site-page-header-responsive'
+            onBack={() => Router.back()}
+            title='Shipping'
+            subTitle='Outbound'
+          >
+            <Row gutter={[16, 16]}>
+              <Col span={12}>
+                <Card title='New Outbound'>Test</Card>
+              </Col>
+              <Col span={12}>
+                <Card title='Open Shipments'>Test</Card>
+              </Col>
+            </Row>
+          </PageHeader>
+        </Wrapper>
+      )}
     </>
   )
 }

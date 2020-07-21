@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import Router from 'next/router'
 import { RIEInput } from 'riek'
 import { useSession } from 'next-auth/client'
 import LoginRequired from '../../components/LoginRequired'
@@ -36,7 +37,7 @@ const ItemsList = () => {
         <Wrapper>
           <PageHeader
             className='site-page-header-responsive'
-            onBack={() => window.history.back()}
+            onBack={() => Router.back()}
             title='Item'
             subTitle='List'
             extra={[

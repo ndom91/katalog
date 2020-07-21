@@ -86,7 +86,7 @@ const RecentsTable = ({ items, setItems }: RecentsProps) => {
       key: 'action',
       render: record => (
         <Space size='middle'>
-          <Link href={`/items/${record.id}`}>
+          <Link href='/items/[id]' as={`/items/${record.id}`}>
             <Button
               type='primary'
               ghost

@@ -91,7 +91,6 @@ export default ({ csrfToken, session, providers }: Props) => {
               {providers &&
                 Object.values(providers).map(provider => {
                   if (provider.name === 'Email') return null
-                  console.log(provider)
                   return (
                     <Form.Item key={provider.name}>
                       <a

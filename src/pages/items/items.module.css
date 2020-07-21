@@ -59,3 +59,15 @@
   overflow: hidden;
   color: #fff;
 }
+
+.fibu-carousel .slick-slide {
+  padding: 50px;
+  text-align: center;
+  height: 100%;
+  line-height: 160px;
+  background: transparent;
+  overflow: hidden;
+}
+.fibu-carousel .slick-slide form {
+  max-width: 700px;
+}

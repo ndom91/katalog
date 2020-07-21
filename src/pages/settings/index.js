@@ -1,4 +1,5 @@
 import React from 'react'
+import Router from 'next/router'
 import { useSession } from 'next-auth/client'
 import LoginRequired from '../../components/LoginRequired'
 import Wrapper from '../../components/Layout'
@@ -17,7 +18,7 @@ const Settings = () => {
         <Wrapper>
           <PageHeader
             className='site-page-header-responsive'
-            onBack={() => window.history.back()}
+            onBack={() => Router.back()}
             title='Settings'
             subTitle='Details'
             extra={[

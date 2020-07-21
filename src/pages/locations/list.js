@@ -1,4 +1,5 @@
 import React from 'react'
+import Router from 'next/router'
 import Wrapper from '../../components/Layout'
 import { useSession } from 'next-auth/client'
 import LoginRequired from '../../components/LoginRequired'
@@ -17,7 +18,7 @@ const LocationsList = () => {
         <Wrapper>
           <PageHeader
             className='site-page-header-responsive'
-            onBack={() => window.history.back()}
+            onBack={() => Router.back()}
             title='Locations'
             subTitle='List'
             extra={[

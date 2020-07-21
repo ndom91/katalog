@@ -1,8 +1,18 @@
 import React, { useState } from 'react'
+import Router from 'next/router'
 import Wrapper from '../../components/Layout'
 import { useSession } from 'next-auth/client'
 import LoginRequired from '../../components/LoginRequired'
-import { Row, Col, Card, PageHeader, Tabs, Button, Typography, message } from 'antd'
+import {
+  Row,
+  Col,
+  Card,
+  PageHeader,
+  Tabs,
+  Button,
+  Typography,
+  message,
+} from 'antd'
 import { withApollo } from '../../../apollo/client'
 import { useQuery, useMutation, gql } from '@apollo/client'
 
@@ -10,14 +20,8 @@ const { TabPane } = Tabs
 const { Title } = Typography
 
 const addLocationMutation = gql`
-  mutation CreateLocationMutation(
-    $description: String
-  ) {
-    createOneLocation(
-      data: {
-        description: $description
-      }
-    ) {
+  mutation CreateLocationMutation($description: String) {
+    createOneLocation(data: { description: $description }) {
       id
       description
     }
@@ -29,7 +33,6 @@ const LocationsAdd = () => {
   const [location, setLocation] = useState({ description: '' })
   const [createLocation] = useMutation(addLocationMutation, {
     onCompleted: data => {
-      console.log('completeAdd', data)
       message.success(`${data.createOneLocation.description} created`)
     },
   })
@@ -46,40 +49,49 @@ const LocationsAdd = () => {
       {!session ? (
         <LoginRequired />
       ) : (
-          <Wrapper>
-            <PageHeader
-              className='site-page-header-responsive'
-              onBack={() => window.history.back()}
-              title='Locations'
-              subTitle='Add'
-              extra={[
-                <Button key='2'>Clear</Button>,
-                <Button key='1' type='primary'>
-                  Save
+        <Wrapper>
+          <PageHeader
+            className='site-page-header-responsive'
+            onBack={() => Router.back()}
+            title='Locations'
+            subTitle='Add'
+            extra={[
+              <Button key='2'>Clear</Button>,
+              <Button key='1' type='primary'>
+                Save
               </Button>,
-              ]}
-            >
-              <Tabs defaultActiveKey='1'>
-                <TabPane tab='Details' key='1'>
-                  <Row gutter={[16, 16]}>
-                    <Col span={12}>
-                      <Card title="Location Details" headStyle={{ fontSize: '1.5rem' }}>
-                        <Form layout='vertical' form={form}>
-                          <Form.Item label='Item Type' name='item-type' required>
-                            <Input name='loc-description' value={location.description}
-                              onChange={event =>
-                                setLocation({ ...location, description: event.target.value })
-                              } />
-                          </Form.Item>
-                        </Form>
-                      </Card>
-                    </Col>
-                  </Row>
-                </TabPane>
-              </Tabs>
-            </PageHeader>
-          </Wrapper>
-        )}
+            ]}
+          >
+            <Tabs defaultActiveKey='1'>
+              <TabPane tab='Details' key='1'>
+                <Row gutter={[16, 16]}>
+                  <Col span={12}>
+                    <Card
+                      title='Location Details'
+                      headStyle={{ fontSize: '1.5rem' }}
+                    >
+                      <Form layout='vertical' form={form}>
+                        <Form.Item label='Item Type' name='item-type' required>
+                          <Input
+                            name='loc-description'
+                            value={location.description}
+                            onChange={event =>
+                              setLocation({
+                                ...location,
+                                description: event.target.value,
+                              })
+                            }
+                          />
+                        </Form.Item>
+                      </Form>
+                    </Card>
+                  </Col>
+                </Row>
+              </TabPane>
+            </Tabs>
+          </PageHeader>
+        </Wrapper>
+      )}
     </>
   )
 }
