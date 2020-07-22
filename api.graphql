@@ -172,6 +172,7 @@ type Item {
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
+  purchase_price: String
   qty: Int
   restbeguenstigung: String
   serialNo: String
@@ -180,6 +181,7 @@ type Item {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
+  status: String
   title: String!
   type: String
   updated_by: String!
@@ -215,6 +217,7 @@ input ItemCreateInput {
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
+  purchase_price: String
   qty: Int
   restbeguenstigung: String
   serialNo: String
@@ -223,6 +226,7 @@ input ItemCreateInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
+  status: String
   title: String!
   type: String
   updated_by: String!
@@ -267,6 +271,7 @@ input ItemCreateWithoutImagesInput {
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
+  purchase_price: String
   qty: Int
   restbeguenstigung: String
   serialNo: String
@@ -275,6 +280,7 @@ input ItemCreateWithoutImagesInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
+  status: String
   title: String!
   type: String
   updated_by: String!
@@ -309,6 +315,7 @@ input ItemCreateWithoutLocationInput {
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
+  purchase_price: String
   qty: Int
   restbeguenstigung: String
   serialNo: String
@@ -317,6 +324,7 @@ input ItemCreateWithoutLocationInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
+  status: String
   title: String!
   type: String
   updated_by: String!
@@ -358,6 +366,7 @@ input ItemOrderByInput {
   n_afa_wj_beginn: OrderByArg
   n_afa_wj_ende: OrderByArg
   nutzungsdauer: OrderByArg
+  purchase_price: OrderByArg
   qty: OrderByArg
   restbeguenstigung: OrderByArg
   serialNo: OrderByArg
@@ -366,6 +375,7 @@ input ItemOrderByInput {
   sonder_abs_verteil: OrderByArg
   sonder_abs_wj_beginn: OrderByArg
   sonder_abs_wj_ende: OrderByArg
+  status: OrderByArg
   title: OrderByArg
   type: OrderByArg
   updated_by: OrderByArg
@@ -405,6 +415,7 @@ input ItemScalarWhereInput {
   NOT: [ItemScalarWhereInput!]
   nutzungsdauer: NullableStringFilter
   OR: [ItemScalarWhereInput!]
+  purchase_price: NullableStringFilter
   qty: NullableIntFilter
   restbeguenstigung: NullableStringFilter
   serialNo: NullableStringFilter
@@ -413,6 +424,7 @@ input ItemScalarWhereInput {
   sonder_abs_verteil: NullableBooleanFilter
   sonder_abs_wj_beginn: NullableStringFilter
   sonder_abs_wj_ende: NullableStringFilter
+  status: NullableStringFilter
   title: StringFilter
   type: NullableStringFilter
   updated_by: StringFilter
@@ -449,6 +461,7 @@ input ItemUpdateInput {
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
+  purchase_price: String
   qty: Int
   restbeguenstigung: String
   serialNo: String
@@ -457,6 +470,7 @@ input ItemUpdateInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
+  status: String
   title: String
   type: String
   updated_by: String
@@ -491,6 +505,7 @@ input ItemUpdateManyDataInput {
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
+  purchase_price: String
   qty: Int
   restbeguenstigung: String
   serialNo: String
@@ -499,6 +514,7 @@ input ItemUpdateManyDataInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
+  status: String
   title: String
   type: String
   updated_by: String
@@ -533,6 +549,7 @@ input ItemUpdateManyMutationInput {
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
+  purchase_price: String
   qty: Int
   restbeguenstigung: String
   serialNo: String
@@ -541,6 +558,7 @@ input ItemUpdateManyMutationInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
+  status: String
   title: String
   type: String
   updated_by: String
@@ -605,6 +623,7 @@ input ItemUpdateWithoutImagesDataInput {
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
+  purchase_price: String
   qty: Int
   restbeguenstigung: String
   serialNo: String
@@ -613,6 +632,7 @@ input ItemUpdateWithoutImagesDataInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
+  status: String
   title: String
   type: String
   updated_by: String
@@ -648,6 +668,7 @@ input ItemUpdateWithoutLocationDataInput {
   n_afa_wj_beginn: String
   n_afa_wj_ende: String
   nutzungsdauer: String
+  purchase_price: String
   qty: Int
   restbeguenstigung: String
   serialNo: String
@@ -656,6 +677,7 @@ input ItemUpdateWithoutLocationDataInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
+  status: String
   title: String
   type: String
   updated_by: String
@@ -718,6 +740,7 @@ input ItemWhereInput {
   NOT: [ItemWhereInput!]
   nutzungsdauer: NullableStringFilter
   OR: [ItemWhereInput!]
+  purchase_price: NullableStringFilter
   qty: NullableIntFilter
   restbeguenstigung: NullableStringFilter
   serialNo: NullableStringFilter
@@ -726,6 +749,7 @@ input ItemWhereInput {
   sonder_abs_verteil: NullableBooleanFilter
   sonder_abs_wj_beginn: NullableStringFilter
   sonder_abs_wj_ende: NullableStringFilter
+  status: NullableStringFilter
   title: StringFilter
   type: NullableStringFilter
   updated_by: StringFilter

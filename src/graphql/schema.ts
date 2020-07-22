@@ -12,6 +12,8 @@ schema.objectType({
     t.model.type()
     t.model.description()
     t.model.serialNo()
+    t.model.purchase_price()
+    t.model.status()
     t.model.inventarNr()
     t.model.kontoNr()
     t.model.date_added()

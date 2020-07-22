@@ -21,7 +21,7 @@ import {
   Input,
   Button,
   Radio,
-  Slider,
+  Tag,
   InputNumber,
   Select,
   Space,
@@ -55,6 +55,8 @@ const UpdateItemMutation = gql`
     $location: Int
     $updated_by: String!
     $type: String
+    $status: String
+    $purchase_price: String
     $serialNo: String
     $inventarNr: String
     $kontoNr: String
@@ -97,6 +99,8 @@ const UpdateItemMutation = gql`
         type: $type
         serialNo: $serialNo
         inventarNr: $inventarNr
+        purchase_price: $purchase_price
+        status: $status
         kontoNr: $kontoNr
         date_updated: $date_updated
         ahk_date: $ahk_date
@@ -139,6 +143,8 @@ const UpdateItemMutation = gql`
       serialNo
       inventarNr
       kontoNr
+      purchase_price
+      status
       date_added
       date_updated
       updated_by
@@ -191,6 +197,8 @@ const getItemQuery = gql`
       serialNo
       inventarNr
       kontoNr
+      status
+      purchase_price
       date_added
       date_updated
       updated_by
@@ -273,6 +281,8 @@ const ItemEdit = () => {
         type: data.item.type,
         updated_by: data.item.updated_by,
         location: data.item.locationId,
+        status: data.item.status,
+        purchase_price: data.item.purchase_price,
       })
       setFibu({
         serialNo: data.item.serialNo,
@@ -320,6 +330,8 @@ const ItemEdit = () => {
         title: item.title,
         description: item.description,
         type: item.type,
+        purchase_price: item.purchase_price,
+        status: item.status,
         location: item.location,
         serialNo: fibu.serial,
         inventarNr: fibu.inventory,
@@ -407,7 +419,43 @@ const ItemEdit = () => {
               <TabPane tab='Details' key='1'>
                 <Row gutter={[16, 16]}>
                   <Col span={12}>
-                    <Card title='Item' headStyle={{ fontSize: '1.5rem' }}>
+                    <Card
+                      title='Item'
+                      headStyle={{ fontSize: '1.5rem' }}
+                      extra={
+                        <Select
+                          placeholder='Status'
+                          style={{ width: 120, height: 45 }}
+                          bordered={false}
+                          size='large'
+                        >
+                          <Option value='ready'>
+                            <Tag
+                              style={{ padding: '8px', fontSize: '0.8rem' }}
+                              color='orange'
+                            >
+                              Ready
+                            </Tag>
+                          </Option>
+                          <Option value='shipping'>
+                            <Tag
+                              style={{ padding: '8px', fontSize: '0.8rem' }}
+                              color='geekblue'
+                            >
+                              Shipping
+                            </Tag>
+                          </Option>
+                          <Option value='lager'>
+                            <Tag
+                              style={{ padding: '8px', fontSize: '0.8rem' }}
+                              color='green'
+                            >
+                              Lager
+                            </Tag>
+                          </Option>
+                        </Select>
+                      }
+                    >
                       <Form layout='vertical' form={form}>
                         <Form.Item label='Item Type' name='item-type' required>
                           <Radio.Group
@@ -468,7 +516,7 @@ const ItemEdit = () => {
                             </Form.Item>
                           </Col>
                           <Col span={12}>
-                            <Form.Item label='Location'>
+                            <Form.Item label='Location' required>
                               <Select
                                 showSearch
                                 placeholder='Select a location'
@@ -531,19 +579,6 @@ const ItemEdit = () => {
                                 label='Purchase Price'
                                 style={{ position: 'relative' }}
                               >
-                                <Tooltip title='AHK Wirtschaftsjahr-Ende'>
-                                  <a
-                                    href='#API'
-                                    style={{
-                                      margin: '0 8px',
-                                      position: 'absolute',
-                                      top: '-30px',
-                                      right: '10px',
-                                    }}
-                                  >
-                                    <QuestionCircleOutlined />
-                                  </a>
-                                </Tooltip>
                                 <Input.Group compact>
                                   <InputNumber
                                     formatter={value =>
@@ -555,9 +590,12 @@ const ItemEdit = () => {
                                     parser={value =>
                                       value.replace(/\$\s?|(,*)/g, '')
                                     }
-                                    value={fibu.ahkWjEnde}
+                                    value={item.purchase_price}
                                     onChange={price =>
-                                      setFibu({ ...fibu, ahkWjEnde: price })
+                                      setItem({
+                                        ...item,
+                                        purchase_price: price,
+                                      })
                                     }
                                     style={{ width: 'calc( 95% - 80px)' }}
                                   />
@@ -816,6 +854,18 @@ const ItemEdit = () => {
                       </Form.Item>
                     </Form>
                     <Form layout='vertical' labelAlign='left' colon={false}>
+                      <Form.Item label='AHK Wj-Ende'>
+                        <Input
+                          name='fibu-ahk-wj-ende'
+                          value={fibu.ahkWjEnde}
+                          onChange={event =>
+                            setFibu({
+                              ...fibu,
+                              ahkWjEnde: event.target.value,
+                            })
+                          }
+                        />
+                      </Form.Item>
                       <Form.Item label='Buchwert Wj-Ende'>
                         <Input
                           name='fibu-buch-wj-ende'
