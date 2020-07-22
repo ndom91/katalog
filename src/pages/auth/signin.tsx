@@ -1,11 +1,13 @@
 import React from 'react'
 import Router from 'next/router'
-import { Card, Form, Input, Button } from 'antd'
+import { Card, Form, Input, Button, Divider } from 'antd'
 import { csrfToken, signin, getSession, getProviders } from 'next-auth/client'
 import styled from 'styled-components'
 import KatalogLogo from '../../assets/svg/katalog_full.svg'
+import KatalogLogoSmall from '../assets/svg/katalog_icon.svg'
 import Pattern from '../../assets/svg/login_pattern.svg'
 import { generateMedia } from 'styled-media-query'
+import { GoogleOutlined } from '@ant-design/icons'
 
 const customMedia = generateMedia({
   huge: '1440px',
@@ -93,7 +95,7 @@ export default ({ csrfToken, session, providers }: Props) => {
       <Wrapper></Wrapper>
       <Content>
         <CardWrapper>
-          <KatalogLogo style={{ height: '85px', marginBottom: '20px' }} />
+          <svg src={KatalogLogo} style={{ height: '85px', marginBottom: '20px' }} />
           <Card bordered={false} style={{ width: '100%' }}>
             <Form
               form={form}
@@ -110,7 +112,6 @@ export default ({ csrfToken, session, providers }: Props) => {
             >
               <input name='csrfToken' type='hidden' defaultValue={csrfToken} />
               <Form.Item
-                label='Email'
                 style={{ fontWeight: 100 }}
                 colon={false}
                 labelCol={{ span: 24 }}
@@ -118,7 +119,7 @@ export default ({ csrfToken, session, providers }: Props) => {
                 name='email'
                 id='email'
               >
-                <Input />
+                <Input placeholder='Email' />
               </Form.Item>
 
               <Form.Item>
@@ -126,14 +127,16 @@ export default ({ csrfToken, session, providers }: Props) => {
                   Submit
                 </Button>
               </Form.Item>
+              {providers && <Divider style={{ padding: '0 20px' }} />}
               {providers &&
                 Object.values(providers).map(provider => {
                   if (provider.name === 'Email') return null
                   return (
-                    <Form.Item key={provider.name}>
+                    <Form.Item key={provider.name} style={{ marginBottom: 0 }}>
                       <a href={provider.signinUrl} onClick={e => e.preventDefault()}>
                         <Button type='default' block onClick={() => signin(provider.id)}>
-                          Sign in with {provider.name}
+                          Sign in with{' '}
+                          {provider.name === 'Google' ? <GoogleOutlined /> : provider.name}
                         </Button>
                       </a>
                     </Form.Item>

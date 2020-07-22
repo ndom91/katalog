@@ -33,6 +33,7 @@ const Scanner = () => {
           if (cameras.length > 0) {
             setDevices(cameras)
             setCameraId(cameras[0].deviceId)
+            setResult(JSON.stringify(cameras))
           }
           setLoading(false)
         })
@@ -43,15 +44,13 @@ const Scanner = () => {
   }, [])
 
   const selectCamera = () => {
-    if (!loading) {
-      return cameraId
-    } else {
-      return null
-    }
+    return cameraId
   }
+
   const QrSuccess = result => {
     setResult(result.decoded)
   }
+
   const QrError = data => {
     console.log(data)
     if (typeof data === 'string') {
@@ -65,6 +64,7 @@ const Scanner = () => {
   return (
     <>
       <Select
+        style={{ width: 100 }}
         onChange={value => {
           setCameraId(value)
         }}
