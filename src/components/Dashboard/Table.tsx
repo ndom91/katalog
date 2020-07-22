@@ -1,4 +1,5 @@
 import { DeleteOutlined, EditOutlined, QuestionCircleOutlined } from '@ant-design/icons'
+import TablePaginationConfig from 'antd/es/table/interface.d.ts'
 import { gql, useMutation } from '@apollo/client'
 import { Button, message, Popconfirm, Space, Table, Tag } from 'antd'
 import dayjs from 'dayjs'

@@ -10,6 +10,8 @@ import {
   TableOutlined,
   TagOutlined,
   ReloadOutlined,
+  AlertOutlined,
+  EnvironmentOutlined,
 } from '@ant-design/icons'
 
 import { withApollo } from '../../apollo/client'
@@ -54,10 +56,10 @@ const ItemQuery = gql`
 const iconStyle = {
   fill: '#bcbcbc',
   position: 'absolute',
-  top: '20px',
-  right: '20px',
-  fontSize: '10rem',
-  opacity: '0.2',
+  top: '10px',
+  right: '10px',
+  fontSize: '8rem',
+  opacity: '0.1',
 }
 
 const Homepage: React.FC = () => {
@@ -101,7 +103,7 @@ const Homepage: React.FC = () => {
                   prefix={<TableOutlined />}
                   suffix=''
                 />
-                <TableOutlined style={iconStyle} />
+                <EnvironmentOutlined style={iconStyle} />
               </Card>
             </Col>
             <Col span={6}>
@@ -127,7 +129,7 @@ const Homepage: React.FC = () => {
                   prefix={<BellOutlined />}
                   suffix=''
                 />
-                <BellOutlined style={iconStyle} />
+                <AlertOutlined style={iconStyle} />
               </Card>
             </Col>
           </Row>
