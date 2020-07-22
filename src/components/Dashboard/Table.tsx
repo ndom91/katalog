@@ -1,8 +1,4 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  QuestionCircleOutlined,
-} from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, QuestionCircleOutlined } from '@ant-design/icons'
 import { gql, useMutation } from '@apollo/client'
 import { Button, message, Popconfirm, Space, Table, Tag } from 'antd'
 import dayjs from 'dayjs'
@@ -33,11 +29,7 @@ const deleteItemMutation = gql`
     }
   }
 `
-const RecentsTable = ({
-  items,
-  setItems,
-  pagination = false,
-}: RecentsProps) => {
+const RecentsTable = ({ items, setItems, pagination = false }: RecentsProps) => {
   const [deleteItem] = useMutation(deleteItemMutation, {
     onCompleted: data => {
       const newItems = items.filter(item => item.id !== data.deleteOneItem.id)
@@ -64,18 +56,15 @@ const RecentsTable = ({
     {
       title: 'Status',
       dataIndex: 'status',
-      sorter: (a, b) => a.status.name - b.status.name,
       key: 'status',
       render: status => (
-        <Tag color={status ? status.color : 'grey'}>
-          {status ? status.name : 'N/A'}
-        </Tag>
+        <Tag color={status ? status.color : 'grey'}>{status ? status.name : 'N/A'}</Tag>
       ),
     },
     {
       title: 'Quantity',
       dataIndex: 'qty',
-      sorter: (a, b) => a.qty - b.qty,
+      sorter: (a, b) => a.qty > b.qty,
       key: 'qty',
       render: (text: string) => <>{text}</>,
     },
@@ -98,9 +87,7 @@ const RecentsTable = ({
       dataIndex: 'date_added',
       key: 'date_added',
       sorter: (a, b) => a.date_added > b.date_added,
-      render: (text: string) => (
-        <>{dayjs(text).format('DD.MM.YYYY HH:mm:ss')}</>
-      ),
+      render: (text: string) => <>{dayjs(text).format('DD.MM.YYYY HH:mm:ss')}</>,
     },
     {
       title: 'Added By',
@@ -115,11 +102,7 @@ const RecentsTable = ({
       render: record => (
         <Space size='middle'>
           <Link href='/items/[id]' as={`/items/${record.id}`}>
-            <Button
-              type='primary'
-              ghost
-              style={{ width: '36px', height: '36px', padding: '0px' }}
-            >
+            <Button type='primary' ghost style={{ width: '36px', height: '36px', padding: '0px' }}>
               <EditOutlined style={{ fontSize: '1.0rem' }} />
             </Button>
           </Link>
@@ -130,11 +113,7 @@ const RecentsTable = ({
             okText='Yes'
             cancelText='No'
           >
-            <Button
-              danger
-              type='default'
-              style={{ width: '36px', height: '36px', padding: '0px' }}
-            >
+            <Button danger type='default' style={{ width: '36px', height: '36px', padding: '0px' }}>
               <DeleteOutlined style={{ fontSize: '1.0rem' }} />
             </Button>
           </Popconfirm>
@@ -143,12 +122,7 @@ const RecentsTable = ({
     },
   ]
   return (
-    <Table
-      style={{ width: '100%' }}
-      columns={columns}
-      dataSource={items}
-      pagination={pagination}
-    />
+    <Table style={{ width: '100%' }} columns={columns} dataSource={items} pagination={pagination} />
   )
 }
 
