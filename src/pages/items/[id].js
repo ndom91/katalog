@@ -292,7 +292,7 @@ const ItemEdit = () => {
         type: data.item.type,
         updated_by: data.item.updated_by,
         location: data.item.locationId,
-        status: data.item.status,
+        status: data.item.status.id,
         purchase_price: data.item.purchase_price,
       })
       setFibu({
@@ -436,13 +436,17 @@ const ItemEdit = () => {
                       extra={
                         <Select
                           placeholder='Select a Status'
+                          value={item.status}
+                          onChange={value =>
+                            setItem({ ...item, status: value })
+                          }
                           style={{ width: 120, height: 45 }}
                           bordered={false}
                           size='large'
                         >
                           {data &&
                             data.allStatuses.map(status => (
-                              <Option value={status.id}>
+                              <Option key={status.id} value={status.id}>
                                 <Tag
                                   style={{ padding: '8px', fontSize: '0.8rem' }}
                                   color={status.color}
