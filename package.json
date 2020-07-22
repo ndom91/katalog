@@ -69,6 +69,7 @@
     "rm": "^0.1.8",
     "sqlite3": "^5.0.0",
     "styled-components": "^5.1.1",
+    "styled-media-query": "^2.1.2",
     "typescript-plugin-css-modules": "^2.4.0"
   },
   "devDependencies": {

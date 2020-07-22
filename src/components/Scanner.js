@@ -70,7 +70,7 @@ const Scanner = () => {
         }}
       >
         {devices &&
-          devices.map(device => (
+          devices.map((device, index) => (
             <Option key={device.deviceId} value={device.deviceId}>
               {device.label || `camera ${index}`}
             </Option>

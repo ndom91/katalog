@@ -5,6 +5,14 @@ import { csrfToken, signin, getSession, getProviders } from 'next-auth/client'
 import styled from 'styled-components'
 import KatalogLogo from '../../assets/svg/katalog_full.svg'
 import Pattern from '../../assets/svg/login_pattern.svg'
+import { generateMedia } from 'styled-media-query'
+
+const customMedia = generateMedia({
+  huge: '1440px',
+  large: '1170px',
+  medium: '600px',
+  small: '450px',
+})
 
 const Wrapper = styled.div`
   display: flex;
@@ -17,6 +25,15 @@ const Wrapper = styled.div`
   height: 150%;
   background-color: #002140;
   z-index: 2;
+
+  ${customMedia.lessThan('large')`
+    left: -50px; 
+  `}
+
+  ${customMedia.lessThan('medium')`
+    left: -100px; 
+    width: 80%;
+  `}
 `
 
 const Content = styled.div`
@@ -28,6 +45,9 @@ const Content = styled.div`
   padding: 30px;
   text-align: center;
   font-weight: bold;
+  ${customMedia.lessThan('medium')`
+    justify-content: center;
+  `}
 `
 
 const CardWrapper = styled.div`
@@ -38,6 +58,22 @@ const CardWrapper = styled.div`
   width: 300px;
   margin-left: 15%;
   z-index: 3;
+  ${customMedia.lessThan('medium')`
+    margin-left: 0px;
+  `}
+`
+const StyledPattern = styled(Pattern)`
+  z-index: 1;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: auto;
+
+  ${customMedia.lessThan('medium')`
+    height: 100%;
+    width: auto;
+  `}
 `
 
 type Props = {
@@ -107,7 +143,7 @@ export default ({ csrfToken, session, providers }: Props) => {
           </Card>
         </CardWrapper>
       </Content>
-      <Pattern style={{ zIndex: 1, position: 'absolute', top: 0, right: 0, width: '100%' }} />
+      <StyledPattern />
     </div>
   )
 }
