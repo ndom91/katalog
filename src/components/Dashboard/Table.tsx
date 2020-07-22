@@ -4,7 +4,7 @@ import {
   QuestionCircleOutlined,
 } from '@ant-design/icons'
 import { gql, useMutation } from '@apollo/client'
-import { Button, message, Popconfirm, Space, Table } from 'antd'
+import { Button, message, Popconfirm, Space, Table, Tag } from 'antd'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import React, { Dispatch } from 'react'
@@ -60,6 +60,17 @@ const RecentsTable = ({
       key: 'title',
       sorter: (a, b) => a.title.charAt(0) < b.title.charAt(0),
       render: (text: string) => <>{text}</>,
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      sorter: (a, b) => a.status.name - b.status.name,
+      key: 'status',
+      render: status => (
+        <Tag color={status ? status.color : 'grey'}>
+          {status ? status.name : 'N/A'}
+        </Tag>
+      ),
     },
     {
       title: 'Quantity',
