@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import { Layout, Result, Button } from 'antd'
+import Illustration from '../assets/svg/error1.svg'
 
 const { Header, Content, Footer } = Layout
 
@@ -23,6 +24,7 @@ const LoginRequired = () => {
           <Result
             status='error'
             title='Error'
+            icon={<Illustration />}
             subTitle='You must be logged in to view this page'
             extra={[
               <Link href='/auth/signin'>

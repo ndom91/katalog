@@ -4,6 +4,7 @@ import { Card, Form, Input, Button } from 'antd'
 import { csrfToken, signin, getSession, getProviders } from 'next-auth/client'
 import styled from 'styled-components'
 import KatalogLogo from '../../assets/svg/katalog_full.svg'
+import Pattern from '../../assets/svg/login_pattern.svg'
 
 const Wrapper = styled.div`
   display: flex;
@@ -12,10 +13,10 @@ const Wrapper = styled.div`
   position: fixed;
   top: 0px;
   left: 0px;
-  width: 80%;
+  width: 70%;
   height: 150%;
   background-color: #002140;
-  z-index: 1;
+  z-index: 2;
 `
 
 const Content = styled.div`
@@ -36,6 +37,7 @@ const CardWrapper = styled.div`
   justify-items: center;
   width: 300px;
   margin-left: 15%;
+  z-index: 3;
 `
 
 type Props = {
@@ -51,7 +53,7 @@ export default ({ csrfToken, session, providers }: Props) => {
   }
 
   return (
-    <>
+    <div style={{ overflow: 'hidden', position: 'relative' }}>
       <Wrapper></Wrapper>
       <Content>
         <CardWrapper>
@@ -93,15 +95,8 @@ export default ({ csrfToken, session, providers }: Props) => {
                   if (provider.name === 'Email') return null
                   return (
                     <Form.Item key={provider.name}>
-                      <a
-                        href={provider.signinUrl}
-                        onClick={e => e.preventDefault()}
-                      >
-                        <Button
-                          type='default'
-                          block
-                          onClick={() => signin(provider.id)}
-                        >
+                      <a href={provider.signinUrl} onClick={e => e.preventDefault()}>
+                        <Button type='default' block onClick={() => signin(provider.id)}>
                           Sign in with {provider.name}
                         </Button>
                       </a>
@@ -112,7 +107,8 @@ export default ({ csrfToken, session, providers }: Props) => {
           </Card>
         </CardWrapper>
       </Content>
-    </>
+      <Pattern style={{ zIndex: 1, position: 'absolute', top: 0, right: 0, width: '100%' }} />
+    </div>
   )
 }
 
