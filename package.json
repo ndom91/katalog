@@ -18,6 +18,14 @@
     "prettier": "prettier --config .prettierrc --check \"**/*.{js,jsx,ts,tsx,css,html}\"",
     "prettier:fix": "prettier --config .prettierrc --write \"**/*.{js,jsx,ts,tsx,css,html}\""
   },
+  "homepage": "https://github.com/ndom91/lagerify",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ndom91/lagerify"
+  },
+  "bugs": {
+    "url": "https://github.com/ndom91/lagerify/issues"
+  },
   "keywords": [
     "warehouse",
     "inventory",

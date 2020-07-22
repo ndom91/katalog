@@ -40,7 +40,7 @@ All contributions are welcome!
 
 Based upon [prisma-examples/graphql-nextjs](https://github.com/prisma/prisma-examples/tree/master/typescript/graphql-nextjs).  
 Datev Fields - [Source](https://www.datev.de/dnlexom/client/app/index.html#/document/9211235)  
-Prisma [Docs](https://www.prisma.io/docs/reference)
+Prisma2 [Docs](https://www.prisma.io/docs/reference)
 
 ### 🗒️ License
 
