@@ -27,6 +27,7 @@ import {
   Switch,
   Carousel,
   Steps,
+  Tag,
 } from 'antd'
 import {
   ApiTwoTone,
@@ -48,8 +49,9 @@ const addItemMutation = gql`
     $desc: String
     $location: Int
     $updated_by: String!
-    $status: String
+    $status: Int
     $purchase_price: String
+    $currency: String
     $date_added: DateTime!
     $type: String
     $serialNo: String
@@ -93,8 +95,9 @@ const addItemMutation = gql`
         description: $desc
         updated_by: $updated_by
         date_added: $date_added
+        currency: $currency
         purchase_price: $purchase_price
-        status: $status
+        status: { connect: { id: $status } }
         location: { connect: { id: $location } }
         serialNo: $serialNo
         inventarNr: $inventarNr
@@ -134,10 +137,14 @@ const addItemMutation = gql`
       qty
       title
       description
+      currency
       type
       serialNo
       purchase_price
-      status
+      status {
+        id
+        name
+      }
       inventarNr
       kontoNr
       date_added
@@ -187,6 +194,11 @@ const getLocationsQuery = gql`
       id
       description
     }
+    allStatuses {
+      id
+      name
+      color
+    }
   }
 `
 
@@ -227,6 +239,7 @@ const ItemsAdd = () => {
         purchase_price: item.purchase_price,
         status: item.status,
         serialNo: fibu.serial,
+        currency: fibu.currency,
         inventarNr: fibu.inventory,
         kontoNr: fibu.account,
         ahk_date: fibu.ahkDatum,
@@ -300,7 +313,34 @@ const ItemsAdd = () => {
               <TabPane tab='Details' key='1'>
                 <Row gutter={[16, 16]}>
                   <Col span={12}>
-                    <Card title='Item' headStyle={{ fontSize: '1.5rem' }}>
+                    <Card
+                      title='Item'
+                      headStyle={{ fontSize: '1.5rem' }}
+                      extra={
+                        <Select
+                          placeholder='Status'
+                          value={item.status}
+                          onChange={value =>
+                            setItem({ ...item, status: value })
+                          }
+                          style={{ width: 120, height: 45 }}
+                          bordered={false}
+                          size='large'
+                        >
+                          {data &&
+                            data.allStatuses.map(status => (
+                              <Option key={status.id} value={status.id}>
+                                <Tag
+                                  style={{ padding: '8px', fontSize: '0.8rem' }}
+                                  color={status.color}
+                                >
+                                  {status.name}
+                                </Tag>
+                              </Option>
+                            ))}
+                        </Select>
+                      }
+                    >
                       <Form layout='vertical' form={form}>
                         <Form.Item label='Item Type' name='item-type' required>
                           <Radio.Group
@@ -409,14 +449,6 @@ const ItemsAdd = () => {
                       style={{ width: '100%' }}
                     >
                       <Card
-                        extra={
-                          <Link
-                            href='https://www.datev.de/dnlexom/client/app/index.html#/document/9211235'
-                            target='_blank'
-                          >
-                            FiBu Help
-                          </Link>
-                        }
                         title='Financial Details'
                         headStyle={{ fontSize: '1.5rem' }}
                       >
@@ -427,19 +459,6 @@ const ItemsAdd = () => {
                                 label='Purchase Price'
                                 style={{ position: 'relative' }}
                               >
-                                <Tooltip title='AHK Wirtschaftsjahr-Ende'>
-                                  <a
-                                    href='#API'
-                                    style={{
-                                      margin: '0 8px',
-                                      position: 'absolute',
-                                      top: '-30px',
-                                      right: '10px',
-                                    }}
-                                  >
-                                    <QuestionCircleOutlined />
-                                  </a>
-                                </Tooltip>
                                 <Input.Group compact>
                                   <InputNumber
                                     defaultValue={1000}
@@ -463,6 +482,13 @@ const ItemsAdd = () => {
                                   />
                                   <Select
                                     style={{ width: 80 }}
+                                    value={fibu.currency}
+                                    onChange={value =>
+                                      setFibu({
+                                        ...fibu,
+                                        currency: value,
+                                      })
+                                    }
                                     defaultValue='EUR'
                                   >
                                     <Option value='EUR'>EUR</Option>
@@ -584,346 +610,386 @@ const ItemsAdd = () => {
                     className='fibu-carousel'
                   >
                     <Form layout='vertical' labelAlign='left' colon={false}>
-                      <Form.Item label='Kostenstelle 1'>
-                        <Input
-                          name='fibu-kost1'
-                          value={fibu.kost1}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              kost1: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Kostenstelle 2'>
-                        <Input
-                          name='fibu-kost2'
-                          value={fibu.kost2}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              kost2: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Filiale Nr.'>
-                        <Input
-                          name='fibu-filiale'
-                          value={fibu.filiale}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              filiale: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Lieferanten Nr.'>
-                        <Input
-                          name='fibu-lieferant'
-                          value={fibu.lieferant}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              lieferant: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='ANLAG Lieferant'>
-                        <Input
-                          name='fibu-anlag-lieferant'
-                          value={fibu.anlagLieferant}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              anlagLieferant: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Lebenslaufakte'>
-                        <Switch
-                          name='fibu-lebenslaufakte'
-                          checked={fibu.lebenslaufAkte}
-                          onChange={value =>
-                            setFibu({ ...fibu, lebenslaufAkte: value })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Erlaeuterung zur AfA-Art'>
-                        <Input
-                          name='fibu-erl-afa-art'
-                          value={fibu.erlAfaArt}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              erlAfaArt: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Herkunftsart'>
-                        <Input
-                          name='fibu-herkunftsart'
-                          value={fibu.herkunftsart}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              herkunftsart: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='WKN/ISIN'>
-                        <Input
-                          name='fibu-wkn-isin'
-                          value={fibu.wknIsin}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              wknIsin: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Erfassungsart'>
-                        <Input
-                          name='fibu-erfassungsart'
-                          value={fibu.erfassungsart}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              erfassungsart: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Erfassungsart'>
-                        <Input
-                          name='fibu-erfassungsart'
-                          value={fibu.erfassungsart}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              erfassungsart: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
+                      <Row gutter={[128, 32]}>
+                        <Col span={6}>
+                          <Form.Item label='Kostenstelle 1'>
+                            <Input
+                              name='fibu-kost1'
+                              value={fibu.kost1}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  kost1: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='Kostenstelle 2'>
+                            <Input
+                              name='fibu-kost2'
+                              value={fibu.kost2}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  kost2: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='Filiale Nr.'>
+                            <Input
+                              name='fibu-filiale'
+                              value={fibu.filiale}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  filiale: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                          <Form.Item label='Lieferanten Nr.'>
+                            <Input
+                              name='fibu-lieferant'
+                              value={fibu.lieferant}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  lieferant: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='ANLAG Lieferant'>
+                            <Input
+                              name='fibu-anlag-lieferant'
+                              value={fibu.anlagLieferant}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  anlagLieferant: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='Lebenslaufakte'>
+                            <Switch
+                              name='fibu-lebenslaufakte'
+                              checked={fibu.lebenslaufAkte}
+                              onChange={value =>
+                                setFibu({ ...fibu, lebenslaufAkte: value })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                          <Form.Item label='Erlaeuterung zur AfA-Art'>
+                            <Input
+                              name='fibu-erl-afa-art'
+                              value={fibu.erlAfaArt}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  erlAfaArt: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='Herkunftsart'>
+                            <Input
+                              name='fibu-herkunftsart'
+                              value={fibu.herkunftsart}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  herkunftsart: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='WKN/ISIN'>
+                            <Input
+                              name='fibu-wkn-isin'
+                              value={fibu.wknIsin}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  wknIsin: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                          <Form.Item label='Erfassungsart'>
+                            <Input
+                              name='fibu-erfassungsart'
+                              value={fibu.erfassungsart}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  erfassungsart: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='Erfassungsart'>
+                            <Input
+                              name='fibu-erfassungsart'
+                              value={fibu.erfassungsart}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  erfassungsart: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
                     </Form>
                     <Form layout='vertical' labelAlign='left' colon={false}>
-                      <Form.Item label='AHK Wj-Ende'>
-                        <Input
-                          name='fibu-ahk-wj-ende'
-                          value={fibu.ahkWjEnde}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              ahkWjEnde: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Buchwert Wj-Ende'>
-                        <Input
-                          name='fibu-buch-wj-ende'
-                          value={fibu.buchWjEnde}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              buchWjEnde: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='AHK Wj-Beginn'>
-                        <Input
-                          name='fibu-ahk-wj-beginn'
-                          value={fibu.ahkWjBeginn}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              ahkWjBeginn: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Buchwert Wj-Beginn'>
-                        <Input
-                          name='fibu-buchw-wj-beginn'
-                          value={fibu.buchWjBeginn}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              buchWjBeginn: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
+                      <Row gutter={[128, 32]}>
+                        <Col span={6}>
+                          <Form.Item label='AHK Wj-Ende'>
+                            <Input
+                              name='fibu-ahk-wj-ende'
+                              value={fibu.ahkWjEnde}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  ahkWjEnde: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='Buchwert Wj-Ende'>
+                            <Input
+                              name='fibu-buch-wj-ende'
+                              value={fibu.buchWjEnde}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  buchWjEnde: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='AHK Wj-Beginn'>
+                            <Input
+                              name='fibu-ahk-wj-beginn'
+                              value={fibu.ahkWjBeginn}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  ahkWjBeginn: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                          <Form.Item label='Buchwert Wj-Beginn'>
+                            <Input
+                              name='fibu-buchw-wj-beginn'
+                              value={fibu.buchWjBeginn}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  buchWjBeginn: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
                     </Form>
                     <Form layout='vertical' labelAlign='left' colon={false}>
-                      <Form.Item label='AHK-Datum'>
-                        <DatePicker
-                          name='fibu-ahk-datum'
-                          style={{ width: '100%' }}
-                          value={fibu.ahkDatum}
-                          onChange={date =>
-                            setFibu({
-                              ...fibu,
-                              ahkDatum: date,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='N-AfA Wj-Ende'>
-                        <Input
-                          name='fibu-n-afa-wj-ende'
-                          value={fibu.nAfaWjEnde}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              nAfaWjEnde: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='S-Abschr. Wj-Ende'>
-                        <Input
-                          name='fibu-s-abschr-wj-ende'
-                          value={fibu.sAbschrWjEnde}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              sAbschrWjEnde: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Nutzungsdauer'>
-                        <Input
-                          name='fibu-nutzungsdauer'
-                          value={fibu.nutzungsDauer}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              nutzungsDauer: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='AfA-Art'>
-                        <Input
-                          name='fibu-afa-art'
-                          value={fibu.afaArt}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              afaArt: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='AfA-%'>
-                        <Input
-                          name='fibu-afa-perc'
-                          value={fibu.afaPerc}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              afaPerc: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='N-Afa Wj-Beginn'>
-                        <Input
-                          name='fibu-n-afa-wg-beginn'
-                          value={fibu.nAfaWjBeginn}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              nAfaWjBeginn: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
+                      <Row gutter={[128, 32]}>
+                        <Col span={6}>
+                          <Form.Item label='AHK-Datum'>
+                            <DatePicker
+                              name='fibu-ahk-datum'
+                              style={{ width: '100%' }}
+                              value={fibu.ahkDatum}
+                              onChange={date =>
+                                setFibu({
+                                  ...fibu,
+                                  ahkDatum: date,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='N-AfA Wj-Ende'>
+                            <Input
+                              name='fibu-n-afa-wj-ende'
+                              value={fibu.nAfaWjEnde}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  nAfaWjEnde: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='S-Abschr. Wj-Ende'>
+                            <Input
+                              name='fibu-s-abschr-wj-ende'
+                              value={fibu.sAbschrWjEnde}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  sAbschrWjEnde: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                          <Form.Item label='Nutzungsdauer'>
+                            <Input
+                              name='fibu-nutzungsdauer'
+                              value={fibu.nutzungsDauer}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  nutzungsDauer: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='AfA-Art'>
+                            <Input
+                              name='fibu-afa-art'
+                              value={fibu.afaArt}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  afaArt: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='AfA-%'>
+                            <Input
+                              name='fibu-afa-perc'
+                              value={fibu.afaPerc}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  afaPerc: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                          <Form.Item label='N-Afa Wj-Beginn'>
+                            <Input
+                              name='fibu-n-afa-wg-beginn'
+                              value={fibu.nAfaWjBeginn}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  nAfaWjBeginn: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
+                    </Form>
+                    <Form
+                      layout='vertical'
+                      labelAlign='left'
+                      colon={false}
+                      status={fibuCurrentStep.sonder}
+                      onFieldsChange={() => sonderabschreibungFormChange()}
+                    >
+                      <Row gutter={[128, 32]}>
+                        <Col span={6}>
+                          <Form.Item label='Sonderabschreibung Wj-Beginn'>
+                            <Input
+                              name='fibu-sonderabs-wj-beginn'
+                              value={fibu.sAbschrWjBeginn}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  sAbschrWjBeginn: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='Sonderabschreibung Art'>
+                            <Input
+                              name='fibu-sonderabs-art'
+                              value={fibu.sAbschrArt}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  sAbschrArt: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='Sonderabschreibung %'>
+                            <Input
+                              name='fibu-sonderabs-perc'
+                              value={fibu.sAbschrPerc}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  sAbschrPerc: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                        <Col span={6}>
+                          <Form.Item label='Restbeguenstigung'>
+                            <Input
+                              name='fibu-restbeguenst'
+                              value={fibu.restbeg}
+                              onChange={event =>
+                                setFibu({
+                                  ...fibu,
+                                  restbeg: event.target.value,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                          <Form.Item label='Sonderabschreib Verteilung'>
+                            <Switch
+                              name='fibu-sonderabschr-verteil'
+                              checked={fibu.sAbschrVerteil}
+                              onChange={value =>
+                                setFibu({ ...fibu, sAbschrVerteil: value })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
                     </Form>
                     <Form layout='vertical' labelAlign='left' colon={false}>
-                      <Form.Item label='Sonderabschreibung Wj-Beginn'>
-                        <Input
-                          name='fibu-sonderabs-wj-beginn'
-                          value={fibu.sAbschrWjBeginn}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              sAbschrWjBeginn: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Sonderabschreibung Art'>
-                        <Input
-                          name='fibu-sonderabs-art'
-                          value={fibu.sAbschrArt}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              sAbschrArt: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Sonderabschreibung %'>
-                        <Input
-                          name='fibu-sonderabs-perc'
-                          value={fibu.sAbschrPerc}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              sAbschrPerc: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Restbeguenstigung'>
-                        <Input
-                          name='fibu-restbeguenst'
-                          value={fibu.restbeg}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              restbeg: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Sonderabschreib Verteilung'>
-                        <Switch
-                          name='fibu-sonderabschr-verteil'
-                          checked={fibu.sAbschrVerteil}
-                          onChange={value =>
-                            setFibu({ ...fibu, sAbschrVerteil: value })
-                          }
-                        />
-                      </Form.Item>
-                    </Form>
-                    <Form layout='vertical' labelAlign='left' colon={false}>
-                      <Form.Item label='Abgang'>
-                        <DatePicker
-                          name='fibu-abgang'
-                          style={{ width: '100%' }}
-                          value={fibu.abgang}
-                          onChange={date =>
-                            setFibu({
-                              ...fibu,
-                              abgang: date,
-                            })
-                          }
-                        />
-                      </Form.Item>
+                      <Row gutter={[128, 32]}>
+                        <Col span={6}>
+                          <Form.Item label='Abgang'>
+                            <DatePicker
+                              name='fibu-abgang'
+                              style={{ width: '100%' }}
+                              value={fibu.abgang}
+                              onChange={date =>
+                                setFibu({
+                                  ...fibu,
+                                  abgang: date,
+                                })
+                              }
+                            />
+                          </Form.Item>
+                        </Col>
+                      </Row>
                     </Form>
                   </Carousel>
                 </Card>

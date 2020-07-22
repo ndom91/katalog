@@ -68,9 +68,6 @@
   background: transparent;
   overflow: hidden;
 }
-.fibu-carousel .slick-slide form {
-  max-width: 350px;
-}
 
 .ant-select-borderless .ant-select-selector {
   height: 45px !important;
