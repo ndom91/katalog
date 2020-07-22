@@ -289,6 +289,7 @@ const ItemEdit = () => {
   useEffect(() => {
     if (data) {
       setItem({
+        id: data.item.id,
         qty: data.item.qty,
         title: data.item.title,
         description: data.item.description,
