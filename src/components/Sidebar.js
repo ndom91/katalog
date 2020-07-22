@@ -37,15 +37,10 @@ const Sidebar = () => {
         {collapsed ? (
           <KatalogLogoSmall style={{ height: '35px', fill: '#002140' }} />
         ) : (
-            <KatalogLogo style={{ height: '35px', stroke: '#fff' }} />
-          )}
+          <KatalogLogo style={{ height: '35px', stroke: '#fff' }} />
+        )}
       </Logo>
-      <Menu
-        theme='dark'
-        // defaultSelectedKeys={['1']}
-        mode='inline'
-        defaultOpenKeys={['sub1']}
-      >
+      <Menu theme='dark' defaultSelectedKeys={['1']} mode='inline'>
         <Menu.Item icon={<ShopOutlined />} key='1'>
           <Link href='/'>Dashboard</Link>
         </Menu.Item>
@@ -57,7 +52,7 @@ const Sidebar = () => {
             <Link href='/items/list'>List</Link>
           </Menu.Item>
           <Menu.Item key='5'>
-            <Link href='/items/loader'>Import/Export</Link>
+            <Link href='/items/loader'>Import</Link>
           </Menu.Item>
         </SubMenu>
         <SubMenu key='sub2' icon={<InboxOutlined />} title='Locations'>
