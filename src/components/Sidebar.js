@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Layout, Menu } from 'antd'
 import styled from 'styled-components'
@@ -25,6 +25,14 @@ const Logo = styled.div`
 
 const Sidebar = () => {
   const [collapsed, setCollapsed] = useState(false)
+  const [width, setWidth] = useState()
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth < 600) {
+        setCollapsed(true)
+      }
+    }
+  }, [])
   return (
     <Sider
       collapsible

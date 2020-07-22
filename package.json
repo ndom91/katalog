@@ -65,6 +65,8 @@
     "react-markdown": "4.3.1",
     "react-qr-reader": "^2.2.1",
     "react-qr-scanner": "0.0.9",
+    "react-sizeme": "^2.6.12",
+    "rm": "^0.1.8",
     "sqlite3": "^5.0.0",
     "styled-components": "^5.1.1",
     "typescript-plugin-css-modules": "^2.4.0"
