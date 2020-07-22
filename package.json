@@ -1,6 +1,6 @@
 {
   "name": "katalog",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Inventory Management Application",
   "scripts": {
     "dev": "next",
@@ -14,7 +14,9 @@
     "postinstall": "npm -s run generate",
     "prisma:migrate:save": "prisma migrate save --name lagerify --experimental",
     "prisma:migrate:up": "prisma migrate up --experimental",
-    "db:update": "npm run generate && npm run prisma:migrate:save && npm run prisma:migrate:up"
+    "db:update": "npm run generate && npm run prisma:migrate:save && npm run prisma:migrate:up",
+    "prettier": "prettier --config .prettierrc --check \"**/*.{js,jsx,ts,tsx,css,html}\"",
+    "prettier:fix": "prettier --config .prettierrc --write \"**/*.{js,jsx,ts,tsx,css,html}\""
   },
   "keywords": [
     "warehouse",
@@ -59,15 +61,15 @@
     "@types/styled-components": "^5.1.1",
     "babel-plugin-styled-components": "^1.10.7",
     "copy-webpack-plugin": "^6.0.3",
+    "husky": "^4.2.5",
     "null-loader": "^4.0.0",
     "prettier": "^2.0.5",
+    "pretty-quick": "^2.0.1",
     "typescript": "3.9.6"
   },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "es5",
-    "semi": false,
-    "jsxSingleQuote": true,
-    "arrowParens": "avoid"
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
