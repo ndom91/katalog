@@ -152,6 +152,7 @@ type Item {
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
+  currency: String
   date_added: DateTime!
   date_updated: DateTime!
   description: String
@@ -181,7 +182,8 @@ type Item {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
-  status: String
+  status: Status
+  statusId: Int
   title: String!
   type: String
   updated_by: String!
@@ -199,6 +201,7 @@ input ItemCreateInput {
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
+  currency: String
   date_added: DateTime!
   date_updated: DateTime
   description: String
@@ -226,7 +229,7 @@ input ItemCreateInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
-  status: String
+  status: StatusCreateOneWithoutItemInput
   title: String!
   type: String
   updated_by: String!
@@ -243,6 +246,11 @@ input ItemCreateManyWithoutLocationInput {
   create: [ItemCreateWithoutLocationInput!]
 }
 
+input ItemCreateManyWithoutStatusInput {
+  connect: [ItemWhereUniqueInput!]
+  create: [ItemCreateWithoutStatusInput!]
+}
+
 input ItemCreateWithoutImagesInput {
   abgang: DateTime
   afa_art: String
@@ -254,6 +262,7 @@ input ItemCreateWithoutImagesInput {
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
+  currency: String
   date_added: DateTime!
   date_updated: DateTime
   description: String
@@ -280,7 +289,7 @@ input ItemCreateWithoutImagesInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
-  status: String
+  status: StatusCreateOneWithoutItemInput
   title: String!
   type: String
   updated_by: String!
@@ -298,6 +307,7 @@ input ItemCreateWithoutLocationInput {
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
+  currency: String
   date_added: DateTime!
   date_updated: DateTime
   description: String
@@ -324,7 +334,52 @@ input ItemCreateWithoutLocationInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
-  status: String
+  status: StatusCreateOneWithoutItemInput
+  title: String!
+  type: String
+  updated_by: String!
+  wkn_isin: String
+}
+
+input ItemCreateWithoutStatusInput {
+  abgang: DateTime
+  afa_art: String
+  afa_percent: String
+  ahk_date: DateTime
+  ahk_wj_beginn: String
+  ahk_wj_ende: String
+  anlag_lieferant: String
+  bestelldatum: DateTime
+  buchw_wj_ende: String
+  buchwert_wj_beginn: String
+  currency: String
+  date_added: DateTime!
+  date_updated: DateTime
+  description: String
+  erfassungsart: String
+  erl_afa_art: String
+  filiale: String
+  herkunftsart: String
+  images: ImageCreateManyWithoutItemInput
+  inventarNr: String
+  kontoNr: String
+  kost1: Int
+  kost2: Int
+  lebenslaufakte: Boolean
+  lieferantNr: String
+  location: LocationCreateOneWithoutItemInput
+  n_afa_wj_beginn: String
+  n_afa_wj_ende: String
+  nutzungsdauer: String
+  purchase_price: String
+  qty: Int
+  restbeguenstigung: String
+  serialNo: String
+  sonder_abs_art: String
+  sonder_abs_percent: String
+  sonder_abs_verteil: Boolean
+  sonder_abs_wj_beginn: String
+  sonder_abs_wj_ende: String
   title: String!
   type: String
   updated_by: String!
@@ -348,6 +403,7 @@ input ItemOrderByInput {
   bestelldatum: OrderByArg
   buchw_wj_ende: OrderByArg
   buchwert_wj_beginn: OrderByArg
+  currency: OrderByArg
   date_added: OrderByArg
   date_updated: OrderByArg
   description: OrderByArg
@@ -375,7 +431,7 @@ input ItemOrderByInput {
   sonder_abs_verteil: OrderByArg
   sonder_abs_wj_beginn: OrderByArg
   sonder_abs_wj_ende: OrderByArg
-  status: OrderByArg
+  statusId: OrderByArg
   title: OrderByArg
   type: OrderByArg
   updated_by: OrderByArg
@@ -394,6 +450,7 @@ input ItemScalarWhereInput {
   bestelldatum: NullableDateTimeFilter
   buchw_wj_ende: NullableStringFilter
   buchwert_wj_beginn: NullableStringFilter
+  currency: NullableStringFilter
   date_added: DateTimeFilter
   date_updated: DateTimeFilter
   description: NullableStringFilter
@@ -424,7 +481,7 @@ input ItemScalarWhereInput {
   sonder_abs_verteil: NullableBooleanFilter
   sonder_abs_wj_beginn: NullableStringFilter
   sonder_abs_wj_ende: NullableStringFilter
-  status: NullableStringFilter
+  statusId: NullableIntFilter
   title: StringFilter
   type: NullableStringFilter
   updated_by: StringFilter
@@ -442,6 +499,7 @@ input ItemUpdateInput {
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
+  currency: String
   date_added: DateTime
   date_updated: DateTime
   description: String
@@ -470,7 +528,7 @@ input ItemUpdateInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
-  status: String
+  status: StatusUpdateOneWithoutItemInput
   title: String
   type: String
   updated_by: String
@@ -488,6 +546,7 @@ input ItemUpdateManyDataInput {
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
+  currency: String
   date_added: DateTime
   date_updated: DateTime
   description: String
@@ -514,7 +573,6 @@ input ItemUpdateManyDataInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
-  status: String
   title: String
   type: String
   updated_by: String
@@ -532,6 +590,7 @@ input ItemUpdateManyMutationInput {
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
+  currency: String
   date_added: DateTime
   date_updated: DateTime
   description: String
@@ -558,7 +617,6 @@ input ItemUpdateManyMutationInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
-  status: String
   title: String
   type: String
   updated_by: String
@@ -589,6 +647,18 @@ input ItemUpdateManyWithoutLocationInput {
   upsert: [ItemUpsertWithWhereUniqueWithoutLocationInput!]
 }
 
+input ItemUpdateManyWithoutStatusInput {
+  connect: [ItemWhereUniqueInput!]
+  create: [ItemCreateWithoutStatusInput!]
+  delete: [ItemWhereUniqueInput!]
+  deleteMany: [ItemScalarWhereInput!]
+  disconnect: [ItemWhereUniqueInput!]
+  set: [ItemWhereUniqueInput!]
+  update: [ItemUpdateWithWhereUniqueWithoutStatusInput!]
+  updateMany: [ItemUpdateManyWithWhereNestedInput!]
+  upsert: [ItemUpsertWithWhereUniqueWithoutStatusInput!]
+}
+
 input ItemUpdateManyWithWhereNestedInput {
   data: ItemUpdateManyDataInput!
   where: ItemScalarWhereInput!
@@ -605,6 +675,7 @@ input ItemUpdateWithoutImagesDataInput {
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
+  currency: String
   date_added: DateTime
   date_updated: DateTime
   description: String
@@ -632,7 +703,7 @@ input ItemUpdateWithoutImagesDataInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
-  status: String
+  status: StatusUpdateOneWithoutItemInput
   title: String
   type: String
   updated_by: String
@@ -650,6 +721,7 @@ input ItemUpdateWithoutLocationDataInput {
   bestelldatum: DateTime
   buchw_wj_ende: String
   buchwert_wj_beginn: String
+  currency: String
   date_added: DateTime
   date_updated: DateTime
   description: String
@@ -677,7 +749,53 @@ input ItemUpdateWithoutLocationDataInput {
   sonder_abs_verteil: Boolean
   sonder_abs_wj_beginn: String
   sonder_abs_wj_ende: String
-  status: String
+  status: StatusUpdateOneWithoutItemInput
+  title: String
+  type: String
+  updated_by: String
+  wkn_isin: String
+}
+
+input ItemUpdateWithoutStatusDataInput {
+  abgang: DateTime
+  afa_art: String
+  afa_percent: String
+  ahk_date: DateTime
+  ahk_wj_beginn: String
+  ahk_wj_ende: String
+  anlag_lieferant: String
+  bestelldatum: DateTime
+  buchw_wj_ende: String
+  buchwert_wj_beginn: String
+  currency: String
+  date_added: DateTime
+  date_updated: DateTime
+  description: String
+  erfassungsart: String
+  erl_afa_art: String
+  filiale: String
+  herkunftsart: String
+  id: Int
+  images: ImageUpdateManyWithoutItemInput
+  inventarNr: String
+  kontoNr: String
+  kost1: Int
+  kost2: Int
+  lebenslaufakte: Boolean
+  lieferantNr: String
+  location: LocationUpdateOneWithoutItemInput
+  n_afa_wj_beginn: String
+  n_afa_wj_ende: String
+  nutzungsdauer: String
+  purchase_price: String
+  qty: Int
+  restbeguenstigung: String
+  serialNo: String
+  sonder_abs_art: String
+  sonder_abs_percent: String
+  sonder_abs_verteil: Boolean
+  sonder_abs_wj_beginn: String
+  sonder_abs_wj_ende: String
   title: String
   type: String
   updated_by: String
@@ -694,6 +812,11 @@ input ItemUpdateWithWhereUniqueWithoutLocationInput {
   where: ItemWhereUniqueInput!
 }
 
+input ItemUpdateWithWhereUniqueWithoutStatusInput {
+  data: ItemUpdateWithoutStatusDataInput!
+  where: ItemWhereUniqueInput!
+}
+
 input ItemUpsertWithWhereUniqueWithoutImagesInput {
   create: ItemCreateWithoutImagesInput!
   update: ItemUpdateWithoutImagesDataInput!
@@ -703,6 +826,12 @@ input ItemUpsertWithWhereUniqueWithoutImagesInput {
 input ItemUpsertWithWhereUniqueWithoutLocationInput {
   create: ItemCreateWithoutLocationInput!
   update: ItemUpdateWithoutLocationDataInput!
+  where: ItemWhereUniqueInput!
+}
+
+input ItemUpsertWithWhereUniqueWithoutStatusInput {
+  create: ItemCreateWithoutStatusInput!
+  update: ItemUpdateWithoutStatusDataInput!
   where: ItemWhereUniqueInput!
 }
 
@@ -718,6 +847,7 @@ input ItemWhereInput {
   bestelldatum: NullableDateTimeFilter
   buchw_wj_ende: NullableStringFilter
   buchwert_wj_beginn: NullableStringFilter
+  currency: NullableStringFilter
   date_added: DateTimeFilter
   date_updated: DateTimeFilter
   description: NullableStringFilter
@@ -749,7 +879,8 @@ input ItemWhereInput {
   sonder_abs_verteil: NullableBooleanFilter
   sonder_abs_wj_beginn: NullableStringFilter
   sonder_abs_wj_ende: NullableStringFilter
-  status: NullableStringFilter
+  status: StatusWhereInput
+  statusId: NullableIntFilter
   title: StringFilter
   type: NullableStringFilter
   updated_by: StringFilter
@@ -773,7 +904,7 @@ type Location {
 
 input LocationCreateInput {
   description: String!
-  Item: ItemCreateManyWithoutLocationInput
+  item: ItemCreateManyWithoutLocationInput
 }
 
 input LocationCreateOneWithoutItemInput {
@@ -793,7 +924,7 @@ input LocationOrderByInput {
 input LocationUpdateInput {
   description: String
   id: Int
-  Item: ItemUpdateManyWithoutLocationInput
+  item: ItemUpdateManyWithoutLocationInput
 }
 
 input LocationUpdateManyMutationInput {
@@ -824,7 +955,7 @@ input LocationWhereInput {
   AND: [LocationWhereInput!]
   description: StringFilter
   id: IntFilter
-  Item: ItemFilter
+  item: ItemFilter
   NOT: [LocationWhereInput!]
   OR: [LocationWhereInput!]
 }
@@ -837,21 +968,27 @@ type Mutation {
   createOneImage(data: ImageCreateInput!): Image!
   createOneItem(data: ItemCreateInput!): Item!
   createOneLocation(data: LocationCreateInput!): Location!
+  createOneStatus(data: StatusCreateInput!): Status!
   deleteImages: String
   deleteItems: String
   deleteLocations: String
   deleteManyImage(where: ImageWhereInput): BatchPayload!
   deleteManyItem(where: ItemWhereInput): BatchPayload!
   deleteManyLocation(where: LocationWhereInput): BatchPayload!
+  deleteManyStatus(where: StatusWhereInput): BatchPayload!
   deleteOneImage(where: ImageWhereUniqueInput!): Image
   deleteOneItem(where: ItemWhereUniqueInput!): Item
   deleteOneLocation(where: LocationWhereUniqueInput!): Location
+  deleteOneStatus(where: StatusWhereUniqueInput!): Status
+  deleteStatuses: String
   updateManyImage(data: ImageUpdateManyMutationInput!, where: ImageWhereInput): BatchPayload!
   updateManyItem(data: ItemUpdateManyMutationInput!, where: ItemWhereInput): BatchPayload!
   updateManyLocation(data: LocationUpdateManyMutationInput!, where: LocationWhereInput): BatchPayload!
+  updateManyStatus(data: StatusUpdateManyMutationInput!, where: StatusWhereInput): BatchPayload!
   updateOneImage(data: ImageUpdateInput!, where: ImageWhereUniqueInput!): Image
   updateOneItem(data: ItemUpdateInput!, where: ItemWhereUniqueInput!): Item
   updateOneLocation(data: LocationUpdateInput!, where: LocationWhereUniqueInput!): Location
+  updateOneStatus(data: StatusUpdateInput!, where: StatusWhereUniqueInput!): Status
 }
 
 input NullableBooleanFilter {
@@ -904,12 +1041,91 @@ type Query {
   allImages: [Image!]
   allItems: [Item!]
   allLocations: [Location!]
+  allStatuses: [Status!]
   image(where: ImageWhereUniqueInput!): Image
   images(after: ImageWhereUniqueInput, before: ImageWhereUniqueInput, first: Int, last: Int): [Image!]!
   item(where: ItemWhereUniqueInput!): Item
   items(after: ItemWhereUniqueInput, before: ItemWhereUniqueInput, first: Int, last: Int, orderBy: ItemOrderByInput, where: ItemWhereInput): [Item!]!
   location(where: LocationWhereUniqueInput!): Location
   locations(after: LocationWhereUniqueInput, before: LocationWhereUniqueInput, first: Int, last: Int, orderBy: LocationOrderByInput, where: LocationWhereInput): [Location!]!
+  status(where: StatusWhereUniqueInput!): Status
+  statuses(after: StatusWhereUniqueInput, before: StatusWhereUniqueInput, first: Int, last: Int, orderBy: StatusOrderByInput, where: StatusWhereInput): [Status!]!
+}
+
+type Status {
+  color: String!
+  id: Int!
+  item(after: ItemWhereUniqueInput, before: ItemWhereUniqueInput, first: Int, last: Int): [Item!]!
+  name: String!
+}
+
+input StatusCreateInput {
+  color: String!
+  item: ItemCreateManyWithoutStatusInput
+  name: String!
+}
+
+input StatusCreateOneWithoutItemInput {
+  connect: StatusWhereUniqueInput
+  create: StatusCreateWithoutItemInput
+}
+
+input StatusCreateWithoutItemInput {
+  color: String!
+  name: String!
+}
+
+input StatusOrderByInput {
+  color: OrderByArg
+  id: OrderByArg
+  name: OrderByArg
+}
+
+input StatusUpdateInput {
+  color: String
+  id: Int
+  item: ItemUpdateManyWithoutStatusInput
+  name: String
+}
+
+input StatusUpdateManyMutationInput {
+  color: String
+  id: Int
+  name: String
+}
+
+input StatusUpdateOneWithoutItemInput {
+  connect: StatusWhereUniqueInput
+  create: StatusCreateWithoutItemInput
+  delete: Boolean
+  disconnect: Boolean
+  update: StatusUpdateWithoutItemDataInput
+  upsert: StatusUpsertWithoutItemInput
+}
+
+input StatusUpdateWithoutItemDataInput {
+  color: String
+  id: Int
+  name: String
+}
+
+input StatusUpsertWithoutItemInput {
+  create: StatusCreateWithoutItemInput!
+  update: StatusUpdateWithoutItemDataInput!
+}
+
+input StatusWhereInput {
+  AND: [StatusWhereInput!]
+  color: StringFilter
+  id: IntFilter
+  item: ItemFilter
+  name: StringFilter
+  NOT: [StatusWhereInput!]
+  OR: [StatusWhereInput!]
+}
+
+input StatusWhereUniqueInput {
+  id: Int
 }
 
 input StringFilter {

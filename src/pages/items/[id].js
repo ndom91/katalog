@@ -55,7 +55,7 @@ const UpdateItemMutation = gql`
     $location: Int
     $updated_by: String!
     $type: String
-    $status: String
+    $status: Int
     $purchase_price: String
     $serialNo: String
     $inventarNr: String
@@ -100,7 +100,7 @@ const UpdateItemMutation = gql`
         serialNo: $serialNo
         inventarNr: $inventarNr
         purchase_price: $purchase_price
-        status: $status
+        status: { connect: { id: $status } }
         kontoNr: $kontoNr
         date_updated: $date_updated
         ahk_date: $ahk_date
@@ -144,7 +144,10 @@ const UpdateItemMutation = gql`
       inventarNr
       kontoNr
       purchase_price
-      status
+      status {
+        id
+        name
+      }
       date_added
       date_updated
       updated_by
@@ -197,7 +200,10 @@ const getItemQuery = gql`
       serialNo
       inventarNr
       kontoNr
-      status
+      status {
+        id
+        name
+      }
       purchase_price
       date_added
       date_updated
@@ -240,6 +246,11 @@ const getItemQuery = gql`
     allLocations {
       id
       description
+    }
+    allStatuses {
+      id
+      name
+      color
     }
   }
 `
@@ -424,35 +435,22 @@ const ItemEdit = () => {
                       headStyle={{ fontSize: '1.5rem' }}
                       extra={
                         <Select
-                          placeholder='Status'
+                          placeholder='Select a Status'
                           style={{ width: 120, height: 45 }}
                           bordered={false}
                           size='large'
                         >
-                          <Option value='ready'>
-                            <Tag
-                              style={{ padding: '8px', fontSize: '0.8rem' }}
-                              color='orange'
-                            >
-                              Ready
-                            </Tag>
-                          </Option>
-                          <Option value='shipping'>
-                            <Tag
-                              style={{ padding: '8px', fontSize: '0.8rem' }}
-                              color='geekblue'
-                            >
-                              Shipping
-                            </Tag>
-                          </Option>
-                          <Option value='lager'>
-                            <Tag
-                              style={{ padding: '8px', fontSize: '0.8rem' }}
-                              color='green'
-                            >
-                              Lager
-                            </Tag>
-                          </Option>
+                          {data &&
+                            data.allStatuses.map(status => (
+                              <Option value={status.id}>
+                                <Tag
+                                  style={{ padding: '8px', fontSize: '0.8rem' }}
+                                  color={status.color}
+                                >
+                                  {status.name}
+                                </Tag>
+                              </Option>
+                            ))}
                         </Select>
                       }
                     >
@@ -694,7 +692,7 @@ const ItemEdit = () => {
                       href='https://www.datev.de/dnlexom/client/app/index.html#/document/9211235'
                       target='_blank'
                     >
-                      <a>FiBu Help</a>
+                      <span>FiBu Help</span>
                     </Link>
                   }
                 >

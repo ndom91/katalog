@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model Item {
@@ -72,6 +72,5 @@ model Location {
 model Status {
   id          Int    @default(autoincrement()) @id
   name        String
-  color       String
   item        Item[]
 }

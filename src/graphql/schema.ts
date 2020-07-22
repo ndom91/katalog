@@ -13,7 +13,7 @@ schema.objectType({
     t.model.description()
     t.model.serialNo()
     t.model.purchase_price()
-    t.model.status()
+    t.model.currency()
     t.model.inventarNr()
     t.model.kontoNr()
     t.model.date_added()
@@ -50,6 +50,8 @@ schema.objectType({
     t.model.images()
     t.model.location()
     t.model.locationId()
+    t.model.status()
+    t.model.statusId()
   },
 })
 
@@ -75,6 +77,16 @@ schema.objectType({
         return count
       },
     })
+  },
+})
+
+schema.objectType({
+  name: 'Status',
+  definition(t) {
+    t.model.id()
+    t.model.name()
+    t.model.color()
+    t.model.item()
   },
 })
 
@@ -104,6 +116,14 @@ schema.queryType({
     })
     t.crud.location()
     t.crud.locations({ filtering: true, ordering: true })
+    t.list.field('allStatuses', {
+      type: 'Status',
+      resolve(_parent, _args, ctx) {
+        return ctx.db.status.findMany({})
+      },
+    })
+    t.crud.status()
+    t.crud.statuses({ filtering: true, ordering: true })
   },
 })
 
@@ -148,5 +168,18 @@ schema.mutationType({
     t.crud.deleteManyLocation()
     t.crud.updateOneLocation()
     t.crud.updateManyLocation()
+    t.field('deleteStatuses', {
+      type: 'String',
+      async resolve(_parent, _args, ctx) {
+        const { count } = await ctx.db.item.deleteMany({})
+        return `${count} locations(s) deleted.`
+      },
+    })
+
+    t.crud.createOneStatus()
+    t.crud.deleteOneStatus()
+    t.crud.deleteManyStatus()
+    t.crud.updateOneStatus()
+    t.crud.updateManyStatus()
   },
 })
