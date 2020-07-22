@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 // import QrReader from 'react-qr-reader'
-import { message, Select } from 'antd'
+import { message, Select, Col, Row } from 'antd'
 
 const { Option } = Select
 
@@ -64,7 +64,9 @@ const Scanner = () => {
   return (
     <>
       <Select
-        style={{ width: 100 }}
+        className='camera-select'
+        placeholder='Select a Camera'
+        style={{ minWidth: 200 }}
         onChange={value => {
           setCameraId(value)
         }}
@@ -76,16 +78,24 @@ const Scanner = () => {
             </Option>
           ))}
       </Select>
-      {!loading && devices.length > 0 && (
-        <QrReader
-          delay={100}
-          style={{ height: 240, width: 320 }}
-          onError={QrError}
-          onScan={QrSuccess}
-          chooseDeviceId={selectCamera}
-        />
-      )}
-      {result}
+      <Row>
+        <Col>
+          {!loading && devices.length > 0 && (
+            <QrReader
+              delay={100}
+              style={{ height: 240, width: 320 }}
+              onError={QrError}
+              onScan={QrSuccess}
+              chooseDeviceId={selectCamera}
+            />
+          )}
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <code>{result}</code>
+        </Col>
+      </Row>
     </>
   )
 }

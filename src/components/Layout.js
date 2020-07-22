@@ -1,7 +1,7 @@
 import { UserOutlined } from '@ant-design/icons'
 import { Avatar, Badge, Dropdown, Input, Layout, Menu } from 'antd'
 import { signOut, useSession } from 'next-auth/client'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import GlobalStyle from '../style/global.js'
 import Sidebar from './Sidebar'
@@ -27,6 +27,7 @@ const SearchBar = styled(Search)`
 
 const Wrapper = ({ children }) => {
   const [session, loading] = useSession()
+  const [isMobile, setIsMobile] = useState(false)
   const getInitials = string =>
     string
       .split(' ')
@@ -39,6 +40,11 @@ const Wrapper = ({ children }) => {
   if (!session.user.image && session.user.name) {
     initials = getInitials(session.user.name)
   }
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsMobile(window.innerWidth < 600)
+    }
+  }, [])
 
   return (
     <Layout style={{ minHeight: '100vh' }} hasSider>
@@ -100,7 +106,7 @@ const Wrapper = ({ children }) => {
         <Content style={{ margin: '0 16px' }}>
           <div
             className='site-layout-background'
-            style={{ padding: 24, minHeight: 360 }}
+            style={{ padding: isMobile ? 0 : 24, minHeight: 360 }}
           >
             {children}
           </div>

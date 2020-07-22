@@ -76,3 +76,12 @@
 .ant-card-meta-avatar {
   padding: 0px;
 }
+
+@media screen and (max-width: 600px) {
+  .site-page-header-responsive {
+    padding: 16px 5px;
+  }
+  .camera-select {
+    width: 100%;
+  }
+}
