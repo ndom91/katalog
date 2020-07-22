@@ -3,16 +3,7 @@ import { useSession } from 'next-auth/client'
 import Wrapper from '../components/Layout'
 import RecentsTable from '../components/Dashboard/Table'
 import LoginRequired from '../components/LoginRequired'
-import {
-  Row,
-  Col,
-  Statistic,
-  Card,
-  Skeleton,
-  Typography,
-  Button,
-  Tooltip,
-} from 'antd'
+import { Row, Col, Statistic, Card, Skeleton, Typography, Button, Tooltip } from 'antd'
 import {
   BellOutlined,
   ShoppingOutlined,
@@ -60,6 +51,15 @@ const ItemQuery = gql`
   }
 `
 
+const iconStyle = {
+  fill: '#bcbcbc',
+  position: 'absolute',
+  top: '20px',
+  right: '20px',
+  fontSize: '10rem',
+  opacity: '0.2',
+}
+
 const Homepage: React.FC = () => {
   const [session] = useSession()
   const { loading, data, refetch } = useQuery(ItemQuery)
@@ -79,7 +79,7 @@ const Homepage: React.FC = () => {
         <Wrapper>
           <Row gutter={[16, 16]}>
             <Col span={6}>
-              <Card>
+              <Card style={{ overflow: 'hidden' }}>
                 <Statistic
                   title='Items'
                   value={items.length}
@@ -88,10 +88,11 @@ const Homepage: React.FC = () => {
                   prefix={<TagOutlined />}
                   suffix=''
                 />
+                <TagOutlined style={iconStyle} />
               </Card>
             </Col>
             <Col span={6}>
-              <Card>
+              <Card style={{ overflow: 'hidden' }}>
                 <Statistic
                   title='Locations'
                   value={locationCount}
@@ -100,10 +101,11 @@ const Homepage: React.FC = () => {
                   prefix={<TableOutlined />}
                   suffix=''
                 />
+                <TableOutlined style={iconStyle} />
               </Card>
             </Col>
             <Col span={6}>
-              <Card>
+              <Card style={{ overflow: 'hidden' }}>
                 <Statistic
                   title='Active Shipments'
                   value={6}
@@ -112,10 +114,11 @@ const Homepage: React.FC = () => {
                   prefix={<ShoppingOutlined />}
                   suffix=''
                 />
+                <ShoppingOutlined style={iconStyle} />
               </Card>
             </Col>
             <Col span={6}>
-              <Card>
+              <Card style={{ overflow: 'hidden' }}>
                 <Statistic
                   title='Notifications'
                   value={3}
@@ -124,6 +127,7 @@ const Homepage: React.FC = () => {
                   prefix={<BellOutlined />}
                   suffix=''
                 />
+                <BellOutlined style={iconStyle} />
               </Card>
             </Col>
           </Row>

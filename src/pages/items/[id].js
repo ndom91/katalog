@@ -207,6 +207,7 @@ const getItemQuery = gql`
         id
         name
       }
+      statusId
       purchase_price
       currency
       date_added
@@ -279,14 +280,11 @@ const ItemEdit = () => {
   const { loading, data } = useQuery(getItemQuery, {
     variables: { id: parseInt(id) },
   })
-  const [updateItem, { loading: loadingUpdate }] = useMutation(
-    UpdateItemMutation,
-    {
-      onCompleted: data => {
-        message.success(`${data.updateOneItem.title} updated`)
-      },
-    }
-  )
+  const [updateItem, { loading: loadingUpdate }] = useMutation(UpdateItemMutation, {
+    onCompleted: data => {
+      message.success(`${data.updateOneItem.title} updated`)
+    },
+  })
   useEffect(() => {
     if (data) {
       setItem({
@@ -296,7 +294,7 @@ const ItemEdit = () => {
         type: data.item.type,
         updated_by: data.item.updated_by,
         location: data.item.locationId,
-        status: data.item.status.id,
+        status: data.item.statusId,
         purchase_price: data.item.purchase_price,
       })
       setFibu({
@@ -354,7 +352,7 @@ const ItemEdit = () => {
         inventarNr: fibu.inventory,
         kontoNr: fibu.account,
         ahk_date: fibu.ahkDatum,
-        ahk_wj_ende: fibu.ahkWjEnde.toString(),
+        ahk_wj_ende: fibu.ahkWjEnde,
         buchw_wj_ende: fibu.buchWjEnde,
         n_afa_wj_ende: fibu.nAfaWjEnde,
         sonder_abs_wj_ende: fibu.sAbschrWjEnde,
@@ -395,12 +393,7 @@ const ItemEdit = () => {
 
   const sonderabschreibungFormChange = data => {
     console.log(data)
-    if (
-      fibu.sAbschrWjBeginn &&
-      fibu.sAbschrArt &&
-      fibu.sAbschrPerc &&
-      fibu.restbeg
-    ) {
+    if (fibu.sAbschrWjBeginn && fibu.sAbschrArt && fibu.sAbschrPerc && fibu.restbeg) {
       setStepStatus({ ...stepStatus, sonder: 'finished' })
     }
   }
@@ -421,12 +414,7 @@ const ItemEdit = () => {
                 <Button key='2' onClick={clearForm}>
                   Clear
                 </Button>
-                <Button
-                  key='1'
-                  type='primary'
-                  onClick={saveItem}
-                  loading={loadingUpdate}
-                >
+                <Button key='1' type='primary' onClick={saveItem} loading={loadingUpdate}>
                   Save
                 </Button>
               </>,
@@ -443,9 +431,7 @@ const ItemEdit = () => {
                         <Select
                           placeholder='Status'
                           value={item.status}
-                          onChange={value =>
-                            setItem({ ...item, status: value })
-                          }
+                          onChange={value => setItem({ ...item, status: value })}
                           style={{ width: 120, height: 45 }}
                           bordered={false}
                           size='large'
@@ -470,35 +456,21 @@ const ItemEdit = () => {
                             className='itemType-wrapper'
                             name='item-type'
                             value={item.type}
-                            onChange={event =>
-                              setItem({ ...item, type: event.target.value })
-                            }
+                            onChange={event => setItem({ ...item, type: event.target.value })}
                           >
-                            <Radio.Button
-                              className='itemType-radio'
-                              value='net'
-                            >
+                            <Radio.Button className='itemType-radio' value='net'>
                               Network
                               <ApiTwoTone style={{ fontSize: '2rem' }} />
                             </Radio.Button>
-                            <Radio.Button
-                              className='itemType-radio'
-                              value='int'
-                            >
+                            <Radio.Button className='itemType-radio' value='int'>
                               Internal
                               <HomeTwoTone style={{ fontSize: '2rem' }} />
                             </Radio.Button>
-                            <Radio.Button
-                              className='itemType-radio'
-                              value='cust'
-                            >
+                            <Radio.Button className='itemType-radio' value='cust'>
                               Customer
                               <ContactsTwoTone style={{ fontSize: '2rem' }} />
                             </Radio.Button>
-                            <Radio.Button
-                              className='itemType-radio'
-                              value='storage'
-                            >
+                            <Radio.Button className='itemType-radio' value='storage'>
                               Storage
                               <SaveTwoTone style={{ fontSize: '2rem' }} />
                             </Radio.Button>
@@ -507,9 +479,7 @@ const ItemEdit = () => {
                         <Form.Item label='Title' required>
                           <Input
                             value={item.title}
-                            onChange={event =>
-                              setItem({ ...item, title: event.target.value })
-                            }
+                            onChange={event => setItem({ ...item, title: event.target.value })}
                           />
                         </Form.Item>
                         <Row>
@@ -530,21 +500,14 @@ const ItemEdit = () => {
                                 placeholder='Select a location'
                                 optionFilterProp='children'
                                 value={item.location}
-                                onChange={value =>
-                                  setItem({ ...item, location: value })
-                                }
+                                onChange={value => setItem({ ...item, location: value })}
                                 filterOption={(input, option) =>
-                                  option.children
-                                    .toLowerCase()
-                                    .indexOf(input.toLowerCase()) >= 0
+                                  option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
                               >
                                 {data &&
                                   data.allLocations.map(location => (
-                                    <Option
-                                      key={location.id}
-                                      value={location.id}
-                                    >
+                                    <Option key={location.id} value={location.id}>
                                       {location.description}
                                     </Option>
                                   ))}
@@ -571,33 +534,18 @@ const ItemEdit = () => {
                     <Card title='Images' headStyle={{ fontSize: '1.5rem' }}>
                       <ImageUpload />
                     </Card>
-                    <Space
-                      direction='vertical'
-                      size='middle'
-                      style={{ width: '100%' }}
-                    >
-                      <Card
-                        title='Financial Details'
-                        headStyle={{ fontSize: '1.5rem' }}
-                      >
+                    <Space direction='vertical' size='middle' style={{ width: '100%' }}>
+                      <Card title='Financial Details' headStyle={{ fontSize: '1.5rem' }}>
                         <Form layout='vertical' form={form}>
                           <Row>
                             <Col span={12}>
-                              <Form.Item
-                                label='Purchase Price'
-                                style={{ position: 'relative' }}
-                              >
+                              <Form.Item label='Purchase Price' style={{ position: 'relative' }}>
                                 <Input.Group compact>
                                   <InputNumber
                                     formatter={value =>
-                                      `${value}`.replace(
-                                        /\B(?=(\d{3})+(?!\d))/g,
-                                        ','
-                                      )
+                                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                                     }
-                                    parser={value =>
-                                      value.replace(/\$\s?|(,*)/g, '')
-                                    }
+                                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                     value={item.purchase_price}
                                     onChange={price =>
                                       setItem({
@@ -607,10 +555,7 @@ const ItemEdit = () => {
                                     }
                                     style={{ width: 'calc( 95% - 80px)' }}
                                   />
-                                  <Select
-                                    style={{ width: 80 }}
-                                    defaultValue='EUR'
-                                  >
+                                  <Select style={{ width: 80 }} defaultValue='EUR'>
                                     <Option value='EUR'>EUR</Option>
                                     <Option value='USD'>USD</Option>
                                   </Select>
@@ -618,10 +563,7 @@ const ItemEdit = () => {
                               </Form.Item>
                             </Col>
                             <Col span={12}>
-                              <Form.Item
-                                label='Purchase Date'
-                                style={{ position: 'relative' }}
-                              >
+                              <Form.Item label='Purchase Date' style={{ position: 'relative' }}>
                                 <Tooltip title='Bestelldatum'>
                                   <a
                                     href='#API'
@@ -637,9 +579,7 @@ const ItemEdit = () => {
                                 <DatePicker
                                   style={{ width: '100%' }}
                                   value={dayjs(fibu.bestellDatum)}
-                                  onChange={date =>
-                                    setFibu({ ...fibu, bestellDatum: date })
-                                  }
+                                  onChange={date => setFibu({ ...fibu, bestellDatum: date })}
                                 />
                               </Form.Item>
                             </Col>
@@ -719,17 +659,10 @@ const ItemEdit = () => {
                     <Step status='stamm' title='Stamm'></Step>
                     <Step status='afaVorschau' title='AfA-Vorschau'></Step>
                     <Step status='abschreibung' title='Abschreibung'></Step>
-                    <Step
-                      status='sonderabschreibung'
-                      title='Sonderabschreibung'
-                    ></Step>
+                    <Step status='sonderabschreibung' title='Sonderabschreibung'></Step>
                     <Step status='bewegung' title='Bewegung'></Step>
                   </Steps>
-                  <Carousel
-                    ref={carouselRef}
-                    dots={false}
-                    className='fibu-carousel'
-                  >
+                  <Carousel ref={carouselRef} dots={false} className='fibu-carousel'>
                     <Form layout='vertical' labelAlign='left' colon={false}>
                       <Row gutter={[128, 32]}>
                         <Col span={6}>
@@ -799,9 +732,7 @@ const ItemEdit = () => {
                             <Switch
                               name='fibu-lebenslaufakte'
                               checked={fibu.lebenslaufAkte}
-                              onChange={value =>
-                                setFibu({ ...fibu, lebenslaufAkte: value })
-                              }
+                              onChange={value => setFibu({ ...fibu, lebenslaufAkte: value })}
                             />
                           </Form.Item>
                         </Col>
@@ -1085,9 +1016,7 @@ const ItemEdit = () => {
                             <Switch
                               name='fibu-sonderabschr-verteil'
                               checked={fibu.sAbschrVerteil}
-                              onChange={value =>
-                                setFibu({ ...fibu, sAbschrVerteil: value })
-                              }
+                              onChange={value => setFibu({ ...fibu, sAbschrVerteil: value })}
                             />
                           </Form.Item>
                         </Col>

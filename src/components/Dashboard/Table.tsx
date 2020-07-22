@@ -18,7 +18,7 @@ type ItemType = {
 type RecentsProps = {
   items: ItemType
   setItems: Dispatch<ItemType>
-  pagination: Boolean
+  pagination: false | TablePaginationConfig
 }
 
 const deleteItemMutation = gql`
