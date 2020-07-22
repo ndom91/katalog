@@ -22,6 +22,7 @@ type ItemType = {
 type RecentsProps = {
   items: ItemType
   setItems: Dispatch<ItemType>
+  pagination: Boolean
 }
 
 const deleteItemMutation = gql`
@@ -32,7 +33,11 @@ const deleteItemMutation = gql`
     }
   }
 `
-const RecentsTable = ({ items, setItems }: RecentsProps) => {
+const RecentsTable = ({
+  items,
+  setItems,
+  pagination = false,
+}: RecentsProps) => {
   const [deleteItem] = useMutation(deleteItemMutation, {
     onCompleted: data => {
       const newItems = items.filter(item => item.id !== data.deleteOneItem.id)
@@ -53,24 +58,35 @@ const RecentsTable = ({ items, setItems }: RecentsProps) => {
       title: 'Name',
       dataIndex: 'title',
       key: 'title',
-      render: (text: string) => <>{text}</>,
-    },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
+      sorter: (a, b) => a.title.charAt(0) < b.title.charAt(0),
       render: (text: string) => <>{text}</>,
     },
     {
       title: 'Quantity',
       dataIndex: 'qty',
+      sorter: (a, b) => a.qty - b.qty,
       key: 'qty',
       render: (text: string) => <>{text}</>,
+    },
+    {
+      title: 'Description',
+      dataIndex: 'description',
+      sorter: (a, b) => a.description > b.description,
+      key: 'description',
+      render: (text: string) => <>{text}</>,
+    },
+    {
+      title: 'Location',
+      dataIndex: 'location',
+      key: 'location',
+      sorter: (a, b) => a.location > b.location,
+      render: text => <>{text.description}</>,
     },
     {
       title: 'Date Added',
       dataIndex: 'date_added',
       key: 'date_added',
+      sorter: (a, b) => a.date_added > b.date_added,
       render: (text: string) => (
         <>{dayjs(text).format('DD.MM.YYYY HH:mm:ss')}</>
       ),
@@ -79,10 +95,11 @@ const RecentsTable = ({ items, setItems }: RecentsProps) => {
       title: 'Added By',
       dataIndex: 'updated_by',
       key: 'updated_by',
+      sorter: (a, b) => a.updated_by > b.updated_by,
       render: (text: string) => <>{text}</>,
     },
     {
-      title: 'Action',
+      title: '',
       key: 'action',
       render: record => (
         <Space size='middle'>
@@ -115,7 +132,12 @@ const RecentsTable = ({ items, setItems }: RecentsProps) => {
     },
   ]
   return (
-    <Table style={{ width: '100%' }} columns={columns} dataSource={items} />
+    <Table
+      style={{ width: '100%' }}
+      columns={columns}
+      dataSource={items}
+      pagination={pagination}
+    />
   )
 }
 

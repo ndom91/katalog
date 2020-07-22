@@ -38,7 +38,7 @@ const { Title } = Typography
 
 const ItemQuery = gql`
   query ItemQuery {
-    items(orderBy: { date_added: asc }, last: 5) {
+    items(orderBy: { date_added: desc }, last: 5) {
       id
       title
       qty
@@ -46,6 +46,9 @@ const ItemQuery = gql`
       type
       date_added
       updated_by
+      location {
+        description
+      }
     }
     locations(first: 1) {
       total
@@ -55,7 +58,7 @@ const ItemQuery = gql`
 
 const Homepage: React.FC = () => {
   const [session] = useSession()
-  const { loading, error, data, refetch } = useQuery(ItemQuery)
+  const { loading, data, refetch } = useQuery(ItemQuery)
   const [items, setItems] = useState<ItemType>([])
   const [locationCount, setLocationCount] = useState(0)
 

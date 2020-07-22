@@ -256,11 +256,14 @@ const ItemEdit = () => {
   const { loading, data } = useQuery(getItemQuery, {
     variables: { id: parseInt(id) },
   })
-  const [updateItem] = useMutation(UpdateItemMutation, {
-    onCompleted: data => {
-      message.success(`${data.updateOneItem.title} updated`)
-    },
-  })
+  const [updateItem, { loading: loadingUpdate }] = useMutation(
+    UpdateItemMutation,
+    {
+      onCompleted: data => {
+        message.success(`${data.updateOneItem.title} updated`)
+      },
+    }
+  )
   useEffect(() => {
     if (data) {
       setItem({
@@ -329,8 +332,8 @@ const ItemEdit = () => {
         nutzungsdauer: fibu.nutzungsDauer,
         afa_art: fibu.afaArt,
         afa_percent: fibu.afaPerc,
-        kost1: fibu.kost1,
-        kost2: fibu.kost2,
+        kost1: parseInt(fibu.kost1),
+        kost2: parseInt(fibu.kost2),
         filiale: fibu.filiale,
         lieferantNr: fibu.lieferant,
         anlag_lieferant: fibu.anlagLieferant,
@@ -383,13 +386,18 @@ const ItemEdit = () => {
             className='site-page-header-responsive'
             onBack={() => Router.back()}
             title='Item'
-            subTitle='Create New'
+            subTitle='Edit'
             extra={[
               <>
-                <Button key='2' onClick={() => setItem(initialItem)}>
+                <Button key='2' onClick={clearForm}>
                   Clear
                 </Button>
-                <Button key='1' type='primary' onClick={saveItem}>
+                <Button
+                  key='1'
+                  type='primary'
+                  onClick={saveItem}
+                  loading={loadingUpdate}
+                >
                   Save
                 </Button>
               </>,
@@ -477,7 +485,10 @@ const ItemEdit = () => {
                               >
                                 {data &&
                                   data.allLocations.map(location => (
-                                    <Option value={location.id}>
+                                    <Option
+                                      key={location.id}
+                                      value={location.id}
+                                    >
                                       {location.description}
                                     </Option>
                                   ))}
@@ -645,7 +656,7 @@ const ItemEdit = () => {
                       href='https://www.datev.de/dnlexom/client/app/index.html#/document/9211235'
                       target='_blank'
                     >
-                      FiBu Help
+                      <a>FiBu Help</a>
                     </Link>
                   }
                 >
@@ -825,18 +836,6 @@ const ItemEdit = () => {
                             setFibu({
                               ...fibu,
                               ahkWjBeginn: event.target.value,
-                            })
-                          }
-                        />
-                      </Form.Item>
-                      <Form.Item label='Buchwert Wj-Beginn'>
-                        <Input
-                          name='fibu-buchw-wj-beginn'
-                          value={fibu.buchWjBeginn}
-                          onChange={event =>
-                            setFibu({
-                              ...fibu,
-                              buchWjBeginn: event.target.value,
                             })
                           }
                         />
