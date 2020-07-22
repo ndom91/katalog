@@ -13,8 +13,7 @@ const ImageUpload = () => {
       uid: '-1',
       name: 'dell_vostro.jpg',
       status: 'done',
-      url:
-        'https://i.dell.com/sites/csimages/Video_Imagery/all/vostro-1471.jpg',
+      url: 'https://i.dell.com/sites/csimages/Video_Imagery/all/vostro-1471.jpg',
     },
   ])
 
@@ -42,7 +41,7 @@ const ImageUpload = () => {
       <Dragger
         name='file'
         multiple
-        listType='picture-card'
+        listType='picture'
         action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
         onChange={onChange}
         onPreview={onPreview}
@@ -50,10 +49,7 @@ const ImageUpload = () => {
         <p className='ant-upload-drag-icon'>
           <FileImageOutlined />
         </p>
-        <p className='ant-upload-text'>
-          Click or drag image to this area to upload
-        </p>
-        <p className='ant-upload-hint'>Support for a single or bulk upload.</p>
+        <p className='ant-upload-text'>Click or drag image here to upload</p>
       </Dragger>
     </ImgCrop>
   )

@@ -1,5 +1,4 @@
 import { DeleteOutlined, EditOutlined, QuestionCircleOutlined } from '@ant-design/icons'
-import TablePaginationConfig from 'antd/es/table/interface.d.ts'
 import { gql, useMutation } from '@apollo/client'
 import { Button, message, Popconfirm, Space, Table, Tag } from 'antd'
 import dayjs from 'dayjs'
@@ -19,7 +18,7 @@ type ItemType = {
 type RecentsProps = {
   items: ItemType
   setItems: Dispatch<ItemType>
-  pagination: false | TablePaginationConfig
+  pagination: any
 }
 
 const deleteItemMutation = gql`

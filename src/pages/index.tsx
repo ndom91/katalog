@@ -53,7 +53,7 @@ const ItemQuery = gql`
   }
 `
 
-const iconStyle = {
+const iconStyle: React.CSSProperties = {
   fill: '#bcbcbc',
   position: 'absolute',
   top: '10px',

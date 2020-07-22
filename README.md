@@ -4,7 +4,7 @@ All in one Warehouse / Inventory Management Application
 
 ## Screenshots
 
-<img src="https://imgur.com/PTI7pfu.png" alt="Screenshot Dashboard" height="450" />
+<img src="https://imgur.com/2CbygkP.png" alt="Screenshot Dashboard" height="450" />
 
 ## Features
 

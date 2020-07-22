@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import Router from 'next/router'
 import dayjs from 'dayjs'
+import QRCode from 'qrcode.react'
 import { useSession } from 'next-auth/client'
 import { useRouter } from 'next/router'
 import Wrapper from '../../components/Layout'
@@ -530,10 +531,34 @@ const ItemEdit = () => {
                       </Form>
                     </Card>
                   </Col>
-                  <Col span={12} gutter={[16, 16]}>
-                    <Card title='Images' headStyle={{ fontSize: '1.5rem' }}>
-                      <ImageUpload />
-                    </Card>
+                  <Col span={12}>
+                    <Row gutter={[16, 8]}>
+                      <Col span={12}>
+                        <Card title='Images' headStyle={{ fontSize: '1.5rem' }}>
+                          <ImageUpload />
+                        </Card>
+                      </Col>
+                      <Col span={12}>
+                        <Card
+                          bodyStyle={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            minHeight: '248px',
+                          }}
+                        >
+                          <Card.Meta
+                            avatar={
+                              <QRCode
+                                value={`https://katalog.newtelco.dev/items/${item.id}`}
+                                renderAs='svg'
+                                size={154}
+                              />
+                            }
+                          />
+                        </Card>
+                      </Col>
+                    </Row>
                     <Space direction='vertical' size='middle' style={{ width: '100%' }}>
                       <Card title='Financial Details' headStyle={{ fontSize: '1.5rem' }}>
                         <Form layout='vertical' form={form}>
