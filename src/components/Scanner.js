@@ -14,7 +14,7 @@ const Scanner = () => {
   const [result, setResult] = useState('')
   const [loading, setLoading] = useState(true)
   const [cameraId, setCameraId] = useState('')
-  const [devices, setDevices] = useState('')
+  const [devices, setDevices] = useState([])
 
   useEffect(() => {
     if (navigator && navigator.mediaDevices) {
@@ -30,8 +30,10 @@ const Scanner = () => {
           return videoSelect
         })
         .then(cameras => {
-          setDevices(cameras)
-          setCameraId(cameras[0].deviceId)
+          if (cameras.length > 0) {
+            setDevices(cameras)
+            setCameraId(cameras[0].deviceId)
+          }
           setLoading(false)
         })
         .catch(error => {
@@ -47,20 +49,17 @@ const Scanner = () => {
       return null
     }
   }
-  const QrSuccess = data => {
-    setResult(JSON.stringify(data))
+  const QrSuccess = result => {
+    setResult(result.decoded)
   }
   const QrError = data => {
     console.log(data)
     if (typeof data === 'string') {
       setErrorMsg(data)
+    } else {
+      setErrorMsg(JSON.stringify(data))
     }
-    setResult(JSON.stringify(data))
     message.error('Error')
-  }
-  const chooseDevice = device => {
-    console.log(device)
-    setResult(device)
   }
 
   return (
@@ -77,7 +76,7 @@ const Scanner = () => {
             </Option>
           ))}
       </Select>
-      {!loading && (
+      {!loading && devices.length > 0 && (
         <QrReader
           delay={100}
           style={{ height: 240, width: 320 }}
