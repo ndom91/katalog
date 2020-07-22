@@ -1,7 +1,11 @@
 import React, { useState } from 'react'
-import QrReader from 'react-qr-reader'
+import dynamic from 'next/dynamic'
+// import QrReader from 'react-qr-reader'
 import { message } from 'antd'
-import { showManifestErrorsAndExit } from 'nexus/dist/lib/plugin'
+
+const QrReader = dynamic(() => import('react-qr-reader'), {
+  ssr: false,
+})
 
 const Scanner = () => {
   const [errorMsg, setErrorMsg] = useState('')

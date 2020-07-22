@@ -74,90 +74,94 @@ const Homepage: React.FC = () => {
     data && setLocationCount(data.locations[0].total)
   }, [data])
 
-  !session && Router.push('/auth/signin')
+  !session && typeof window !== 'undefined' && Router.push('/auth/signin')
 
   return (
     <>
-      <Wrapper>
-        <Row gutter={[16, 16]}>
-          <Col span={6}>
-            <Card style={{ overflow: 'hidden' }}>
-              <Statistic
-                title='Items'
-                value={items.length}
-                precision={0}
-                valueStyle={{ color: '#3f8600' }}
-                prefix={<TagOutlined />}
-                suffix=''
-              />
-              <TagOutlined style={iconStyle} />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card style={{ overflow: 'hidden' }}>
-              <Statistic
-                title='Locations'
-                value={locationCount}
-                precision={0}
-                valueStyle={{ color: '#3f8600' }}
-                prefix={<TableOutlined />}
-                suffix=''
-              />
-              <EnvironmentOutlined style={iconStyle} />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card style={{ overflow: 'hidden' }}>
-              <Statistic
-                title='Active Shipments'
-                value={6}
-                precision={0}
-                valueStyle={{ color: '#3f8600' }}
-                prefix={<ShoppingOutlined />}
-                suffix=''
-              />
-              <ShoppingOutlined style={iconStyle} />
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card style={{ overflow: 'hidden' }}>
-              <Statistic
-                title='Notifications'
-                value={3}
-                precision={0}
-                valueStyle={{ color: '#3f8600' }}
-                prefix={<BellOutlined />}
-                suffix=''
-              />
-              <AlertOutlined style={iconStyle} />
-            </Card>
-          </Col>
-        </Row>
-        <Row>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              width: '100%',
-            }}
-          >
-            <Title level={3}>Recent Items</Title>
-            <Tooltip title='Reload List'>
-              <Button onClick={() => refetch()} loading={loading}>
-                <ReloadOutlined />
-              </Button>
-            </Tooltip>
-          </div>
-          {loading ? (
-            <Card style={{ width: '100%' }}>
-              <Skeleton loading={loading} active />
-            </Card>
-          ) : (
-            // @ts-ignore
-            <RecentsTable items={items} setItems={setItems} />
-          )}
-        </Row>
-      </Wrapper>
+      {!session ? (
+        <LoginRequired />
+      ) : (
+        <Wrapper>
+          <Row gutter={[16, 16]}>
+            <Col span={6}>
+              <Card style={{ overflow: 'hidden' }}>
+                <Statistic
+                  title='Items'
+                  value={items.length}
+                  precision={0}
+                  valueStyle={{ color: '#3f8600' }}
+                  prefix={<TagOutlined />}
+                  suffix=''
+                />
+                <TagOutlined style={iconStyle} />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card style={{ overflow: 'hidden' }}>
+                <Statistic
+                  title='Locations'
+                  value={locationCount}
+                  precision={0}
+                  valueStyle={{ color: '#3f8600' }}
+                  prefix={<TableOutlined />}
+                  suffix=''
+                />
+                <EnvironmentOutlined style={iconStyle} />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card style={{ overflow: 'hidden' }}>
+                <Statistic
+                  title='Active Shipments'
+                  value={6}
+                  precision={0}
+                  valueStyle={{ color: '#3f8600' }}
+                  prefix={<ShoppingOutlined />}
+                  suffix=''
+                />
+                <ShoppingOutlined style={iconStyle} />
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card style={{ overflow: 'hidden' }}>
+                <Statistic
+                  title='Notifications'
+                  value={3}
+                  precision={0}
+                  valueStyle={{ color: '#3f8600' }}
+                  prefix={<BellOutlined />}
+                  suffix=''
+                />
+                <AlertOutlined style={iconStyle} />
+              </Card>
+            </Col>
+          </Row>
+          <Row>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                width: '100%',
+              }}
+            >
+              <Title level={3}>Recent Items</Title>
+              <Tooltip title='Reload List'>
+                <Button onClick={() => refetch()} loading={loading}>
+                  <ReloadOutlined />
+                </Button>
+              </Tooltip>
+            </div>
+            {loading ? (
+              <Card style={{ width: '100%' }}>
+                <Skeleton loading={loading} active />
+              </Card>
+            ) : (
+              // @ts-ignore
+              <RecentsTable items={items} setItems={setItems} />
+            )}
+          </Row>
+        </Wrapper>
+      )}
     </>
   )
 }

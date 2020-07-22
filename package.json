@@ -31,6 +31,9 @@
     "inventory",
     "management"
   ],
+  "browser": {
+    "child_process": false
+  },
   "author": "Nico Domino <yo@ndo.dev>",
   "license": "MIT",
   "dependencies": {
