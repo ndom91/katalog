@@ -12,11 +12,12 @@ const QrReader = dynamic(() => import('react-qr-scanner'), {
 const Scanner = () => {
   const [errorMsg, setErrorMsg] = useState('')
   const [result, setResult] = useState('')
-  const [loading, setLoading] = useState('')
+  const [loading, setLoading] = useState(true)
   const [cameraId, setCameraId] = useState('')
   const [devices, setDevices] = useState('')
+
   useEffect(() => {
-    if (navigator) {
+    if (navigator && navigator.mediaDevices) {
       navigator.mediaDevices
         .enumerateDevices()
         .then(cameras => {
@@ -30,8 +31,8 @@ const Scanner = () => {
         })
         .then(cameras => {
           setDevices(cameras)
-          setLoading(false)
           setCameraId(cameras[0].deviceId)
+          setLoading(false)
         })
         .catch(error => {
           console.log(error)
@@ -40,7 +41,11 @@ const Scanner = () => {
   }, [])
 
   const selectCamera = () => {
-    return cameraId
+    if (!loading) {
+      return cameraId
+    } else {
+      return null
+    }
   }
   const QrSuccess = data => {
     setResult(JSON.stringify(data))
@@ -72,14 +77,15 @@ const Scanner = () => {
             </Option>
           ))}
       </Select>
-      <QrReader
-        delay={100}
-        gg
-        style={{ height: 240, width: 320 }}
-        onError={QrError}
-        onScan={QrSuccess}
-        chooseDeviceId={selectCamera}
-      />
+      {!loading && (
+        <QrReader
+          delay={100}
+          style={{ height: 240, width: 320 }}
+          onError={QrError}
+          onScan={QrSuccess}
+          chooseDeviceId={selectCamera}
+        />
+      )}
       {result}
     </>
   )
