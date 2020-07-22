@@ -43,8 +43,6 @@ const Scanner = () => {
     return cameraId
   }
   const QrSuccess = data => {
-    // console.log(data)
-    // message.success('Success')
     setResult(JSON.stringify(data))
   }
   const QrError = data => {
