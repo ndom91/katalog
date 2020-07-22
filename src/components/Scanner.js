@@ -1,15 +1,20 @@
-import React from 'react'
-import QrReader from 'react-qr-scanner'
+import React, { useState } from 'react'
+import QrReader from 'react-qr-reader'
 import { message } from 'antd'
+import { showManifestErrorsAndExit } from 'nexus/dist/lib/plugin'
 
 const Scanner = () => {
+  const [errorMsg, setErrorMsg] = useState('')
   const QrSuccess = data => {
     console.log(data)
-    message.success(data)
+    message.success('Error')
   }
   const QrError = data => {
     console.log(data)
-    message.success(data)
+    if (typeof data === 'string') {
+      setErrorMsg(data)
+    }
+    message.success('Success')
   }
 
   return (

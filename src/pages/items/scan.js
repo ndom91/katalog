@@ -8,7 +8,7 @@ import { Row, Col, Card, PageHeader, Tabs, Button, Typography } from 'antd'
 
 const { TabPane } = Tabs
 const { Title } = Typography
-let Scanner
+const Scanner = loadable(() => import('../../components/Scanner'))
 
 const ItemsLoader = () => {
   const [session, loading] = useSession()
@@ -17,8 +17,6 @@ const ItemsLoader = () => {
   useEffect(() => {
     console.log('facingMode', navigator.mediaDevices.getSupportedConstraints().facingMode)
     if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
-      // if (navigator.mediaDevices.getSupportedConstraints().facingMode) {
-      Scanner = loadable(() => import('../../components/Scanner'))
       setCameraAvailable(true)
     }
   }, [])
@@ -38,11 +36,7 @@ const ItemsLoader = () => {
             <Row gutter={[16, 16]}>
               <Col span={24}>
                 <Card title='Scan QR Code' headStyle={{ fontSize: '1.5rem' }}>
-                  {cameraAvailable && (
-                    <React.Suspense fallback={<div>Loading..</div>}>
-                      <Scanner />
-                    </React.Suspense>
-                  )}
+                  <Scanner />
                 </Card>
               </Col>
             </Row>
