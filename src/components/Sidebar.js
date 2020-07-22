@@ -54,16 +54,19 @@ const Sidebar = () => {
           <Menu.Item key='5'>
             <Link href='/items/loader'>Import</Link>
           </Menu.Item>
+          <Menu.Item key='6'>
+            <Link href='/items/scan'>Scan</Link>
+          </Menu.Item>
         </SubMenu>
         <SubMenu key='sub2' icon={<InboxOutlined />} title='Locations'>
-          <Menu.Item key='6'>
+          <Menu.Item key='7'>
             <Link href='/locations/add'>Add</Link>
           </Menu.Item>
           <Menu.Item key='8'>
             <Link href='/locations/list'>List</Link>
           </Menu.Item>
           <Menu.Item key='9'>
-            <Link href='/locations/loader'>Import/Export</Link>
+            <Link href='/locations/loader'>Import</Link>
           </Menu.Item>
         </SubMenu>
         <SubMenu key='sub3' icon={<GlobalOutlined />} title='Shipping'>

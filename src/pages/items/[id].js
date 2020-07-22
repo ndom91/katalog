@@ -345,7 +345,7 @@ const ItemEdit = () => {
         title: item.title,
         description: item.description,
         type: item.type,
-        purchase_price: item.purchase_price,
+        purchase_price: item.purchase_price ? item.purchase_price.toString() : null,
         status: item.status,
         location: item.location,
         currency: fibu.currency,
@@ -381,7 +381,7 @@ const ItemEdit = () => {
         wkn_isin: fibu.wknIsin,
         erfassungsart: fibu.erfassungsart,
         date_updated: date.toISOString(),
-        updated_by: currentUser,
+        updated_by: currentUser.split('@')[0],
         id: parseInt(id),
       },
     })
@@ -459,19 +459,35 @@ const ItemEdit = () => {
                             value={item.type}
                             onChange={event => setItem({ ...item, type: event.target.value })}
                           >
-                            <Radio.Button className='itemType-radio' value='net'>
+                            <Radio.Button
+                              className='itemType-radio'
+                              value='net'
+                              checked={item.type === 'net'}
+                            >
                               Network
                               <ApiTwoTone style={{ fontSize: '2rem' }} />
                             </Radio.Button>
-                            <Radio.Button className='itemType-radio' value='int'>
+                            <Radio.Button
+                              className='itemType-radio'
+                              value='int'
+                              checked={item.type === 'int'}
+                            >
                               Internal
                               <HomeTwoTone style={{ fontSize: '2rem' }} />
                             </Radio.Button>
-                            <Radio.Button className='itemType-radio' value='cust'>
+                            <Radio.Button
+                              className='itemType-radio'
+                              value='cust'
+                              checked={item.type === 'cust'}
+                            >
                               Customer
                               <ContactsTwoTone style={{ fontSize: '2rem' }} />
                             </Radio.Button>
-                            <Radio.Button className='itemType-radio' value='storage'>
+                            <Radio.Button
+                              className='itemType-radio'
+                              value='storage'
+                              checked={item.type === 'storage'}
+                            >
                               Storage
                               <SaveTwoTone style={{ fontSize: '2rem' }} />
                             </Radio.Button>
@@ -540,10 +556,12 @@ const ItemEdit = () => {
                       </Col>
                       <Col span={12}>
                         <Card
+                          style={{ height: '100%' }}
                           bodyStyle={{
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
+                            height: '100%',
                             minHeight: '248px',
                           }}
                         >

@@ -271,7 +271,7 @@ const ItemsAdd = () => {
         wkn_isin: fibu.wknIsin,
         erfassungsart: fibu.erfassungsart,
         date_updated: date.toISOString(),
-        updated_by: currentUser,
+        updated_by: currentUser.split('@')[0],
         date_added: date.toISOString(),
       },
     })

@@ -72,3 +72,7 @@
 .ant-select-borderless .ant-select-selector {
   height: 45px !important;
 }
+
+.ant-card-meta-avatar {
+  padding: 0px;
+}
