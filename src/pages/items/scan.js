@@ -37,13 +37,7 @@ const ItemsLoader = () => {
             title='Item'
             subTitle='Scan'
           >
-            <Row gutter={[16, 16]}>
-              <Col span={24}>
-                <Card title='QR Code' headStyle={{ fontSize: '1.5rem' }}>
-                  <Scanner />
-                </Card>
-              </Col>
-            </Row>
+            <Scanner />
           </PageHeader>
         </Wrapper>
       )}

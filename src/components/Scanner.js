@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import dynamic from 'next/dynamic'
 // import QrReader from 'react-qr-reader'
-import { message, Select, Col, Row } from 'antd'
+import { Card, message, Select, Col, Row, Tabs } from 'antd'
 
+const { TabPane } = Tabs
 const { Option } = Select
 
 const QrReader = dynamic(() => import('react-qr-scanner'), {
@@ -43,6 +44,7 @@ const Scanner = () => {
   }, [])
 
   const selectCamera = () => {
+    message.info(cameraId)
     return cameraId
   }
 
@@ -62,41 +64,51 @@ const Scanner = () => {
 
   return (
     <>
-      <Select
-        className='camera-select'
-        placeholder='Select a Camera'
-        style={{ minWidth: 200 }}
-        onChange={value => {
-          setResult(value.substr(0, 20))
-          setCameraId(value)
-        }}
-      >
-        {devices &&
-          devices.map((device, index) => (
-            <Option key={device.deviceId} value={device.deviceId}>
-              {device.label || `camera ${index}`}
-            </Option>
-          ))}
-      </Select>
-      <Row>
-        <Col>
-          {!loading && cameraId && devices.length > 0 && (
-            <QrReader
-              delay={300}
-              style={{ height: 480, width: 320 }}
-              onError={QrError}
-              onScan={QrSuccess}
-              facingMode='rear'
-              chooseDeviceId={selectCamera}
-            />
-          )}
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          <code>{result}</code>
-        </Col>
-      </Row>
+      <Tabs type='card' animated>
+        <TabPane tab='Scan' key='1'>
+          <Card>
+            <Row>
+              <Col>
+                {!loading && cameraId && devices.length > 0 && (
+                  <QrReader
+                    delay={300}
+                    style={{ height: 480, width: 320 }}
+                    onError={QrError}
+                    onScan={QrSuccess}
+                    facingMode='rear'
+                    chooseDeviceId={selectCamera}
+                  />
+                )}
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <code>{result}</code>
+              </Col>
+            </Row>
+          </Card>
+        </TabPane>
+        <TabPane tab='Select Camera' key='2'>
+          <Card>
+            <Select
+              className='camera-select'
+              placeholder='Select a Camera'
+              style={{ minWidth: 200 }}
+              onChange={value => {
+                setResult(value.substr(0, 20))
+                setCameraId(value)
+              }}
+            >
+              {devices &&
+                devices.map((device, index) => (
+                  <Option key={device.deviceId} value={device.deviceId}>
+                    {device.label || `camera ${index}`}
+                  </Option>
+                ))}
+            </Select>
+          </Card>
+        </TabPane>
+      </Tabs>
     </>
   )
 }
