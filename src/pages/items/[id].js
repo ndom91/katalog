@@ -580,7 +580,11 @@ const ItemEdit = () => {
                             <Card.Meta
                               avatar={
                                 <QRCode
-                                  value={`https://katalog.newtelco.dev/items/${item.id}`}
+                                  value={JSON.stringify({
+                                    id: item.id,
+                                    title: item.title,
+                                    type: 'katalogItem',
+                                  })}
                                   renderAs='svg'
                                   size={154}
                                 />

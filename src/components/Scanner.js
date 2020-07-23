@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-// import QrScanner from './QrScanner'
+import Router from 'next/router'
 import dynamic from 'next/dynamic'
-import { Card, message, Select, Col, Row, Tabs } from 'antd'
+import { Modal, Button, Card, message, Select, Col, Row, Tabs } from 'antd'
 const QrReader = dynamic(() => import('react-qr-scanner'), {
   ssr: false,
 })
@@ -9,13 +9,7 @@ const QrReader = dynamic(() => import('react-qr-scanner'), {
 const { TabPane } = Tabs
 const { Option } = Select
 
-// const Scanner = () => {
 export default class Scanner extends React.Component {
-  // const [errorMsg, setErrorMsg] = useState('')
-  // const [result, setResult] = useState('')
-  // const [loading, setLoading] = useState(true)
-  // const [cameraId, setCameraId] = useState('')
-  // const [devices, setDevices] = useState([])
   constructor(props) {
     super(props)
     this.state = {
@@ -24,10 +18,15 @@ export default class Scanner extends React.Component {
       loading: false,
       cameraId: '',
       devices: [],
+      modalVisible: false,
+      itemDetails: {
+        type: '',
+        title: '',
+        id: 0,
+      },
     }
   }
 
-  // useEffect(() => {
   componentWillMount() {
     if (navigator && navigator.mediaDevices) {
       this.setState({
@@ -50,25 +49,31 @@ export default class Scanner extends React.Component {
             devices,
             loading: false,
           })
-          // if (cameras.length > 0) {
-          //   setDevices(cameras)
-          //   setCameraId(cameras[0].deviceId)
-          // }
-          // setLoading(false)
         })
         .catch(error => {
           console.log(error)
         })
     }
   }
-  // }, [])
 
-  // useEffect(() => {
-  //   setCameraId()
-  // }, [cameraId])
+  toggleModal = () => {
+    this.setState({
+      modalVisible: !this.state.modalVisible,
+    })
+  }
 
-  QrSuccess = result => {
-    // setResult(result.decoded)
+  handleConfirm = () => {
+    Router.push(`/items/${itemDetails.id}`)
+  }
+
+  QrSuccess = raw => {
+    const result = JSON.parse(raw)
+    if (result.type === 'katalogItem') {
+      this.setState({
+        itemDetails: result,
+      })
+    }
+    // ### DEBUG ###
     this.setState({
       result,
     })
@@ -77,12 +82,10 @@ export default class Scanner extends React.Component {
   QrError = data => {
     console.log(data)
     if (typeof data === 'string') {
-      // setErrorMsg(data)
       this.setState({
         errorMsg: data,
       })
     } else {
-      // setErrorMsg(JSON.stringify(data))
       this.setState({
         errorMsg: JSON.stringify(data),
       })
@@ -95,58 +98,54 @@ export default class Scanner extends React.Component {
   }
 
   render() {
-    const { result, loading, cameraId, devices } = this.state
+    const { result, loading, cameraId, devices, modalVisible, itemDetails } = this.state
 
     return (
       <>
-        <Tabs type='card' animated>
-          <TabPane tab='Scan' key='1'>
-            <Card>
-              <Row>
-                <Col>
-                  <Select
-                    className='camera-select'
-                    style={{ minWidth: 200 }}
-                    onChange={value => {
-                      this.setState({ cameraId: undefined }, () => {
-                        this.setState({ cameraId: value })
-                      })
-                    }}
-                    // onChange={value => {
-                    //   setResult(value.substr(0, 20))
-                    //   setCameraId(value)
-                    // }}
-                  >
-                    {devices &&
-                      devices.map((device, index) => (
-                        <Option key={device.deviceId} value={device.deviceId}>
-                          {device.label || `camera ${index}`}
-                        </Option>
-                      ))}
-                  </Select>
-                  {!loading && cameraId && devices.length > 0 && (
-                    <QrReader
-                      delay={300}
-                      style={{ height: 480, width: 320 }}
-                      onError={this.QrError}
-                      onScan={this.QrSuccess}
-                      facingMode='rear'
-                      chooseDeviceId={this.selectCamera}
-                    />
-                  )}
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <code>{result}</code>
-                </Col>
-              </Row>
-            </Card>
-          </TabPane>
-          <TabPane tab='Settings' key='2'>
-            <Card>Please select a Camera</Card>
-          </TabPane>
-        </Tabs>
+        <Col sm={24} md={12} xl={6}>
+          <Card>
+            <Row>
+              <Select
+                className='camera-select'
+                style={{ minWidth: 200 }}
+                onChange={value => {
+                  this.setState({ cameraId: undefined }, () => {
+                    this.setState({ cameraId: value })
+                  })
+                }}
+              >
+                {devices &&
+                  devices.map((device, index) => (
+                    <Option key={device.deviceId} value={device.deviceId}>
+                      {device.label || `camera ${index}`}
+                    </Option>
+                  ))}
+              </Select>
+            </Row>
+            <Row>
+              {!loading && cameraId && devices.length > 0 && (
+                <QrReader
+                  delay={200}
+                  style={{ height: 480, width: 320 }}
+                  onError={this.QrError}
+                  onScan={this.QrSuccess}
+                  facingMode='rear'
+                  chooseDeviceId={this.selectCamera}
+                />
+              )}
+            </Row>
+          </Card>
+        </Col>
+        <Modal
+          title='Basic Modal'
+          visible={modalVisible}
+          onOk={this.handleConfirm}
+          onCancel={this.toggleModal}
+        >
+          <p>We have identified the following Item</p>
+          <p>{itemDetails.title}</p>
+          <p>Would you like to open it?</p>
+        </Modal>
       </>
     )
   }
