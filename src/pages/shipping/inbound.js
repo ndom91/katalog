@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 import Router from 'next/router'
 import { useSession } from 'next-auth/client'
 import LoginRequired from '../../components/LoginRequired'
@@ -16,6 +17,9 @@ const Shipping = () => {
         <LoginRequired />
       ) : (
         <Wrapper>
+          <Head>
+            <title>Katalog | Shipping Inbound</title>
+          </Head>
           <PageHeader
             className='site-page-header-responsive'
             onBack={() => Router.back()}

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
+import Head from 'next/head'
 import Router from 'next/router'
 import dayjs from 'dayjs'
 import QRCode from 'qrcode.react'
@@ -409,6 +410,9 @@ const ItemEdit = () => {
         <LoginRequired />
       ) : (
         <Wrapper>
+          <Head>
+            <title>Katalog | Item View</title>
+          </Head>
           <Spin spinning={loading}>
             <PageHeader
               className='site-page-header-responsive'

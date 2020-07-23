@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import Head from 'next/head'
 import Router from 'next/router'
 import dynamic from 'next/dynamic'
 import Wrapper from '../../components/Layout'
@@ -32,6 +33,9 @@ const ScanPage = () => {
         <LoginRequired />
       ) : (
         <Wrapper>
+          <Head>
+            <title>Katalog | Item - Scan</title>
+          </Head>
           <PageHeader
             className='site-page-header-responsive'
             onBack={() => Router.back()}

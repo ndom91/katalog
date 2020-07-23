@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Head from 'next/head'
 import dayjs from 'dayjs'
 import Router from 'next/router'
 import { useSession } from 'next-auth/client'
@@ -51,6 +52,9 @@ const ItemsList = () => {
         <LoginRequired />
       ) : (
         <Wrapper>
+          <Head>
+            <title>Katalog | Item List</title>
+          </Head>
           <PageHeader
             className='site-page-header-responsive'
             onBack={() => Router.back()}
@@ -76,12 +80,7 @@ const ItemsList = () => {
                     Export
                   </Button>
                 </CSVLink>
-                <Button
-                  key='1'
-                  type='primary'
-                  loading={loading}
-                  onClick={() => refetch()}
-                >
+                <Button key='1' type='primary' loading={loading} onClick={() => refetch()}>
                   Reload
                 </Button>
               </>,
@@ -90,11 +89,7 @@ const ItemsList = () => {
             <Row gutter={[16, 16]}>
               <Col span={24}>
                 <Card title='Overview' headStyle={{ fontSize: '1.5rem' }}>
-                  <RecentsTable
-                    items={items}
-                    setItems={setItems}
-                    pagination={true}
-                  />
+                  <RecentsTable items={items} setItems={setItems} pagination={true} />
                 </Card>
               </Col>
             </Row>

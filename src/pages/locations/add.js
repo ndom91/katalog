@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Head from 'next/head'
 import Router from 'next/router'
 import Wrapper from '../../components/Layout'
 import { useSession } from 'next-auth/client'
@@ -83,6 +84,9 @@ const LocationsAdd = () => {
         <LoginRequired />
       ) : (
         <Wrapper>
+          <Head>
+            <title>Katalog | Location Add</title>
+          </Head>
           <PageHeader
             className='site-page-header-responsive'
             onBack={() => Router.back()}
@@ -118,20 +122,14 @@ const LocationsAdd = () => {
                             showSearch
                             placeholder='Parent'
                             optionFilterProp='children'
-                            onChange={value =>
-                              setLocation({ ...location, parent: value })
-                            }
+                            onChange={value => setLocation({ ...location, parent: value })}
                             filterOption={(input, option) =>
-                              option.children
-                                .toLowerCase()
-                                .indexOf(input.toLowerCase()) >= 0
+                              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
                           >
                             {data &&
                               data.allLocations.map(location => (
-                                <Option value={location.id}>
-                                  {location.description}
-                                </Option>
+                                <Option value={location.id}>{location.description}</Option>
                               ))}
                           </Select>
                         </Form.Item>
@@ -140,11 +138,7 @@ const LocationsAdd = () => {
                   </Col>
                   <Col span={12}>
                     <Card title='Locations' headStyle={{ fontSize: '1.5rem' }}>
-                      <DirectoryTree
-                        multiple
-                        defaultExpandAll
-                        treeData={treeData}
-                      />
+                      <DirectoryTree multiple defaultExpandAll treeData={treeData} />
                     </Card>
                   </Col>
                 </Row>

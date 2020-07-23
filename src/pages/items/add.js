@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react'
+import Head from 'next/head'
 import Router from 'next/router'
 import { useSession } from 'next-auth/client'
 import Wrapper from '../../components/Layout'
@@ -292,6 +293,9 @@ const ItemsAdd = () => {
         <LoginRequired />
       ) : (
         <Wrapper>
+          <Head>
+            <title>Katalog | Item Add</title>
+          </Head>
           <Spin spinning={loading}>
             <PageHeader
               className='site-page-header-responsive'

@@ -1,4 +1,5 @@
 import React, { useRef } from 'react'
+import Head from 'next/head'
 import styled from 'styled-components'
 import QRCode from 'qrcode.react'
 import Router from 'next/router'
@@ -20,6 +21,9 @@ const ItemsLoader = () => {
         <LoginRequired />
       ) : (
         <Wrapper>
+          <Head>
+            <title>Katalog | Item - Print</title>
+          </Head>
           <PageHeader
             className='site-page-header-responsive'
             onBack={() => Router.back()}
