@@ -54,7 +54,11 @@ const Scanner = () => {
 
   return (
     <>
-      <Tabs type='card' animated>
+      <Tabs
+        type='card'
+        animated
+        onChange={key => (key === 2 ? setLoading(true) : setLoading(false))}
+      >
         <TabPane tab='Scan' key='1'>
           <Card>
             <Row>
