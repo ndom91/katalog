@@ -83,11 +83,7 @@ const ScannerModal = ({ itemDetails, visible, handleConfirm, toggleModal }) => {
     refetch({ variables: parseInt(itemDetails.id) })
   }, [itemDetails])
 
-  useVibrate(visible, [100, 1000, 300], false)
-
-  // useEffect(() => {
-  //   visible && useVibrate(visible, [100, 1000, 300], false)
-  // }, [visible])
+  useVibrate(visible, [300, 500], false)
 
   return (
     <Modal
