@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Router from 'next/router'
 import { Card, Form, Input, Button, Divider } from 'antd'
 import { csrfToken, signin, getSession, getProviders } from 'next-auth/client'
 import styled from 'styled-components'
 import KatalogLogo from '../../assets/svg/katalog_full.svg'
-import KatalogLogoSmall from '../assets/svg/katalog_icon.svg'
+import KatalogLogoSmall from '../../assets/svg/katalog_icon.svg'
 import Pattern from '../../assets/svg/login_pattern.svg'
 import { generateMedia } from 'styled-media-query'
 import { GoogleOutlined } from '@ant-design/icons'
@@ -86,17 +86,31 @@ type Props = {
 
 export default ({ csrfToken, session, providers }: Props) => {
   const [form] = Form.useForm()
+  const [isMobile, setIsMobile] = useState(false)
   if (typeof window !== 'undefined' && session) {
     Router.push('/')
   }
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setIsMobile(window.innerWidth < 600)
+    }
+  }, [])
 
   return (
     <div style={{ overflow: 'hidden', position: 'relative' }}>
       <Wrapper></Wrapper>
       <Content>
         <CardWrapper>
-          <svg src={KatalogLogo} style={{ height: '85px', marginBottom: '20px' }} />
-          <Card bordered={false} style={{ width: '100%' }}>
+          {isMobile ? (
+            <KatalogLogoSmall
+              width='96px'
+              height='96px'
+              style={{ height: '85px', position: 'absolute', top: '60px' }}
+            />
+          ) : (
+            <KatalogLogo style={{ height: '85px', marginBottom: '20px' }} />
+          )}
+          <Card bordered={false} style={isMobile ? { marginTop: '120px' } : { width: '100%' }}>
             <Form
               form={form}
               name='login'
