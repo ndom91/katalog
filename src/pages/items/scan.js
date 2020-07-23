@@ -11,7 +11,7 @@ import './items.module.css'
 const { TabPane } = Tabs
 const { Title } = Typography
 
-const ItemsLoader = () => {
+const ScanPage = () => {
   const [session, loading] = useSession()
   const [cameraAvailable, setCameraAvailable] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -45,4 +45,4 @@ const ItemsLoader = () => {
   )
 }
 
-export default ItemsLoader
+export default ScanPage

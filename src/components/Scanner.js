@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import Router from 'next/router'
 import dynamic from 'next/dynamic'
 import { Modal, Button, Card, message, Select, Col, Row, Tabs } from 'antd'
+import { QrcodeOutlined } from '@ant-design/icons'
 const QrReader = dynamic(() => import('react-qr-scanner'), {
   ssr: false,
 })
@@ -138,14 +139,27 @@ export default class Scanner extends React.Component {
           visible={modalVisible}
           onOk={this.handleConfirm}
           onCancel={this.toggleModal}
+          centered
+          cancelText='Close'
+          okText='Open'
+          title='Item Identified'
+          okButtonProps={{ style: { width: '49%' } }}
+          cancelButtonProps={{ style: { width: '49%' } }}
         >
-          <p>We have identified the following Item</p>
-          <p>{itemDetails.title}</p>
-          <p>Would you like to open it?</p>
+          <Row>
+            <Col span={6}>
+              <QrcodeOutlined style={{ fontSize: '5rem' }} />
+            </Col>
+            <Col span={18}>
+              <p>We have identified the following Item</p>
+              <p>
+                <b>{itemDetails.title}</b>
+              </p>
+              <p>Would you like to open it?</p>
+            </Col>
+          </Row>
         </Modal>
       </>
     )
   }
 }
-
-// export default Scanner
