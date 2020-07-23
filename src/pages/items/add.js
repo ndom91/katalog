@@ -221,11 +221,14 @@ const ItemsAdd = () => {
   const carouselRef = useRef()
 
   const { data } = useQuery(getLocationsQuery)
-  const [createItem, { loading: loadingMutation }] = useMutation(addItemMutation, {
-    onCompleted: data => {
-      message.success(`${data.createOneItem.title} created`)
-    },
-  })
+  const [createItem, { data: createdItem, loading: loadingMutation }] = useMutation(
+    addItemMutation,
+    {
+      onCompleted: data => {
+        message.success(`${data.createOneItem.title} created`)
+      },
+    }
+  )
 
   const saveItem = async () => {
     const date = new Date()
@@ -933,6 +936,17 @@ const ItemsAdd = () => {
                     </Carousel>
                   </Card>
                 </TabPane>
+                {createdItem.item.id && (
+                  <TabPane tab='QR Code' key='2'>
+                    <Row gutter={[16, 16]}>
+                      <Col sm={24} lg={12}>
+                        <Card title='Item' headStyle={{ fontSize: '1.5rem' }}>
+                          Print your QR Code!
+                        </Card>
+                      </Col>
+                    </Row>
+                  </TabPane>
+                )}
               </Tabs>
             </PageHeader>
           </Spin>
