@@ -71,12 +71,9 @@ export default class Scanner extends React.Component {
     if (result.type === 'katalogItem') {
       this.setState({
         itemDetails: result,
+        modalVisible: true,
       })
     }
-    // ### DEBUG ###
-    this.setState({
-      result,
-    })
   }
 
   QrError = data => {
