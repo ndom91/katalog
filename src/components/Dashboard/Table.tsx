@@ -8,6 +8,7 @@ import React, { Dispatch } from 'react'
 type ItemType = {
   id: number
   title: string
+  status?: string
   qty?: number
   description?: string
   type?: string
@@ -122,6 +123,7 @@ const RecentsTable = ({ items, setItems, pagination = false }: RecentsProps) => 
     },
   ]
   return (
+    // @ts-ignore
     <Table style={{ width: '100%' }} columns={columns} dataSource={items} pagination={pagination} />
   )
 }
