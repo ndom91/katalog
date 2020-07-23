@@ -134,7 +134,6 @@ export default ({ csrfToken, session, providers }: Props) => {
                 wrapperCol={{ span: 24 }}
                 name='email'
                 id='email'
-                style={{ fontSize: '1.2rem' }}
               >
                 <Input placeholder='Email' size='large' />
               </Form.Item>
