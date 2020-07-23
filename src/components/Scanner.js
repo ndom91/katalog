@@ -128,10 +128,10 @@ export default class Scanner extends React.Component {
                     <QrReader
                       delay={300}
                       style={{ height: 480, width: 320 }}
-                      onError={QrError}
-                      onScan={QrSuccess}
+                      onError={this.QrError}
+                      onScan={this.QrSuccess}
                       facingMode='rear'
-                      chooseDeviceId={selectCamera}
+                      chooseDeviceId={this.selectCamera}
                     />
                   )}
                 </Col>
