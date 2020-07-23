@@ -80,7 +80,7 @@ const Scanner = () => {
       </Select>
       <Row>
         <Col>
-          {!loading && devices.length > 0 && (
+          {!loading && cameraId && devices.length > 0 && (
             <QrReader
               delay={100}
               style={{ height: 240, width: 320 }}
