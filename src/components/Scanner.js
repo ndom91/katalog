@@ -67,8 +67,10 @@ const Scanner = () => {
         placeholder='Select a Camera'
         style={{ minWidth: 200 }}
         onChange={value => {
-          setResult(value)
+          setLoading(true)
+          setResult(value.substr(0, 20))
           setCameraId(value)
+          setLoading(false)
         }}
       >
         {devices &&
@@ -82,8 +84,8 @@ const Scanner = () => {
         <Col>
           {!loading && cameraId && devices.length > 0 && (
             <QrReader
-              delay={100}
-              style={{ height: 240, width: 320 }}
+              delay={300}
+              style={{ height: 480, width: 320 }}
               onError={QrError}
               onScan={QrSuccess}
               chooseDeviceId={selectCamera}
