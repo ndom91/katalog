@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { Modal, Row, Col, Form, InputNumber, Button } from 'antd'
+import { Modal, Spin, Row, Col, Form, InputNumber, Button } from 'antd'
 import { QrcodeOutlined, PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons'
 import { useQuery, useMutation, gql } from '@apollo/client'
 
@@ -79,7 +79,7 @@ const ScannerModal = ({ itemDetails, visible, handleConfirm, toggleModal }) => {
   })
 
   useEffect(() => {
-    refetch()
+    refetch({ variables: parseInt(itemDetails.id) })
   }, [itemDetails])
 
   return (
@@ -99,27 +99,31 @@ const ScannerModal = ({ itemDetails, visible, handleConfirm, toggleModal }) => {
         <Col span={6}>
           <QrcodeOutlined style={{ fontSize: '5rem' }} />
         </Col>
-        <Col span={18}>
-          <CheckoutWrapper>
-            <p>
-              <b>Checkout Item</b>
-            </p>
-            <Form>
-              <Form.Item title='Quantity'>
-                <InputNumber value={requestQty} min={0} max={data && data.qty} size='large' />
-              </Form.Item>
-              <Button type='text' onClick={() => setRequestQty(requestQty - 1)} size='large'>
-                <MinusCircleOutlined
-                  style={{ fontSize: '1.5rem', color: 'var(--primary-color)' }}
-                />
-              </Button>
-              <Button type='text' onClick={() => setRequestQty(requestQty + 1)} size='large'>
-                <PlusCircleOutlined style={{ fontSize: '1.5rem', color: 'var(--primary-color)' }} />
-              </Button>
-            </Form>
-            <small>{data && data.qty} available</small>
-          </CheckoutWrapper>
-        </Col>
+        <Spin spinning={loading}>
+          <Col span={18}>
+            <CheckoutWrapper>
+              <p>
+                <b>Checkout Item</b>
+              </p>
+              <Form>
+                <Form.Item title='Quantity'>
+                  <InputNumber value={requestQty} min={0} max={data && data.qty} size='large' />
+                </Form.Item>
+                <Button type='text' onClick={() => setRequestQty(requestQty - 1)} size='large'>
+                  <MinusCircleOutlined
+                    style={{ fontSize: '1.5rem', color: 'var(--primary-color)' }}
+                  />
+                </Button>
+                <Button type='text' onClick={() => setRequestQty(requestQty + 1)} size='large'>
+                  <PlusCircleOutlined
+                    style={{ fontSize: '1.5rem', color: 'var(--primary-color)' }}
+                  />
+                </Button>
+              </Form>
+              <small>{data && data.qty} available</small>
+            </CheckoutWrapper>
+          </Col>
+        </Spin>
       </Row>
     </Modal>
   )
