@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Router from 'next/router'
 import dynamic from 'next/dynamic'
+import ScannerModal from './ScannerModal'
 import { Modal, Button, Card, message, Select, Col, Row, Tabs } from 'antd'
 import { QrcodeOutlined } from '@ant-design/icons'
 const QrReader = dynamic(() => import('react-qr-scanner'), {
@@ -64,7 +65,7 @@ export default class Scanner extends React.Component {
   }
 
   handleConfirm = () => {
-    Router.push(`/items/${itemDetails.id}`)
+    Router.push('/items/[id]', `/items/${this.state.itemDetails.id}`)
   }
 
   QrSuccess = raw => {
@@ -134,31 +135,12 @@ export default class Scanner extends React.Component {
             </Row>
           </Card>
         </Col>
-        <Modal
-          title='Basic Modal'
+        <ScannerModal
           visible={modalVisible}
-          onOk={this.handleConfirm}
-          onCancel={this.toggleModal}
-          centered
-          cancelText='Close'
-          okText='Open'
-          title='Item Identified'
-          okButtonProps={{ style: { width: '49%' } }}
-          cancelButtonProps={{ style: { width: '49%' } }}
-        >
-          <Row>
-            <Col span={6}>
-              <QrcodeOutlined style={{ fontSize: '5rem' }} />
-            </Col>
-            <Col span={18}>
-              <p>We have identified the following Item</p>
-              <p>
-                <b>{itemDetails.title}</b>
-              </p>
-              <p>Would you like to open it?</p>
-            </Col>
-          </Row>
-        </Modal>
+          handleConfirm={this.handleConfirm}
+          toggleModal={this.toggleModal}
+          itemDetails={itemDetails}
+        />
       </>
     )
   }

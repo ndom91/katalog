@@ -5,6 +5,7 @@ import Wrapper from '../../components/Layout'
 import { useSession } from 'next-auth/client'
 import LoginRequired from '../../components/LoginRequired'
 import Scanner from '../../components/Scanner'
+import { withApollo } from '../../../apollo/client'
 import { Row, Col, Card, PageHeader, Tabs, Button, Typography } from 'antd'
 import './items.module.css'
 
@@ -45,4 +46,4 @@ const ScanPage = () => {
   )
 }
 
-export default ScanPage
+export default withApollo(ScanPage)
