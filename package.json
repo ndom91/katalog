@@ -67,6 +67,7 @@
     "react-qr-scanner": "0.0.9",
     "react-sizeme": "^2.6.12",
     "react-to-print": "^2.9.0",
+    "react-use": "^15.3.2",
     "rm": "^0.1.8",
     "sqlite3": "^5.0.0",
     "styled-components": "^5.1.1",

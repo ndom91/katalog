@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
+import { useVibrate } from 'react-use'
 import { Modal, Spin, Row, Col, Form, InputNumber, Button } from 'antd'
 import { QrcodeOutlined, PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons'
 import { useQuery, useMutation, gql } from '@apollo/client'
@@ -81,6 +82,12 @@ const ScannerModal = ({ itemDetails, visible, handleConfirm, toggleModal }) => {
   useEffect(() => {
     refetch({ variables: parseInt(itemDetails.id) })
   }, [itemDetails])
+
+  useVibrate(visible, [100, 1000, 300], false)
+
+  // useEffect(() => {
+  //   visible && useVibrate(visible, [100, 1000, 300], false)
+  // }, [visible])
 
   return (
     <Modal
