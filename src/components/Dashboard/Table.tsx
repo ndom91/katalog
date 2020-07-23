@@ -56,6 +56,7 @@ const RecentsTable = ({ items, setItems, pagination = false }: RecentsProps) => 
       title: 'Status',
       dataIndex: 'status',
       key: 'status',
+      responsive: ['sm', 'md', 'lg', 'xl'],
       render: status => (
         <Tag color={status ? status.color : 'grey'}>{status ? status.name : 'N/A'}</Tag>
       ),
@@ -64,30 +65,35 @@ const RecentsTable = ({ items, setItems, pagination = false }: RecentsProps) => 
       title: 'Quantity',
       dataIndex: 'qty',
       key: 'qty',
+      responsive: ['md', 'lg', 'xl'],
       render: (text: string) => <>{text}</>,
     },
     {
       title: 'Description',
       dataIndex: 'description',
       key: 'description',
+      responsive: ['lg', 'xl'],
       render: (text: string) => <>{text}</>,
     },
     {
       title: 'Location',
       dataIndex: 'location',
       key: 'location',
+      responsive: ['md', 'lg', 'xl'],
       render: text => <>{text.description}</>,
     },
     {
       title: 'Date Added',
       dataIndex: 'date_added',
       key: 'date_added',
+      responsive: ['lg', 'xl'],
       render: (text: string) => <>{dayjs(text).format('DD.MM.YYYY HH:mm:ss')}</>,
     },
     {
       title: 'Added By',
       dataIndex: 'updated_by',
       key: 'updated_by',
+      responsive: ['lg', 'xl'],
       render: (text: string) => <>{text}</>,
     },
     {

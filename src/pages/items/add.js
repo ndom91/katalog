@@ -307,7 +307,7 @@ const ItemsAdd = () => {
             <Tabs defaultActiveKey='1'>
               <TabPane tab='Details' key='1'>
                 <Row gutter={[16, 16]}>
-                  <Col span={12}>
+                  <Col sm={24} lg={12}>
                     <Card
                       title='Item'
                       headStyle={{ fontSize: '1.5rem' }}
@@ -407,7 +407,7 @@ const ItemsAdd = () => {
                       </Form>
                     </Card>
                   </Col>
-                  <Col span={12} gutter={[16, 16]}>
+                  <Col sm={24} lg={12}>
                     <Card title='Images' headStyle={{ fontSize: '1.5rem' }}>
                       <ImageUpload />
                     </Card>

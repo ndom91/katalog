@@ -33,7 +33,6 @@ const Scanner = () => {
           if (cameras.length > 0) {
             setDevices(cameras)
             setCameraId(cameras[0].deviceId)
-            setResult(JSON.stringify(cameras))
           }
           setLoading(false)
         })
@@ -68,6 +67,7 @@ const Scanner = () => {
         placeholder='Select a Camera'
         style={{ minWidth: 200 }}
         onChange={value => {
+          setResult(value)
           setCameraId(value)
         }}
       >

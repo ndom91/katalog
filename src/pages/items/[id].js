@@ -289,7 +289,7 @@ const ItemEdit = () => {
   useEffect(() => {
     if (data) {
       setItem({
-        id: data.item.id,
+        id: id,
         qty: data.item.qty,
         title: data.item.title,
         description: data.item.description,
@@ -425,7 +425,7 @@ const ItemEdit = () => {
             <Tabs defaultActiveKey='1'>
               <TabPane tab='Details' key='1'>
                 <Row gutter={[16, 16]}>
-                  <Col span={12}>
+                  <Col sm={24} lg={12}>
                     <Card
                       title='Item'
                       headStyle={{ fontSize: '1.5rem' }}
@@ -501,7 +501,7 @@ const ItemEdit = () => {
                           />
                         </Form.Item>
                         <Row>
-                          <Col span={12}>
+                          <Col sm={24} lg={12}>
                             <Form.Item label='Quantity' required>
                               <InputNumber
                                 min={1}
@@ -511,7 +511,7 @@ const ItemEdit = () => {
                               />
                             </Form.Item>
                           </Col>
-                          <Col span={12}>
+                          <Col sm={24} lg={12}>
                             <Form.Item label='Location' required>
                               <Select
                                 showSearch
@@ -548,7 +548,7 @@ const ItemEdit = () => {
                       </Form>
                     </Card>
                   </Col>
-                  <Col span={12}>
+                  <Col sm={24} lg={12}>
                     <Row gutter={[16, 8]}>
                       <Col span={12}>
                         <Card title='Images' headStyle={{ fontSize: '1.5rem' }}>
@@ -582,7 +582,7 @@ const ItemEdit = () => {
                       <Card title='Financial Details' headStyle={{ fontSize: '1.5rem' }}>
                         <Form layout='vertical' form={form}>
                           <Row>
-                            <Col span={12}>
+                            <Col sm={24} lg={12}>
                               <Form.Item label='Purchase Price' style={{ position: 'relative' }}>
                                 <Input.Group compact>
                                   <InputNumber
@@ -606,7 +606,7 @@ const ItemEdit = () => {
                                 </Input.Group>
                               </Form.Item>
                             </Col>
-                            <Col span={12}>
+                            <Col sm={24} lg={12}>
                               <Form.Item label='Purchase Date' style={{ position: 'relative' }}>
                                 <Tooltip title='Bestelldatum'>
                                   <a

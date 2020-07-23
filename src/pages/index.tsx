@@ -83,7 +83,7 @@ const Homepage: React.FC = () => {
       ) : (
         <Wrapper>
           <Row gutter={[16, 16]}>
-            <Col span={6}>
+            <Col xs={24} sm={12} lg={6}>
               <Card style={{ overflow: 'hidden' }}>
                 <Statistic
                   title='Items'
@@ -96,7 +96,7 @@ const Homepage: React.FC = () => {
                 <TagOutlined style={iconStyle} />
               </Card>
             </Col>
-            <Col span={6}>
+            <Col xs={24} sm={12} lg={6}>
               <Card style={{ overflow: 'hidden' }}>
                 <Statistic
                   title='Locations'
@@ -109,7 +109,7 @@ const Homepage: React.FC = () => {
                 <EnvironmentOutlined style={iconStyle} />
               </Card>
             </Col>
-            <Col span={6}>
+            <Col xs={24} sm={12} lg={6}>
               <Card style={{ overflow: 'hidden' }}>
                 <Statistic
                   title='Active Shipments'
@@ -122,7 +122,7 @@ const Homepage: React.FC = () => {
                 <ShoppingOutlined style={iconStyle} />
               </Card>
             </Col>
-            <Col span={6}>
+            <Col xs={24} sm={12} lg={6}>
               <Card style={{ overflow: 'hidden' }}>
                 <Statistic
                   title='Notifications'
