@@ -28,11 +28,9 @@ const LoginRequired = () => {
             subTitle='You must be logged in to view this page'
             extra={[
               <Link href='/auth/signin'>
-                <a>
-                  <Button type='primary' key='login'>
-                    Login
-                  </Button>
-                </a>
+                <Button type='primary' key='login'>
+                  Login
+                </Button>
               </Link>,
               <Button onClick={() => window.location.reload()} key='tryagain'>
                 Try Again

@@ -5,6 +5,22 @@
   --primary-color: #002140;
 }
 
+body::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: #f0f2f5;
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+  background-color: transparent;
+}
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 12px;
+  background-color: #002140;
+}
+
 @primary-color: #002140; // primary color for all components
 @link-color: #1890ff; // link color
 @success-color: #52c41a; // success state color
@@ -17,5 +33,5 @@
 @disabled-color: rgba(0, 0, 0, 0.25); // disable state color
 @border-radius-base: 4px; // major border radius
 @border-color-base: #d9d9d9; // major border color
-@box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.12),
-  0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 9px 28px 8px rgba(0, 0, 0, 0.05); // major shadow for layers
+@box-shadow-base: 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 6px 16px 0 rgba(0, 0, 0, 0.08),
+  0 9px 28px 8px rgba(0, 0, 0, 0.05); // major shadow for layers

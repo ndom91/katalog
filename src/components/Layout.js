@@ -28,6 +28,7 @@ const SearchBar = styled(Search)`
 const Wrapper = ({ children }) => {
   const [session, loading] = useSession()
   const [isMobile, setIsMobile] = useState(false)
+  const [initials, setInitials] = useState('NT')
   const getInitials = string =>
     string
       .split(' ')
@@ -36,13 +37,12 @@ const Wrapper = ({ children }) => {
       .join('')
       .toUpperCase()
 
-  let initials = 'NT'
-  if (!loading && !session.user.image && session.user.name) {
-    initials = getInitials(session.user.name)
-  }
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setIsMobile(window.innerWidth < 600)
+    }
+    if (session && !session.user.image && session.user.name) {
+      setInitials(getInitials(session.user.name))
     }
   }, [])
 
@@ -89,17 +89,28 @@ const Wrapper = ({ children }) => {
             )}
           >
             <Badge count={0}>
-              <Avatar
-                src={!loading && session.user.image ? session.user.image : ''}
-                shape='square'
-                style={{
-                  color: '#3a64d5',
-                  backgroundColor: '#002140',
-                  border: '1px solid #fff',
-                }}
-              >
-                {initials}
-              </Avatar>
+              {session && session.user.image ? (
+                <Avatar
+                  src={session.user.image}
+                  shape='square'
+                  style={{
+                    color: '#3a64d5',
+                    backgroundColor: '#002140',
+                    border: '1px solid #fff',
+                  }}
+                />
+              ) : (
+                <Avatar
+                  shape='square'
+                  style={{
+                    color: '#3a64d5',
+                    backgroundColor: '#002140',
+                    border: '1px solid #fff',
+                  }}
+                >
+                  {initials}
+                </Avatar>
+              )}
             </Badge>
           </Dropdown>
         </Header>
