@@ -57,9 +57,10 @@ const CardWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-items: center;
-  width: 300px;
+  width: 400px;
   margin-left: 15%;
   z-index: 3;
+  font-size: 1.2rem;
   ${customMedia.lessThan('medium')`
     margin-left: 0px;
   `}
@@ -123,6 +124,7 @@ export default ({ csrfToken, session, providers }: Props) => {
               onFinish={() => {
                 signin('email', { email: form.getFieldValue('email') })
               }}
+              style={{ fontSize: '1.2rem' }}
             >
               <input name='csrfToken' type='hidden' defaultValue={csrfToken} />
               <Form.Item
@@ -132,12 +134,13 @@ export default ({ csrfToken, session, providers }: Props) => {
                 wrapperCol={{ span: 24 }}
                 name='email'
                 id='email'
+                style={{ fontSize: '1.2rem' }}
               >
-                <Input placeholder='Email' />
+                <Input placeholder='Email' size='large' />
               </Form.Item>
 
               <Form.Item>
-                <Button type='primary' htmlType='submit' block>
+                <Button type='primary' htmlType='submit' block size='large'>
                   Submit
                 </Button>
               </Form.Item>
@@ -148,7 +151,12 @@ export default ({ csrfToken, session, providers }: Props) => {
                   return (
                     <Form.Item key={provider.name} style={{ marginBottom: 0 }}>
                       <a href={provider.signinUrl} onClick={e => e.preventDefault()}>
-                        <Button type='default' block onClick={() => signin(provider.id)}>
+                        <Button
+                          type='default'
+                          block
+                          onClick={() => signin(provider.id)}
+                          size='large'
+                        >
                           Sign in with{' '}
                           {provider.name === 'Google' ? <GoogleOutlined /> : provider.name}
                         </Button>

@@ -37,7 +37,7 @@ const Wrapper = ({ children }) => {
       .toUpperCase()
 
   let initials = 'NT'
-  if (!session.user.image && session.user.name) {
+  if (!loading && !session.user.image && session.user.name) {
     initials = getInitials(session.user.name)
   }
   useEffect(() => {
@@ -90,7 +90,7 @@ const Wrapper = ({ children }) => {
           >
             <Badge count={0}>
               <Avatar
-                src={session.user.image ? session.user.image : ''}
+                src={!loading && session.user.image ? session.user.image : ''}
                 shape='square'
                 style={{
                   color: '#3a64d5',
