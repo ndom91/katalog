@@ -67,10 +67,8 @@ const Scanner = () => {
         placeholder='Select a Camera'
         style={{ minWidth: 200 }}
         onChange={value => {
-          setLoading(true)
           setResult(value.substr(0, 20))
           setCameraId(value)
-          setLoading(false)
         }}
       >
         {devices &&
@@ -88,6 +86,7 @@ const Scanner = () => {
               style={{ height: 480, width: 320 }}
               onError={QrError}
               onScan={QrSuccess}
+              facingMode='rear'
               chooseDeviceId={selectCamera}
             />
           )}
