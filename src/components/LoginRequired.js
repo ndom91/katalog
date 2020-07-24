@@ -24,7 +24,7 @@ const LoginRequired = () => {
           <Result
             status='error'
             title='Error'
-            icon={<Illustration />}
+            icon={<Illustration title='Error' />}
             subTitle='You must be logged in to view this page'
             extra={[
               <Link href='/auth/signin'>

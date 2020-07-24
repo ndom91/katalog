@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import ScannerModal from './ScannerModal'
 import { Modal, Button, Card, message, Select, Col, Row, Tabs } from 'antd'
 import { QrcodeOutlined } from '@ant-design/icons'
+
 const QrReader = dynamic(() => import('react-qr-scanner'), {
   ssr: false,
 })
