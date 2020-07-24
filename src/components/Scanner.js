@@ -70,6 +70,7 @@ export default class Scanner extends React.Component {
 
   QrSuccess = raw => {
     const result = JSON.parse(raw)
+    console.log(result)
     if (result.type === 'katalogItem') {
       this.setState({
         itemDetails: result,
