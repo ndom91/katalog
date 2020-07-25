@@ -1,37 +1,3 @@
-.rieInput {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-variant: tabular-nums;
-  list-style: none;
-  font-feature-settings: 'tnum';
-  position: relative;
-  display: inline-block;
-  width: 100%;
-  min-width: 0;
-  padding: 4px 11px;
-  color: rgba(0, 0, 0, 0.65);
-  font-size: 14px;
-  line-height: 1.5715;
-  background-color: #fff;
-  background-image: none;
-  border-radius: 4px;
-  transition: all 0.3s;
-  width: 100%;
-  border: 1px solid rgba(0, 0, 0, 0);
-}
-
-.rieInput-editing {
-  outline: none;
-  border: 1px solid rgba(0, 0, 0, 0);
-  box-shadow: 0 0 0 2px #00152923;
-}
-
-.rieInput:hover {
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-}
-
 .itemType-wrapper {
   display: flex;
   justify-content: space-around;
@@ -51,7 +17,7 @@
   justify-content: center;
 }
 
-.ant-carousel .slick-slide {
+.fibu-carousel .slick-slide {
   text-align: center;
   height: 160px;
   line-height: 160px;

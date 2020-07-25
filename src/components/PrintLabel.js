@@ -4,7 +4,7 @@ import { Typography, Row, Col } from 'antd'
 
 const { Text } = Typography
 
-const PrintLabel = ({ qrCode, companyName, itemName }) => {
+const PrintLabel = ({ qrCode, itemId, itemName }) => {
   return (
     <LabelWrapper>
       <Row>
@@ -14,13 +14,11 @@ const PrintLabel = ({ qrCode, companyName, itemName }) => {
           </Row>
         </Col>
         <Col span={14}>
-          <Row justify='end' align='top'>
+          <Row justify='space-between' align='middle' style={{ padding: '2px' }}>
+            <Text string>{itemId}</Text>
             <img src='/images/nt.png' alt='Company Logo' width='32' height='32' />
           </Row>
-          <Row justify='start' align='middle'>
-            <Text string>{companyName}</Text>
-          </Row>
-          <Row justify='start' align='middle'>
+          <Row justify='start' align='middle' style={{ padding: '2px' }}>
             <Text strong>{itemName}</Text>
           </Row>
         </Col>
@@ -30,7 +28,9 @@ const PrintLabel = ({ qrCode, companyName, itemName }) => {
 }
 
 const LabelWrapper = styled.div`
+  padding: 8px;
   width: 47%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 `
 
 export default PrintLabel

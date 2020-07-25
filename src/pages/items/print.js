@@ -1,20 +1,27 @@
-import React, { useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import QRCode from 'qrcode.react'
 import Router from 'next/router'
 import Wrapper from '../../components/Layout'
 import { useSession } from 'next-auth/client'
+import { withApollo } from '../../../apollo/client'
 import LoginRequired from '../../components/LoginRequired'
-import { Row, Col, Card, PageHeader, Button, Typography } from 'antd'
+import { Carousel, Steps, Row, Col, Card, PageHeader, Button, Typography } from 'antd'
 import ReactToPrint from 'react-to-print'
+import PrintSelector from '../../components/PrintSelector'
 import PrintLabel from '../../components/PrintLabel'
+import './items.module.css'
 
 const { Title } = Typography
+const { Step } = Steps
 
 const ItemsLoader = () => {
   const pageRef = useRef()
+  const carouselRef = useRef()
+  const [currentStep, setCurrentStep] = useState(0)
   const [session, loading] = useSession()
+
   return (
     <>
       {!session ? (
@@ -29,76 +36,112 @@ const ItemsLoader = () => {
             onBack={() => Router.back()}
             title='Item'
             subTitle='Import / Export'
-            extra={[
-              <Button key='2'>Clear</Button>,
-              <ReactToPrint
-                trigger={() => (
-                  <Button key='1' type='primary'>
-                    Print
-                  </Button>
-                )}
-                content={() => pageRef.current}
-              />,
-            ]}
           >
-            <Row gutter={[16, 16]}>
-              <Col span={24}>
-                <Card title='Print Labels'>
-                  <PageWrapper ref={pageRef}>
-                    <Page>
-                      <PrintRow>
-                        <PrintLabel
-                          qrCode={<QRCode value='123' size={48} />}
-                          companyName='Newtelco'
-                          itemName='Dell 5580'
-                        />
-                        <PrintLabel
-                          qrCode={<QRCode value='123' size={48} />}
-                          companyName='Newtelco'
-                          itemName='Dell 5580'
-                        />
-                      </PrintRow>
-                      <PrintRow>
-                        <PrintLabel
-                          qrCode={<QRCode value='123' size={48} />}
-                          companyName='Newtelco'
-                          itemName='Dell 5580'
-                        />
-                        <PrintLabel
-                          qrCode={<QRCode value='123' size={48} />}
-                          companyName='Newtelco'
-                          itemName='Dell 5580'
-                        />
-                      </PrintRow>
-                      <PrintRow>
-                        <PrintLabel
-                          qrCode={<QRCode value='123' size={48} />}
-                          companyName='Newtelco'
-                          itemName='Dell 5580'
-                        />
-                        <PrintLabel
-                          qrCode={<QRCode value='123' size={48} />}
-                          companyName='Newtelco'
-                          itemName='Dell 5580'
-                        />
-                      </PrintRow>
-                      <PrintRow>
-                        <PrintLabel
-                          qrCode={<QRCode value='123' size={48} />}
-                          companyName='Newtelco'
-                          itemName='Dell 5580'
-                        />
-                        <PrintLabel
-                          qrCode={<QRCode value='123' size={48} />}
-                          companyName='Newtelco'
-                          itemName='Dell 5580'
-                        />
-                      </PrintRow>
-                    </Page>
-                  </PageWrapper>
-                </Card>
-              </Col>
-            </Row>
+            <Steps
+              type='navigation'
+              size='small'
+              current={currentStep}
+              onChange={step => {
+                carouselRef.current.slick.slickGoTo(step)
+                setCurrentStep(step)
+              }}
+              className='site-navigation-steps'
+            >
+              <Step title='Select Items' />
+              <Step title='Print Preview' />
+            </Steps>
+            <Carousel ref={carouselRef} dots={false} className='print-carousel'>
+              <Card
+                style={{ width: '100%' }}
+                extra={
+                  <Button
+                    onClick={() => {
+                      carouselRef.current.slick.slickGoTo(1)
+                      setCurrentStep(1)
+                    }}
+                  >
+                    Next
+                  </Button>
+                }
+              >
+                <Row>
+                  <Col span={24}>
+                    <Card>
+                      <PrintSelector />
+                    </Card>
+                  </Col>
+                </Row>
+              </Card>
+              <Card
+                extra={[
+                  <ReactToPrint
+                    trigger={() => (
+                      <Button key='1' type='primary'>
+                        Print
+                      </Button>
+                    )}
+                    content={() => pageRef.current}
+                  />,
+                ]}
+              >
+                <Row gutter={[16, 16]}>
+                  <Col span={24}>
+                    <PageWrapper ref={pageRef}>
+                      <Page>
+                        <PrintRow>
+                          <PrintLabel
+                            qrCode={<QRCode value='123' size={48} />}
+                            itemId='123'
+                            itemName='Dell 5580'
+                          />
+                          <PrintLabel
+                            qrCode={<QRCode value='123' size={48} />}
+                            itemId='123'
+                            itemName='Dell 5580'
+                          />
+                        </PrintRow>
+                        <PrintRow>
+                          <PrintLabel
+                            qrCode={<QRCode value='123' size={48} />}
+                            itemId='123'
+                            itemName='Dell 5580'
+                          />
+                          <PrintLabel
+                            qrCode={<QRCode value='123' size={48} />}
+                            itemId='123'
+                            itemName='Dell 5580'
+                          />
+                        </PrintRow>
+                        <PrintRow>
+                          <PrintLabel
+                            qrCode={<QRCode value='123' size={48} />}
+                            itemId='123'
+                            itemName='Dell 5580'
+                          />
+                          <PrintLabel
+                            qrCode={<QRCode value='123' size={48} />}
+                            itemId='123'
+                            itemName='Dell 5580'
+                          />
+                        </PrintRow>
+                        <PrintRow>
+                          <PrintLabel
+                            qrCode={<QRCode value='123' size={48} />}
+                            itemId='123'
+                            itemName='Dell 5580'
+                          />
+                          <PrintLabel
+                            qrCode={<QRCode value='123' size={48} />}
+                            itemId='123'
+                            itemName='Dell 5580'
+                          />
+                        </PrintRow>
+                      </Page>
+                    </PageWrapper>
+                  </Col>
+                </Row>
+              </Card>
+            </Carousel>
           </PageHeader>
         </Wrapper>
       )}
@@ -124,6 +167,11 @@ const Page = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+  transition: box-shadow 250ms ease-in-out;
+
+  &:hover {
+    box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.15);
+  }
 `
 const PrintRow = styled.div`
   width: 80%;
@@ -133,4 +181,4 @@ const PrintRow = styled.div`
   margin: 0 auto;
 `
 
-export default ItemsLoader
+export default withApollo(ItemsLoader)
