@@ -1,6 +1,6 @@
 {
   "name": "katalog",
-  "version": "0.4.3",
+  "version": "0.4.5",
   "description": "Inventory Management Application",
   "scripts": {
     "dev": "next",
@@ -31,9 +31,6 @@
     "inventory",
     "management"
   ],
-  "browser": {
-    "child_process": false
-  },
   "author": "Nico Domino <yo@ndo.dev>",
   "license": "MIT",
   "dependencies": {
@@ -46,7 +43,6 @@
     "antd": "^4.4.2",
     "antd-img-crop": "^3.9.0",
     "dayjs": "^1.8.29",
-    "express": "4.17.1",
     "glob": "^7.1.6",
     "graphql-iso-date": "3.6.1",
     "isomorphic-unfetch": "3.0.0",
