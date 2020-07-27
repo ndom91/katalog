@@ -29,7 +29,7 @@ const ScanPage = () => {
 
   return (
     <>
-      {!session ? (
+      {!loading && !session ? (
         <LoginRequired />
       ) : (
         <Wrapper>

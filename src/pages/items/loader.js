@@ -13,7 +13,7 @@ const ItemsLoader = () => {
   const [session, loading] = useSession()
   return (
     <>
-      {!session ? (
+      {!loading && !session ? (
         <LoginRequired />
       ) : (
         <Wrapper>

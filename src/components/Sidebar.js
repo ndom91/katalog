@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Layout, Menu } from 'antd'
 import styled from 'styled-components'
+import { useWindowSize } from 'react-use'
 import KatalogLogo from '../assets/svg/katalog_full.svg'
 import KatalogLogoSmall from '../assets/svg/katalog_icon.svg'
 import {
@@ -24,20 +25,14 @@ const Logo = styled.div`
 `
 
 const Sidebar = () => {
-  const [collapsed, setCollapsed] = useState(false)
-  const [width, setWidth] = useState()
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      if (window.innerWidth < 600) {
-        setCollapsed(true)
-      }
-    }
-  }, [])
+  const { width } = useWindowSize()
+  const [collapsed, setCollapsed] = useState(width < 600)
+
   return (
     <Sider
       collapsible
       collapsed={collapsed}
-      defaultCollapsed={false}
+      defaultCollapsed={width < 600}
       onCollapse={() => setCollapsed(!collapsed)}
       theme='dark'
     >

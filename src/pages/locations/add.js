@@ -80,7 +80,7 @@ const LocationsAdd = () => {
   }
   return (
     <>
-      {!session ? (
+      {!loading && !session ? (
         <LoginRequired />
       ) : (
         <Wrapper>
@@ -122,14 +122,20 @@ const LocationsAdd = () => {
                             showSearch
                             placeholder='Parent'
                             optionFilterProp='children'
-                            onChange={value => setLocation({ ...location, parent: value })}
+                            onChange={value =>
+                              setLocation({ ...location, parent: value })
+                            }
                             filterOption={(input, option) =>
-                              option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                              option.children
+                                .toLowerCase()
+                                .indexOf(input.toLowerCase()) >= 0
                             }
                           >
                             {data &&
                               data.allLocations.map(location => (
-                                <Option value={location.id}>{location.description}</Option>
+                                <Option value={location.id}>
+                                  {location.description}
+                                </Option>
                               ))}
                           </Select>
                         </Form.Item>
@@ -138,7 +144,11 @@ const LocationsAdd = () => {
                   </Col>
                   <Col span={12}>
                     <Card title='Locations' headStyle={{ fontSize: '1.5rem' }}>
-                      <DirectoryTree multiple defaultExpandAll treeData={treeData} />
+                      <DirectoryTree
+                        multiple
+                        defaultExpandAll
+                        treeData={treeData}
+                      />
                     </Card>
                   </Col>
                 </Row>

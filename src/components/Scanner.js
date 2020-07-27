@@ -99,7 +99,14 @@ export default class Scanner extends React.Component {
   }
 
   render() {
-    const { result, loading, cameraId, devices, modalVisible, itemDetails } = this.state
+    const {
+      result,
+      loading,
+      cameraId,
+      devices,
+      modalVisible,
+      itemDetails,
+    } = this.state
 
     return (
       <>
@@ -108,7 +115,8 @@ export default class Scanner extends React.Component {
             <Row>
               <Select
                 className='camera-select'
-                style={{ minWidth: 200 }}
+                placeholder='Select a Camera'
+                style={{ width: '100%' }}
                 onChange={value => {
                   this.setState({ cameraId: undefined }, () => {
                     this.setState({ cameraId: value })
@@ -126,7 +134,7 @@ export default class Scanner extends React.Component {
             <Row>
               {!loading && cameraId && devices.length > 0 && (
                 <QrReader
-                  delay={200}
+                  delay={100}
                   style={{ height: 480, width: 320 }}
                   onError={this.QrError}
                   onScan={this.QrSuccess}

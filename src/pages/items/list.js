@@ -35,9 +35,9 @@ const ItemQuery = gql`
 
 const ItemsList = () => {
   const [form] = Form.useForm()
-  const [session] = useSession()
+  const [session, loading] = useSession()
   const [items, setItems] = useState([])
-  const { loading, data, refetch } = useQuery(ItemQuery)
+  const { loading: loadingQuery, data, refetch } = useQuery(ItemQuery)
   useEffect(() => {
     data && setItems(data.items)
   }, [data])
@@ -48,7 +48,7 @@ const ItemsList = () => {
 
   return (
     <>
-      {!session ? (
+      {!loading && !session ? (
         <LoginRequired />
       ) : (
         <Wrapper>
@@ -80,7 +80,12 @@ const ItemsList = () => {
                     Export
                   </Button>
                 </CSVLink>
-                <Button key='1' type='primary' loading={loading} onClick={() => refetch()}>
+                <Button
+                  key='1'
+                  type='primary'
+                  loading={loadingQuery}
+                  onClick={() => refetch()}
+                >
                   Reload
                 </Button>
               </>,
@@ -89,7 +94,11 @@ const ItemsList = () => {
             <Row gutter={[16, 16]}>
               <Col span={24}>
                 <Card title='Overview' headStyle={{ fontSize: '1.5rem' }}>
-                  <RecentsTable items={items} setItems={setItems} pagination={true} />
+                  <RecentsTable
+                    items={items}
+                    setItems={setItems}
+                    pagination={true}
+                  />
                 </Card>
               </Col>
             </Row>

@@ -4,7 +4,16 @@ import { useSession } from 'next-auth/client'
 import Wrapper from '../components/Layout'
 import RecentsTable from '../components/Dashboard/Table'
 import LoginRequired from '../components/LoginRequired'
-import { Row, Col, Statistic, Card, Skeleton, Typography, Button, Tooltip } from 'antd'
+import {
+  Row,
+  Col,
+  Statistic,
+  Card,
+  Skeleton,
+  Typography,
+  Button,
+  Tooltip,
+} from 'antd'
 import {
   BellOutlined,
   ShoppingOutlined,
@@ -64,8 +73,8 @@ const iconStyle: React.CSSProperties = {
 }
 
 const Homepage: React.FC = () => {
-  const [session] = useSession()
-  const { loading, data, refetch } = useQuery(ItemQuery)
+  const [session, loading] = useSession()
+  const { loading: loadingQuery, data, refetch } = useQuery(ItemQuery)
   const [items, setItems] = useState<ItemType>([])
   const [locationCount, setLocationCount] = useState(0)
 
@@ -78,7 +87,7 @@ const Homepage: React.FC = () => {
 
   return (
     <>
-      {!session ? (
+      {!loading && !session ? (
         <LoginRequired />
       ) : (
         <Wrapper>
@@ -146,14 +155,14 @@ const Homepage: React.FC = () => {
             >
               <Title level={3}>Recent Items</Title>
               <Tooltip title='Reload List'>
-                <Button onClick={() => refetch()} loading={loading}>
+                <Button onClick={() => refetch()} loading={loadingQuery}>
                   <ReloadOutlined />
                 </Button>
               </Tooltip>
             </div>
             {loading ? (
               <Card style={{ width: '100%' }}>
-                <Skeleton loading={loading} active />
+                <Skeleton loading={loadingQuery} active />
               </Card>
             ) : (
               // @ts-ignore

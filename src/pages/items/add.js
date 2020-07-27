@@ -222,14 +222,14 @@ const ItemsAdd = () => {
   const carouselRef = useRef()
 
   const { data } = useQuery(getLocationsQuery)
-  const [createItem, { data: createdItem, loading: loadingMutation }] = useMutation(
-    addItemMutation,
-    {
-      onCompleted: data => {
-        message.success(`${data.createOneItem.title} created`)
-      },
-    }
-  )
+  const [
+    createItem,
+    { data: createdItem, loading: loadingMutation },
+  ] = useMutation(addItemMutation, {
+    onCompleted: data => {
+      message.success(`${data.createOneItem.title} created`)
+    },
+  })
 
   const saveItem = async () => {
     const date = new Date()
@@ -289,7 +289,7 @@ const ItemsAdd = () => {
 
   return (
     <>
-      {!session ? (
+      {!loading && !session ? (
         <LoginRequired />
       ) : (
         <Wrapper>
@@ -307,7 +307,12 @@ const ItemsAdd = () => {
                   <Button key='2' onClick={clearForm}>
                     Clear
                   </Button>
-                  <Button key='1' type='primary' onClick={saveItem} loading={loadingMutation}>
+                  <Button
+                    key='1'
+                    type='primary'
+                    onClick={saveItem}
+                    loading={loadingMutation}
+                  >
                     Save
                   </Button>
                 </>,
@@ -324,7 +329,9 @@ const ItemsAdd = () => {
                           <Select
                             placeholder='Status'
                             value={item.status}
-                            onChange={value => setItem({ ...item, status: value })}
+                            onChange={value =>
+                              setItem({ ...item, status: value })
+                            }
                             style={{ width: 120, height: 45 }}
                             bordered={false}
                             size='large'
@@ -333,7 +340,10 @@ const ItemsAdd = () => {
                               data.allStatuses.map(status => (
                                 <Option key={status.id} value={status.id}>
                                   <Tag
-                                    style={{ padding: '8px', fontSize: '0.8rem' }}
+                                    style={{
+                                      padding: '8px',
+                                      fontSize: '0.8rem',
+                                    }}
                                     color={status.color}
                                   >
                                     {status.name}
@@ -344,25 +354,43 @@ const ItemsAdd = () => {
                         }
                       >
                         <Form layout='vertical' form={form}>
-                          <Form.Item label='Item Type' name='item-type' required>
+                          <Form.Item
+                            label='Item Type'
+                            name='item-type'
+                            required
+                          >
                             <Radio.Group
                               className='itemType-wrapper'
                               value={item.type}
-                              onChange={event => setItem({ ...item, type: event.target.value })}
+                              onChange={event =>
+                                setItem({ ...item, type: event.target.value })
+                              }
                             >
-                              <Radio.Button className='itemType-radio' value='net'>
+                              <Radio.Button
+                                className='itemType-radio'
+                                value='net'
+                              >
                                 Network
                                 <ApiTwoTone style={{ fontSize: '2rem' }} />
                               </Radio.Button>
-                              <Radio.Button className='itemType-radio' value='int'>
+                              <Radio.Button
+                                className='itemType-radio'
+                                value='int'
+                              >
                                 Internal
                                 <HomeTwoTone style={{ fontSize: '2rem' }} />
                               </Radio.Button>
-                              <Radio.Button className='itemType-radio' value='cust'>
+                              <Radio.Button
+                                className='itemType-radio'
+                                value='cust'
+                              >
                                 Customer
                                 <ContactsTwoTone style={{ fontSize: '2rem' }} />
                               </Radio.Button>
-                              <Radio.Button className='itemType-radio' value='storage'>
+                              <Radio.Button
+                                className='itemType-radio'
+                                value='storage'
+                              >
                                 Storage
                                 <SaveTwoTone style={{ fontSize: '2rem' }} />
                               </Radio.Button>
@@ -371,7 +399,9 @@ const ItemsAdd = () => {
                           <Form.Item label='Title' required>
                             <Input
                               value={item.title}
-                              onChange={event => setItem({ ...item, title: event.target.value })}
+                              onChange={event =>
+                                setItem({ ...item, title: event.target.value })
+                              }
                             />
                           </Form.Item>
                           <Row>
@@ -391,14 +421,21 @@ const ItemsAdd = () => {
                                   showSearch
                                   placeholder='Select a location'
                                   optionFilterProp='children'
-                                  onChange={value => setItem({ ...item, location: value })}
+                                  onChange={value =>
+                                    setItem({ ...item, location: value })
+                                  }
                                   filterOption={(input, option) =>
-                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                    option.children
+                                      .toLowerCase()
+                                      .indexOf(input.toLowerCase()) >= 0
                                   }
                                 >
                                   {data &&
                                     data.allLocations.map(location => (
-                                      <Option key={location.id} value={location.id}>
+                                      <Option
+                                        key={location.id}
+                                        value={location.id}
+                                      >
                                         {location.description}
                                       </Option>
                                     ))}
@@ -410,7 +447,9 @@ const ItemsAdd = () => {
                             <Input
                               placeholder=''
                               value={item.desc}
-                              onChange={event => setItem({ ...item, desc: event.target.value })}
+                              onChange={event =>
+                                setItem({ ...item, desc: event.target.value })
+                              }
                             />
                           </Form.Item>
                         </Form>
@@ -420,19 +459,34 @@ const ItemsAdd = () => {
                       <Card title='Images' headStyle={{ fontSize: '1.5rem' }}>
                         <ImageUpload />
                       </Card>
-                      <Space direction='vertical' size='middle' style={{ width: '100%' }}>
-                        <Card title='Financial Details' headStyle={{ fontSize: '1.5rem' }}>
+                      <Space
+                        direction='vertical'
+                        size='middle'
+                        style={{ width: '100%' }}
+                      >
+                        <Card
+                          title='Financial Details'
+                          headStyle={{ fontSize: '1.5rem' }}
+                        >
                           <Form layout='vertical' form={form}>
                             <Row>
                               <Col span={12}>
-                                <Form.Item label='Purchase Price' style={{ position: 'relative' }}>
+                                <Form.Item
+                                  label='Purchase Price'
+                                  style={{ position: 'relative' }}
+                                >
                                   <Input.Group compact>
                                     <InputNumber
                                       defaultValue={1000}
                                       formatter={value =>
-                                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                        `${value}`.replace(
+                                          /\B(?=(\d{3})+(?!\d))/g,
+                                          ','
+                                        )
                                       }
-                                      parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                                      parser={value =>
+                                        value.replace(/\$\s?|(,*)/g, '')
+                                      }
                                       value={item.purchase_price}
                                       onChange={price =>
                                         setItem({
@@ -460,7 +514,10 @@ const ItemsAdd = () => {
                                 </Form.Item>
                               </Col>
                               <Col span={12}>
-                                <Form.Item label='Purchase Date' style={{ position: 'relative' }}>
+                                <Form.Item
+                                  label='Purchase Date'
+                                  style={{ position: 'relative' }}
+                                >
                                   <Tooltip title='Bestelldatum'>
                                     <a
                                       href='#API'
@@ -475,7 +532,9 @@ const ItemsAdd = () => {
                                   </Tooltip>
                                   <DatePicker
                                     style={{ width: '100%' }}
-                                    onChange={date => setFibu({ ...fibu, bestellDatum: date })}
+                                    onChange={date =>
+                                      setFibu({ ...fibu, bestellDatum: date })
+                                    }
                                   />
                                 </Form.Item>
                               </Col>
@@ -555,10 +614,17 @@ const ItemsAdd = () => {
                       <Step status='stamm' title='Stamm'></Step>
                       <Step status='afaVorschau' title='AfA-Vorschau'></Step>
                       <Step status='abschreibung' title='Abschreibung'></Step>
-                      <Step status='sonderabschreibung' title='Sonderabschreibung'></Step>
+                      <Step
+                        status='sonderabschreibung'
+                        title='Sonderabschreibung'
+                      ></Step>
                       <Step status='bewegung' title='Bewegung'></Step>
                     </Steps>
-                    <Carousel ref={carouselRef} dots={false} className='fibu-carousel'>
+                    <Carousel
+                      ref={carouselRef}
+                      dots={false}
+                      className='fibu-carousel'
+                    >
                       <Form layout='vertical' labelAlign='left' colon={false}>
                         <Row gutter={[128, 32]}>
                           <Col span={6}>
@@ -628,7 +694,9 @@ const ItemsAdd = () => {
                               <Switch
                                 name='fibu-lebenslaufakte'
                                 checked={fibu.lebenslaufAkte}
-                                onChange={value => setFibu({ ...fibu, lebenslaufAkte: value })}
+                                onChange={value =>
+                                  setFibu({ ...fibu, lebenslaufAkte: value })
+                                }
                               />
                             </Form.Item>
                           </Col>
@@ -912,7 +980,9 @@ const ItemsAdd = () => {
                               <Switch
                                 name='fibu-sonderabschr-verteil'
                                 checked={fibu.sAbschrVerteil}
-                                onChange={value => setFibu({ ...fibu, sAbschrVerteil: value })}
+                                onChange={value =>
+                                  setFibu({ ...fibu, sAbschrVerteil: value })
+                                }
                               />
                             </Form.Item>
                           </Col>
@@ -940,7 +1010,7 @@ const ItemsAdd = () => {
                     </Carousel>
                   </Card>
                 </TabPane>
-                {createdItem.item.id && (
+                {createdItem && createdItem.item.id && (
                   <TabPane tab='QR Code' key='2'>
                     <Row gutter={[16, 16]}>
                       <Col sm={24} lg={12}>

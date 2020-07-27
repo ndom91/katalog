@@ -7,7 +7,16 @@ import Wrapper from '../../components/Layout'
 import { useSession } from 'next-auth/client'
 import { withApollo } from '../../../apollo/client'
 import LoginRequired from '../../components/LoginRequired'
-import { Carousel, Steps, Row, Col, Card, PageHeader, Button, Typography } from 'antd'
+import {
+  Carousel,
+  Steps,
+  Row,
+  Col,
+  Card,
+  PageHeader,
+  Button,
+  Typography,
+} from 'antd'
 import ReactToPrint from 'react-to-print'
 import PrintSelector from '../../components/PrintSelector'
 import PrintLabel from '../../components/PrintLabel'
@@ -24,7 +33,7 @@ const ItemsLoader = () => {
 
   return (
     <>
-      {!session ? (
+      {!loading && !session ? (
         <LoginRequired />
       ) : (
         <Wrapper>
@@ -66,9 +75,7 @@ const ItemsLoader = () => {
               >
                 <Row>
                   <Col span={24}>
-                    <Card>
-                      <PrintSelector />
-                    </Card>
+                    <PrintSelector />
                   </Col>
                 </Row>
               </Card>

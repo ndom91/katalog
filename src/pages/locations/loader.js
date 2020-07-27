@@ -13,7 +13,7 @@ const LocationsLoader = () => {
   const [session, loading] = useSession()
   return (
     <>
-      {!session ? (
+      {!loading && !session ? (
         <LoginRequired />
       ) : (
         <Wrapper>

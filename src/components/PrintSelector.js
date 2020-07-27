@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import difference from 'lodash/difference'
 import { useQuery, gql } from '@apollo/client'
-import { Transfer, Switch, Table, Tag } from 'antd'
+import { Card, Transfer, Switch, Table, Tag } from 'antd'
 
 const ItemQuery = gql`
   query ItemQuery {
@@ -32,7 +32,9 @@ const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
       const rowSelection = {
         getCheckboxProps: item => ({ disabled: listDisabled || item.disabled }),
         onSelectAll(selected, selectedRows) {
-          const treeSelectedKeys = selectedRows.filter(item => !item.disabled).map(({ key }) => key)
+          const treeSelectedKeys = selectedRows
+            .filter(item => !item.disabled)
+            .map(({ key }) => key)
           const diffKeys = selected
             ? difference(treeSelectedKeys, listSelectedKeys)
             : difference(listSelectedKeys, treeSelectedKeys)
@@ -92,23 +94,25 @@ const PrintSelector = () => {
   const [targetKeys, setTargetKeys] = useState([])
   return (
     <>
-      {!loading && data.items && (
-        <TableTransfer
-          titles={['Available Items', 'Selected Items']}
-          dataSource={data.items}
-          showSearch
-          style={{ width: '100%' }}
-          targetKeys={targetKeys}
-          onChange={nextKeys => setTargetKeys(nextKeys)}
-          filterOption={(inputValue, item) =>
-            item.title.indexOf(inputValue) !== -1 ||
-            item.type.indexOf(inputValue) !== -1 ||
-            item.location.description.indexOf(inputValue) !== -1
-          }
-          leftColumns={leftTableColumns}
-          rightColumns={rightTableColumns}
-        />
-      )}
+      <Card bordered={false} loading={loading}>
+        {data && data.items && (
+          <TableTransfer
+            titles={['Available Items', 'Selected Items']}
+            dataSource={data.items}
+            showSearch
+            style={{ width: '100%' }}
+            targetKeys={targetKeys}
+            onChange={nextKeys => setTargetKeys(nextKeys)}
+            filterOption={(inputValue, item) =>
+              item.title.indexOf(inputValue) !== -1 ||
+              item.type.indexOf(inputValue) !== -1 ||
+              item.location.description.indexOf(inputValue) !== -1
+            }
+            leftColumns={leftTableColumns}
+            rightColumns={rightTableColumns}
+          />
+        )}
+      </Card>
     </>
   )
 }
