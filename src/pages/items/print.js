@@ -7,29 +7,24 @@ import Wrapper from '../../components/Layout'
 import { useSession } from 'next-auth/client'
 import { withApollo } from '../../../apollo/client'
 import LoginRequired from '../../components/LoginRequired'
-import {
-  Carousel,
-  Steps,
-  Row,
-  Col,
-  Card,
-  PageHeader,
-  Button,
-  Typography,
-} from 'antd'
+import { Carousel, Steps, Row, Col, Card, PageHeader, Button } from 'antd'
 import ReactToPrint from 'react-to-print'
 import PrintSelector from '../../components/PrintSelector'
 import PrintLabel from '../../components/PrintLabel'
 import './items.module.css'
 
-const { Title } = Typography
 const { Step } = Steps
 
 const ItemsLoader = () => {
   const pageRef = useRef()
   const carouselRef = useRef()
+  const [selectedKeys, setSelectedKeys] = useState([])
   const [currentStep, setCurrentStep] = useState(0)
   const [session, loading] = useSession()
+
+  const fetchSelectedKeys = () => {
+    console.log(selectedKeys)
+  }
 
   return (
     <>
@@ -65,6 +60,7 @@ const ItemsLoader = () => {
                 extra={
                   <Button
                     onClick={() => {
+                      fetchSelectedKeys()
                       carouselRef.current.slick.slickGoTo(1)
                       setCurrentStep(1)
                     }}
@@ -75,7 +71,7 @@ const ItemsLoader = () => {
               >
                 <Row>
                   <Col span={24}>
-                    <PrintSelector />
+                    <PrintSelector setSelectedKeys={setSelectedKeys} />
                   </Col>
                 </Row>
               </Card>

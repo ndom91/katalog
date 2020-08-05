@@ -18,7 +18,7 @@ const ItemQuery = gql`
 `
 
 const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
-  <Transfer {...restProps} showSelectAll={false}>
+  <Transfer {...restProps} showSelectAll={false} rowKey={record => record.id}>
     {({
       direction,
       filteredItems,
@@ -44,6 +44,15 @@ const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
           onItemSelect(key, selected)
         },
         selectedRowKeys: listSelectedKeys,
+      }
+
+      if (
+        restProps.selection &&
+        rowSelection.length !== restProps.selection.length
+      ) {
+        console.log(rowSelection)
+        console.log(restProps.selection)
+        restProps.setSelectedKeys(rowSelection)
       }
 
       return (
@@ -78,7 +87,11 @@ const leftTableColumns = [
   {
     dataIndex: 'location',
     title: 'location',
-    render: location => <span>{location.description}</span>,
+    render: location => (
+      <span>
+        {location && location.description ? location.description : ''}
+      </span>
+    ),
   },
 ]
 const rightTableColumns = [
@@ -88,25 +101,26 @@ const rightTableColumns = [
   },
 ]
 
-const PrintSelector = () => {
+const PrintSelector = ({ selection, setSelectedKeys }) => {
   const { loading, data } = useQuery(ItemQuery)
-  const [selectedKeys, setSelectedKeys] = useState([])
   const [targetKeys, setTargetKeys] = useState([])
   return (
     <>
       <Card bordered={false} loading={loading}>
         {data && data.items && (
           <TableTransfer
+            setSelectedKeys={setSelectedKeys}
+            selection={selection}
             titles={['Available Items', 'Selected Items']}
             dataSource={data.items}
             showSearch
             style={{ width: '100%' }}
             targetKeys={targetKeys}
             onChange={nextKeys => setTargetKeys(nextKeys)}
-            filterOption={(inputValue, item) =>
-              item.title.indexOf(inputValue) !== -1 ||
-              item.type.indexOf(inputValue) !== -1 ||
-              item.location.description.indexOf(inputValue) !== -1
+            filterOption={
+              (inputValue, item) => item.title.indexOf(inputValue) !== -1
+              // || item.type.indexOf(inputValue) !== -1 ||
+              // item.location.description.indexOf(inputValue) !== -1
             }
             leftColumns={leftTableColumns}
             rightColumns={rightTableColumns}
