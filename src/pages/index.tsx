@@ -56,6 +56,7 @@ const ItemQuery = gql`
       location {
         description
       }
+      total
     }
     locations(first: 1) {
       total
@@ -77,10 +78,12 @@ const Homepage: React.FC = () => {
   const { loading: loadingQuery, data, refetch } = useQuery(ItemQuery)
   const [items, setItems] = useState<ItemType>([])
   const [locationCount, setLocationCount] = useState(0)
+  const [itemsCount, setItemsCount] = useState(0)
 
   useEffect(() => {
     data && setItems(data.items)
     data && setLocationCount(data.locations[0].total)
+    data && setItemsCount(data.items[0].total)
   }, [data])
 
   !session && typeof window !== 'undefined' && Router.push('/auth/signin')
@@ -96,7 +99,7 @@ const Homepage: React.FC = () => {
               <Card style={{ overflow: 'hidden' }}>
                 <Statistic
                   title='Items'
-                  value={items.length}
+                  value={itemsCount}
                   precision={0}
                   valueStyle={{ color: '#3f8600' }}
                   prefix={<TagOutlined />}

@@ -1,4 +1,8 @@
-import { DeleteOutlined, EditOutlined, QuestionCircleOutlined } from '@ant-design/icons'
+import {
+  DeleteOutlined,
+  EditOutlined,
+  QuestionCircleOutlined,
+} from '@ant-design/icons'
 import { gql, useMutation } from '@apollo/client'
 import { Button, message, Popconfirm, Space, Table, Tag } from 'antd'
 import dayjs from 'dayjs'
@@ -30,7 +34,11 @@ const deleteItemMutation = gql`
     }
   }
 `
-const RecentsTable = ({ items, setItems, pagination = false }: RecentsProps) => {
+const RecentsTable = ({
+  items,
+  setItems,
+  pagination = false,
+}: RecentsProps) => {
   const [deleteItem] = useMutation(deleteItemMutation, {
     onCompleted: data => {
       const newItems = items.filter(item => item.id !== data.deleteOneItem.id)
@@ -59,7 +67,9 @@ const RecentsTable = ({ items, setItems, pagination = false }: RecentsProps) => 
       key: 'status',
       responsive: ['sm', 'md', 'lg', 'xl'],
       render: status => (
-        <Tag color={status ? status.color : 'grey'}>{status ? status.name : 'N/A'}</Tag>
+        <Tag color={status ? status.color : 'grey'}>
+          {status ? status.name : 'N/A'}
+        </Tag>
       ),
     },
     {
@@ -81,14 +91,16 @@ const RecentsTable = ({ items, setItems, pagination = false }: RecentsProps) => 
       dataIndex: 'location',
       key: 'location',
       responsive: ['md', 'lg', 'xl'],
-      render: text => <>{text.description}</>,
+      render: text => <>{text && text.description ? text.description : ''}</>,
     },
     {
       title: 'Date Added',
       dataIndex: 'date_added',
       key: 'date_added',
       responsive: ['lg', 'xl'],
-      render: (text: string) => <>{dayjs(text).format('DD.MM.YYYY HH:mm:ss')}</>,
+      render: (text: string) => (
+        <>{dayjs(text).format('DD.MM.YYYY HH:mm:ss')}</>
+      ),
     },
     {
       title: 'Added By',
@@ -103,7 +115,11 @@ const RecentsTable = ({ items, setItems, pagination = false }: RecentsProps) => 
       render: record => (
         <Space size='middle'>
           <Link href='/items/[id]' as={`/items/${record.id}`}>
-            <Button type='primary' ghost style={{ width: '36px', height: '36px', padding: '0px' }}>
+            <Button
+              type='primary'
+              ghost
+              style={{ width: '36px', height: '36px', padding: '0px' }}
+            >
               <EditOutlined style={{ fontSize: '1.0rem' }} />
             </Button>
           </Link>
@@ -114,7 +130,11 @@ const RecentsTable = ({ items, setItems, pagination = false }: RecentsProps) => 
             okText='Yes'
             cancelText='No'
           >
-            <Button danger type='default' style={{ width: '36px', height: '36px', padding: '0px' }}>
+            <Button
+              danger
+              type='default'
+              style={{ width: '36px', height: '36px', padding: '0px' }}
+            >
               <DeleteOutlined style={{ fontSize: '1.0rem' }} />
             </Button>
           </Popconfirm>
@@ -124,7 +144,12 @@ const RecentsTable = ({ items, setItems, pagination = false }: RecentsProps) => 
   ]
   return (
     // @ts-ignore
-    <Table style={{ width: '100%' }} columns={columns} dataSource={items} pagination={pagination} />
+    <Table
+      style={{ width: '100%' }}
+      columns={columns}
+      dataSource={items}
+      pagination={pagination}
+    />
   )
 }
 

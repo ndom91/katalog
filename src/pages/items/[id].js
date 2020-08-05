@@ -44,9 +44,8 @@ import {
 } from '@ant-design/icons'
 
 const { TabPane } = Tabs
-const { Title, Link } = Typography
+const { Link } = Typography
 const { Option } = Select
-const { Panel } = Collapse
 const { Step } = Steps
 
 const UpdateItemMutation = gql`

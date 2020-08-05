@@ -67,12 +67,12 @@ const ItemsList = () => {
                   data={items.flatMap(item => {
                     return {
                       name: item.title,
-                      quantity: item.qty,
-                      description: item.description,
-                      type: item.type,
+                      quantity: item.qty ? item.qty : 0,
+                      description: item.description ? item.description : '',
+                      type: item.type ? item.type : '',
                       added: item.date_added,
                       updated: item.updated_by,
-                      location: item.location.description,
+                      location: item.location ? item.location.description : '',
                     }
                   })}
                 >
