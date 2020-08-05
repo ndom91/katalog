@@ -7,14 +7,14 @@ import LoginRequired from '../../components/LoginRequired'
 import Wrapper from '../../components/Layout'
 import { CSVLink } from 'react-csv'
 import RecentsTable from '../../components/Dashboard/Table.tsx'
-import { Row, Col, Card, PageHeader, Button, Form } from 'antd'
+import { Row, Col, Card, PageHeader, Button } from 'antd'
 
 import { withApollo } from '../../../apollo/client'
 import { useQuery, gql } from '@apollo/client'
 
 const ItemQuery = gql`
   query ItemQuery {
-    items(orderBy: { date_added: desc }, last: 5) {
+    items(orderBy: { date_added: desc }) {
       id
       key: id
       title
@@ -23,6 +23,9 @@ const ItemQuery = gql`
       type
       date_added
       updated_by
+      status {
+        name
+      }
       location {
         description
       }
@@ -34,17 +37,14 @@ const ItemQuery = gql`
 `
 
 const ItemsList = () => {
-  const [form] = Form.useForm()
   const [session, loading] = useSession()
   const [items, setItems] = useState([])
   const { loading: loadingQuery, data, refetch } = useQuery(ItemQuery)
+
   useEffect(() => {
     data && setItems(data.items)
-  }, [data])
-
-  const exportData = data => {
     console.log(data)
-  }
+  }, [data])
 
   return (
     <>
