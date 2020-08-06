@@ -67,6 +67,7 @@ const RecentsTable = ({
     }) => (
       <div style={{ padding: 8 }}>
         <Input
+          // @ts-ignore
           ref={searchInput}
           placeholder={`Search ${dataIndex}`}
           value={selectedKeys[0]}
