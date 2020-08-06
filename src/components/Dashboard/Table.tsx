@@ -40,6 +40,7 @@ const RecentsTable = ({
   setItems,
   pagination = false,
 }: RecentsProps) => {
+  // @ts-ignore
   const searchInput = useRef<HTMLInputElement>(null)
   const [searchText, setSearchText] = useState()
   const [searchedColumn, setSearchedColumn] = useState()

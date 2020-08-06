@@ -4,3 +4,4 @@ public/themes/*.min.css
 api/
 .env
 .nexus
+api.graphql
