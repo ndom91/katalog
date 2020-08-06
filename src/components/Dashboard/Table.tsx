@@ -42,7 +42,7 @@ const RecentsTable = ({
 }: RecentsProps) => {
   // @ts-ignore
   const searchInput = useRef<HTMLInputElement>(null)
-  const [searchText, setSearchText] = useState()
+  const [searchText, setSearchText] = useState<String>('')
   const [searchedColumn, setSearchedColumn] = useState()
   const [deleteItem] = useMutation(deleteItemMutation, {
     onCompleted: data => {
