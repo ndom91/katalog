@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
 import QRCode from 'qrcode.react'
@@ -6,6 +6,7 @@ import Router from 'next/router'
 import Wrapper from '../../components/Layout'
 import { useSession } from 'next-auth/client'
 import { withApollo } from '../../../apollo/client'
+import { useLazyQuery, gql } from '@apollo/client'
 import LoginRequired from '../../components/LoginRequired'
 import { Carousel, Steps, Row, Col, Card, PageHeader, Button } from 'antd'
 import ReactToPrint from 'react-to-print'
@@ -15,16 +16,46 @@ import './items.module.css'
 
 const { Step } = Steps
 
+const ItemQuery = gql`
+  query ItemQuery($id: [Int!]) {
+    items(where: { id: { in: $id } }) {
+      id
+      title
+    }
+  }
+`
+
 const ItemsLoader = () => {
   const pageRef = useRef()
   const carouselRef = useRef()
   const [selectedKeys, setSelectedKeys] = useState([])
   const [currentStep, setCurrentStep] = useState(0)
+  const [toPrintItems, setToPrintItems] = useState([])
+  const [getItems, { loading: loadingQuery, data }] = useLazyQuery(ItemQuery)
   const [session, loading] = useSession()
 
   const fetchSelectedKeys = () => {
     console.log(selectedKeys)
+    getItems({ variables: { id: selectedKeys } })
   }
+
+  useEffect(() => {
+    if (!loadingQuery && data) {
+      console.log(data)
+      const returnItems = []
+      for (let i = 0; i < data.items.length; i += 2) {
+        const itemArr = []
+        const item1 = data.items[i]
+        itemArr.push({ id: item1.id, title: item1.title })
+        if (data.items[i + 1]) {
+          const item2 = data.items[i + 1]
+          itemArr.push({ id: item2.id, title: item2.title })
+        }
+        returnItems.push(itemArr)
+      }
+      setToPrintItems(returnItems)
+    }
+  }, [data])
 
   return (
     <>
@@ -71,7 +102,10 @@ const ItemsLoader = () => {
               >
                 <Row>
                   <Col span={24}>
-                    <PrintSelector setSelectedKeys={setSelectedKeys} />
+                    <PrintSelector
+                      setSelectedKeys={setSelectedKeys}
+                      selection={selectedKeys}
+                    />
                   </Col>
                 </Row>
               </Card>
@@ -91,54 +125,18 @@ const ItemsLoader = () => {
                   <Col span={24}>
                     <PageWrapper ref={pageRef}>
                       <Page>
-                        <PrintRow>
-                          <PrintLabel
-                            qrCode={<QRCode value='123' size={48} />}
-                            itemId='123'
-                            itemName='Dell 5580'
-                          />
-                          <PrintLabel
-                            qrCode={<QRCode value='123' size={48} />}
-                            itemId='123'
-                            itemName='Dell 5580'
-                          />
-                        </PrintRow>
-                        <PrintRow>
-                          <PrintLabel
-                            qrCode={<QRCode value='123' size={48} />}
-                            itemId='123'
-                            itemName='Dell 5580'
-                          />
-                          <PrintLabel
-                            qrCode={<QRCode value='123' size={48} />}
-                            itemId='123'
-                            itemName='Dell 5580'
-                          />
-                        </PrintRow>
-                        <PrintRow>
-                          <PrintLabel
-                            qrCode={<QRCode value='123' size={48} />}
-                            itemId='123'
-                            itemName='Dell 5580'
-                          />
-                          <PrintLabel
-                            qrCode={<QRCode value='123' size={48} />}
-                            itemId='123'
-                            itemName='Dell 5580'
-                          />
-                        </PrintRow>
-                        <PrintRow>
-                          <PrintLabel
-                            qrCode={<QRCode value='123' size={48} />}
-                            itemId='123'
-                            itemName='Dell 5580'
-                          />
-                          <PrintLabel
-                            qrCode={<QRCode value='123' size={48} />}
-                            itemId='123'
-                            itemName='Dell 5580'
-                          />
-                        </PrintRow>
+                        {!loadingQuery &&
+                          data &&
+                          toPrintItems.map(itemArr => (
+                            <PrintRow>
+                              {itemArr.map(item => (
+                                <PrintLabel
+                                  itemId={item.id}
+                                  itemName={item.title}
+                                />
+                              ))}
+                            </PrintRow>
+                          ))}
                       </Page>
                     </PageWrapper>
                   </Col>

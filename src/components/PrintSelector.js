@@ -18,7 +18,7 @@ const ItemQuery = gql`
 `
 
 const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
-  <Transfer {...restProps} showSelectAll={false} rowKey={record => record.id}>
+  <Transfer {...restProps} showSelectAll={false}>
     {({
       direction,
       filteredItems,
@@ -44,15 +44,6 @@ const TableTransfer = ({ leftColumns, rightColumns, ...restProps }) => (
           onItemSelect(key, selected)
         },
         selectedRowKeys: listSelectedKeys,
-      }
-
-      if (
-        restProps.selection &&
-        rowSelection.length !== restProps.selection.length
-      ) {
-        console.log(rowSelection)
-        console.log(restProps.selection)
-        restProps.setSelectedKeys(rowSelection)
       }
 
       return (
@@ -104,19 +95,21 @@ const rightTableColumns = [
 const PrintSelector = ({ selection, setSelectedKeys }) => {
   const { loading, data } = useQuery(ItemQuery)
   const [targetKeys, setTargetKeys] = useState([])
+
   return (
     <>
       <Card bordered={false} loading={loading}>
         {data && data.items && (
           <TableTransfer
-            setSelectedKeys={setSelectedKeys}
-            selection={selection}
             titles={['Available Items', 'Selected Items']}
             dataSource={data.items}
             showSearch
             style={{ width: '100%' }}
             targetKeys={targetKeys}
-            onChange={nextKeys => setTargetKeys(nextKeys)}
+            onChange={nextKeys => {
+              setTargetKeys(nextKeys)
+              setSelectedKeys(nextKeys)
+            }}
             filterOption={
               (inputValue, item) => item.title.indexOf(inputValue) !== -1
               // || item.type.indexOf(inputValue) !== -1 ||
