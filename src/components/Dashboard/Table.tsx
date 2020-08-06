@@ -40,7 +40,7 @@ const RecentsTable = ({
   setItems,
   pagination = false,
 }: RecentsProps) => {
-  const searchInput = useRef()
+  const searchInput = useRef<HTMLInputElement>()
   const [searchText, setSearchText] = useState()
   const [searchedColumn, setSearchedColumn] = useState()
   const [deleteItem] = useMutation(deleteItemMutation, {
