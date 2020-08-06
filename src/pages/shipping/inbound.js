@@ -28,7 +28,9 @@ const Shipping = () => {
           >
             <Row gutter={[16, 16]}>
               <Col span={12}>
-                <Card title='New Incoming'>Test</Card>
+                <Card title='New Incoming'>
+                  NOTE: https://my.trackinghive.com/
+                </Card>
               </Col>
               <Col span={12}>
                 <Card title='Open Incoming'>Test</Card>
