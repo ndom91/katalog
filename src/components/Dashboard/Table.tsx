@@ -248,6 +248,7 @@ const RecentsTable = ({
     // @ts-ignore
     <Table
       style={{ width: '100%' }}
+      // @ts-ignore
       columns={columns}
       dataSource={items}
       pagination={pagination}
