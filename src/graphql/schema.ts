@@ -97,6 +97,27 @@ schema.objectType({
   },
 })
 
+schema.objectType({
+  name: 'Shipment',
+  definition(t) {
+    t.model.id()
+    t.model.direction()
+    t.model.provider()
+    t.model.trackingNr()
+    t.model.date_added()
+    t.model.date_updated()
+    t.model.updated_by()
+    t.model.arrived()
+    t.field('total', {
+      type: 'Int',
+      resolve: async (parent, args, ctx) => {
+        let count = await ctx.db.shipment.count()
+        return count
+      },
+    })
+  },
+})
+
 schema.queryType({
   definition(t) {
     t.list.field('allItems', {
@@ -105,6 +126,7 @@ schema.queryType({
         return ctx.db.item.findMany({})
       },
     })
+
     t.crud.item()
     t.crud.items({ filtering: true, ordering: true })
     t.list.field('allImages', {
@@ -113,6 +135,7 @@ schema.queryType({
         return ctx.db.image.findMany({})
       },
     })
+
     t.crud.image()
     t.crud.images()
     t.list.field('allLocations', {
@@ -121,6 +144,7 @@ schema.queryType({
         return ctx.db.location.findMany({})
       },
     })
+
     t.crud.location()
     t.crud.locations({ filtering: true, ordering: true })
     t.list.field('allStatuses', {
@@ -129,8 +153,24 @@ schema.queryType({
         return ctx.db.status.findMany({})
       },
     })
+
     t.crud.status()
     t.crud.statuses({ filtering: true, ordering: true })
+    t.list.field('allStatuses', {
+      type: 'Status',
+      resolve(_parent, _args, ctx) {
+        return ctx.db.status.findMany({})
+      },
+    })
+
+    t.crud.shipment()
+    t.crud.shipments({ filtering: true, ordering: true })
+    t.list.field('allShipments', {
+      type: 'Shipment',
+      resolve(_parent, _args, ctx) {
+        return ctx.db.shipment.findMany({})
+      },
+    })
   },
 })
 
@@ -152,7 +192,7 @@ schema.mutationType({
     t.field('deleteImages', {
       type: 'String',
       async resolve(_parent, _args, ctx) {
-        const { count } = await ctx.db.item.deleteMany({})
+        const { count } = await ctx.db.images.deleteMany({})
         return `${count} images(s) deleted.`
       },
     })
@@ -165,7 +205,7 @@ schema.mutationType({
     t.field('deleteLocations', {
       type: 'String',
       async resolve(_parent, _args, ctx) {
-        const { count } = await ctx.db.item.deleteMany({})
+        const { count } = await ctx.db.location.deleteMany({})
         return `${count} locations(s) deleted.`
       },
     })
@@ -178,8 +218,8 @@ schema.mutationType({
     t.field('deleteStatuses', {
       type: 'String',
       async resolve(_parent, _args, ctx) {
-        const { count } = await ctx.db.item.deleteMany({})
-        return `${count} locations(s) deleted.`
+        const { count } = await ctx.db.status.deleteMany({})
+        return `${count} status(es) deleted.`
       },
     })
 
@@ -188,5 +228,18 @@ schema.mutationType({
     t.crud.deleteManyStatus()
     t.crud.updateOneStatus()
     t.crud.updateManyStatus()
+    t.field('deleteShipments', {
+      type: 'String',
+      async resolve(_parent, _args, ctx) {
+        const { count } = await ctx.db.shipment.deleteMany({})
+        return `${count} shipment(s) deleted.`
+      },
+    })
+
+    t.crud.createOneShipment()
+    t.crud.deleteOneShipment()
+    t.crud.deleteManyShipment()
+    t.crud.updateOneShipment()
+    t.crud.updateManyShipment()
   },
 })

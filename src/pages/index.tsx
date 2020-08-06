@@ -41,7 +41,7 @@ const { Title } = Typography
 
 const ItemQuery = gql`
   query ItemQuery {
-    items(orderBy: { date_added: desc }, last: 5) {
+    items(orderBy: { date_added: desc }, first: 5) {
       id
       title
       qty
