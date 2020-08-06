@@ -75,3 +75,7 @@ model Status {
   color       String
   item        Item[]
 }
+
+generator docs {
+  provider = "node node_modules/prisma-docs-generator"
+}

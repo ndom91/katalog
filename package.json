@@ -14,6 +14,7 @@
     "postinstall": "npm -s run generate",
     "prisma:migrate:save": "prisma migrate save --name lagerify --experimental",
     "prisma:migrate:up": "prisma migrate up --experimental",
+    "prisma:docs:serve": "npm run generate && npx prisma-docs-generator serve",
     "db:update": "npm run generate && npm run prisma:migrate:save && npm run prisma:migrate:up",
     "prettier": "prettier --config .prettierrc --check \"**/*.{js,jsx,ts,tsx,css,html}\"",
     "prettier:fix": "prettier --config .prettierrc --write \"**/*.{js,jsx,ts,tsx,css,html}\""
@@ -84,6 +85,7 @@
     "null-loader": "^4.0.0",
     "prettier": "^2.0.5",
     "pretty-quick": "^2.0.1",
+    "prisma-docs-generator": "0.0.5",
     "typescript": "3.9.6"
   },
   "husky": {

@@ -5,3 +5,4 @@ api/
 .env
 .nexus
 api.graphql
+prisma/docs/
