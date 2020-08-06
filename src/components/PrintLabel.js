@@ -35,8 +35,25 @@ const PrintLabel = ({ itemId, itemName }) => {
               height='32'
             />
           </Row>
-          <Row justify='start' align='middle' style={{ padding: '2px' }}>
-            <Text style={{ fontSize: '0.7rem' }} strong>
+          <Row
+            justify='start'
+            align='middle'
+            style={{
+              padding: '2px',
+            }}
+          >
+            <Text
+              strong
+              style={{
+                fontSize: '0.7rem',
+                maxHeight: '35px',
+                width: '120px',
+                padding: '2px',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
               {itemName.substr(0, 40)}
             </Text>
           </Row>

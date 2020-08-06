@@ -192,8 +192,8 @@ schema.mutationType({
     t.field('deleteImages', {
       type: 'String',
       async resolve(_parent, _args, ctx) {
-        const { count } = await ctx.db.images.deleteMany({})
-        return `${count} images(s) deleted.`
+        const { count } = await ctx.db.image.deleteMany({})
+        return `${count} image(s) deleted.`
       },
     })
 
@@ -206,7 +206,7 @@ schema.mutationType({
       type: 'String',
       async resolve(_parent, _args, ctx) {
         const { count } = await ctx.db.location.deleteMany({})
-        return `${count} locations(s) deleted.`
+        return `${count} location(s) deleted.`
       },
     })
 

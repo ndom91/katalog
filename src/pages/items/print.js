@@ -1,15 +1,23 @@
 import React, { useEffect, useState, useRef } from 'react'
 import Head from 'next/head'
 import styled from 'styled-components'
-import QRCode from 'qrcode.react'
 import Router from 'next/router'
 import Wrapper from '../../components/Layout'
 import { useSession } from 'next-auth/client'
 import { withApollo } from '../../../apollo/client'
 import { useLazyQuery, gql } from '@apollo/client'
 import LoginRequired from '../../components/LoginRequired'
-import { Carousel, Steps, Row, Col, Card, PageHeader, Button } from 'antd'
-import ReactToPrint from 'react-to-print'
+import {
+  Skeleton,
+  Carousel,
+  Steps,
+  Row,
+  Col,
+  Card,
+  PageHeader,
+  Button,
+} from 'antd'
+import { useReactToPrint } from 'react-to-print'
 import PrintSelector from '../../components/PrintSelector'
 import PrintLabel from '../../components/PrintLabel'
 import './items.module.css'
@@ -33,15 +41,17 @@ const ItemsLoader = () => {
   const [toPrintItems, setToPrintItems] = useState([])
   const [getItems, { loading: loadingQuery, data }] = useLazyQuery(ItemQuery)
   const [session, loading] = useSession()
+  const handlePrint = useReactToPrint({
+    content: () => pageRef.current,
+    documentTitle: 'Newtelco Katalog | Item Labels',
+  })
 
   const fetchSelectedKeys = () => {
-    console.log(selectedKeys)
     getItems({ variables: { id: selectedKeys } })
   }
 
   useEffect(() => {
     if (!loadingQuery && data) {
-      console.log(data)
       const returnItems = []
       for (let i = 0; i < data.items.length; i += 2) {
         const itemArr = []
@@ -111,32 +121,47 @@ const ItemsLoader = () => {
               </Card>
               <Card
                 extra={[
-                  <ReactToPrint
-                    trigger={() => (
-                      <Button key='1' type='primary'>
-                        Print
-                      </Button>
-                    )}
-                    content={() => pageRef.current}
-                  />,
+                  <Button key='1' type='primary' onClick={handlePrint}>
+                    Print
+                  </Button>,
                 ]}
               >
                 <Row gutter={[16, 16]}>
                   <Col span={24}>
-                    <PageWrapper ref={pageRef}>
+                    <PageWrapper>
                       <Page>
-                        {!loadingQuery &&
-                          data &&
-                          toPrintItems.map(itemArr => (
-                            <PrintRow>
-                              {itemArr.map(item => (
-                                <PrintLabel
-                                  itemId={item.id}
-                                  itemName={item.title}
-                                />
-                              ))}
-                            </PrintRow>
-                          ))}
+                        <div
+                          ref={pageRef}
+                          style={{ height: '100%', width: '100%' }}
+                        >
+                          {loadingQuery ? (
+                            <>
+                              <Skeleton active avatar />
+                              <Skeleton active avatar />
+                              <Skeleton active avatar />
+                            </>
+                          ) : (
+                            data &&
+                            toPrintItems.map((itemArr, i) => (
+                              <>
+                                {(i + 1) % 13 === 0 && (
+                                  <div
+                                    style={{ pageBreakBefore: 'always' }}
+                                    className='page-break'
+                                  />
+                                )}
+                                <PrintRow>
+                                  {itemArr.map(item => (
+                                    <PrintLabel
+                                      itemId={item.id}
+                                      itemName={item.title}
+                                    />
+                                  ))}
+                                </PrintRow>
+                              </>
+                            ))
+                          )}
+                        </div>
                       </Page>
                     </PageWrapper>
                   </Col>
@@ -172,6 +197,34 @@ const Page = styled.div`
 
   &:hover {
     box-shadow: 0 0 10px 1px rgba(0, 0, 0, 0.15);
+  }
+
+  @media all {
+    .page-break {
+      display: none;
+    }
+  }
+
+  @media print {
+    html,
+    body {
+      height: initial !important;
+      overflow: initial !important;
+      -webkit-print-color-adjust: exact;
+    }
+  }
+
+  @media print {
+    .page-break {
+      margin-top: 4rem;
+      display: block;
+      page-break-before: always;
+    }
+  }
+
+  @page {
+    size: auto;
+    margin: 20mm;
   }
 `
 const PrintRow = styled.div`

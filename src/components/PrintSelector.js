@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import difference from 'lodash/difference'
 import { useQuery, gql } from '@apollo/client'
-import { Card, Transfer, Switch, Table, Tag } from 'antd'
+import { Skeleton, Card, Transfer, Table } from 'antd'
 
 const ItemQuery = gql`
   query ItemQuery {
@@ -9,7 +9,6 @@ const ItemQuery = gql`
       id
       key: id
       title
-      type
       location {
         description
       }
@@ -71,13 +70,8 @@ const leftTableColumns = [
     title: 'Name',
   },
   {
-    dataIndex: 'Type',
-    title: 'type',
-    render: type => <Tag>{type}</Tag>,
-  },
-  {
     dataIndex: 'location',
-    title: 'location',
+    title: 'Location',
     render: location => (
       <span>
         {location && location.description ? location.description : ''}
@@ -98,7 +92,17 @@ const PrintSelector = ({ selection, setSelectedKeys }) => {
 
   return (
     <>
-      <Card bordered={false} loading={loading}>
+      <Card bordered={false}>
+        {loading && (
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div style={{ width: '45%', padding: '0 20px' }}>
+              <Skeleton active paragraph={{ rows: 15 }} />
+            </div>
+            <div style={{ width: '45%', padding: '0 20px' }}>
+              <Skeleton active paragraph={{ rows: 15 }} />
+            </div>
+          </div>
+        )}
         {data && data.items && (
           <TableTransfer
             titles={['Available Items', 'Selected Items']}
