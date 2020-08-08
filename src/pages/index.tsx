@@ -51,7 +51,6 @@ const ItemQuery = gql`
       updated_by
       status {
         name
-        color
       }
       location {
         description

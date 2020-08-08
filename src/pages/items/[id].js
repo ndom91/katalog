@@ -9,9 +9,9 @@ import Wrapper from '../../components/Layout'
 import ImageUpload from '../../components/Items/ImageUpload'
 import LoginRequired from '../../components/LoginRequired'
 import DatePicker from '../../components/DatePicker'
-import './items.module.css'
 import { withApollo } from '../../../apollo/client'
 import { useQuery, useMutation, gql } from '@apollo/client'
+import './items.module.css'
 import {
   Row,
   Col,
@@ -29,7 +29,6 @@ import {
   Space,
   message,
   Tooltip,
-  Collapse,
   Switch,
   Steps,
   Carousel,
@@ -44,7 +43,7 @@ import {
 } from '@ant-design/icons'
 
 const { TabPane } = Tabs
-const { Link } = Typography
+const { Paragraph, Link, Text } = Typography
 const { Option } = Select
 const { Step } = Steps
 
@@ -205,18 +204,13 @@ const getItemQuery = gql`
       serialNo
       inventarNr
       kontoNr
-      status {
-        id
-        name
-      }
-      statusId
+      ahk_wj_ende
       purchase_price
       currency
       date_added
       date_updated
       updated_by
       ahk_date
-      ahk_wj_ende
       buchw_wj_ende
       n_afa_wj_ende
       sonder_abs_wj_ende
@@ -249,6 +243,7 @@ const getItemQuery = gql`
         url
       }
       locationId
+      statusId
     }
     allLocations {
       id
@@ -257,7 +252,6 @@ const getItemQuery = gql`
     allStatuses {
       id
       name
-      color
     }
   }
 `
@@ -344,6 +338,10 @@ const ItemEdit = () => {
   }, [data])
 
   const saveItem = async () => {
+    if (item.status === null || item.qty === null || item.location === null) {
+      message.warning('Required fields missing')
+      return
+    }
     const date = new Date()
     const currentUser = session.user.email
     await updateItem({
@@ -444,6 +442,87 @@ const ItemEdit = () => {
                 </>,
               ]}
             >
+              <Row>
+                <Col span={8} style={{ padding: '10px 0px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        lineHeight: '36px',
+                        height: '36px',
+                      }}
+                    >
+                      <Text strong style={{ marginRight: '5px' }}>
+                        Title
+                      </Text>
+                      <Paragraph>{item.title}</Paragraph>
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        lineHeight: '36px',
+                        height: '36px',
+                      }}
+                    >
+                      <Text strong style={{ marginRight: '5px' }}>
+                        Quantity
+                      </Text>
+                      <Paragraph>{item.qty}</Paragraph>
+                    </div>
+                  </div>
+                </Col>
+                <Col span={8} style={{ padding: '10px 0px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        lineHeight: '36px',
+                        height: '36px',
+                      }}
+                    >
+                      <Text strong style={{ marginRight: '5px' }}>
+                        Status
+                      </Text>
+                      <Paragraph>
+                        <Tag
+                          style={{
+                            padding: '3px 8px',
+                            fontSize: '0.8rem',
+                          }}
+                        >
+                          {item.status ? item.status : 'N/A'}
+                        </Tag>
+                      </Paragraph>
+                    </div>
+                    <div
+                      style={{
+                        display: 'flex',
+                        lineHeight: '36px',
+                        height: '36px',
+                      }}
+                    >
+                      <Text strong style={{ marginRight: '5px' }}>
+                        ID
+                      </Text>
+                      <Paragraph>{item.id}</Paragraph>
+                    </div>
+                  </div>
+                </Col>
+                <Col span={8} align='end'>
+                  <QRCode
+                    value={JSON.stringify({
+                      id: item.id,
+                      title: item.title,
+                      type: 'katalogItem',
+                    })}
+                    style={{
+                      padding: '10px',
+                    }}
+                    renderAs='svg'
+                    size={128}
+                  />
+                </Col>
+              </Row>
               <Tabs
                 defaultActiveKey='1'
                 tabBarExtraContent={
@@ -477,7 +556,6 @@ const ItemEdit = () => {
                                       padding: '8px',
                                       fontSize: '0.8rem',
                                     }}
-                                    color={status.color}
                                   >
                                     {status.name}
                                   </Tag>
@@ -598,164 +676,135 @@ const ItemEdit = () => {
                       </Card>
                     </Col>
                     <Col sm={24} lg={12}>
-                      <Row gutter={[16, 8]}>
-                        <Col span={12}>
-                          <Card
-                            title='Images'
-                            headStyle={{ fontSize: '1.5rem' }}
-                          >
-                            <ImageUpload />
-                          </Card>
-                        </Col>
-                        <Col span={12}>
-                          <Card
-                            style={{ height: '100%' }}
-                            bodyStyle={{
-                              display: 'flex',
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                              height: '100%',
-                              minHeight: '248px',
-                            }}
-                          >
-                            <Card.Meta
-                              avatar={
-                                <QRCode
-                                  value={JSON.stringify({
-                                    id: item.id,
-                                    title: item.title,
-                                    type: 'katalogItem',
-                                  })}
-                                  renderAs='svg'
-                                  size={154}
-                                />
-                              }
-                            />
-                          </Card>
-                        </Col>
-                      </Row>
+                      <Card title='Images' headStyle={{ fontSize: '1.5rem' }}>
+                        <ImageUpload />
+                      </Card>
                       <Space
                         direction='vertical'
                         size='middle'
                         style={{ width: '100%' }}
+                      ></Space>
+                      <Card
+                        title='Financial Details'
+                        headStyle={{ fontSize: '1.5rem' }}
                       >
-                        <Card
-                          title='Financial Details'
-                          headStyle={{ fontSize: '1.5rem' }}
-                        >
-                          <Form layout='vertical' form={form}>
-                            <Row>
-                              <Col sm={24} lg={12}>
-                                <Form.Item
-                                  label='Purchase Price'
-                                  style={{ position: 'relative' }}
-                                >
-                                  <Input.Group compact>
-                                    <InputNumber
-                                      formatter={value =>
-                                        `${value}`.replace(
-                                          /\B(?=(\d{3})+(?!\d))/g,
-                                          ','
-                                        )
-                                      }
-                                      parser={value =>
-                                        value.replace(/\$\s?|(,*)/g, '')
-                                      }
-                                      value={item.purchase_price}
-                                      onChange={price =>
-                                        setItem({
-                                          ...item,
-                                          purchase_price: price,
-                                        })
-                                      }
-                                      style={{ width: 'calc( 95% - 80px)' }}
-                                    />
-                                    <Select
-                                      style={{ width: 80 }}
-                                      defaultValue='EUR'
-                                    >
-                                      <Option value='EUR'>EUR</Option>
-                                      <Option value='USD'>USD</Option>
-                                    </Select>
-                                  </Input.Group>
-                                </Form.Item>
-                              </Col>
-                              <Col sm={24} lg={12}>
-                                <Form.Item
-                                  label='Purchase Date'
-                                  style={{ position: 'relative' }}
-                                >
-                                  <Tooltip title='Bestelldatum'>
-                                    <a
-                                      href='#API'
-                                      style={{
-                                        position: 'absolute',
-                                        top: '-30px',
-                                        right: '10px',
-                                      }}
-                                    >
-                                      <QuestionCircleOutlined />
-                                    </a>
-                                  </Tooltip>
-                                  <DatePicker
-                                    style={{ width: '100%' }}
-                                    value={dayjs(fibu.bestellDatum)}
-                                    onChange={date =>
-                                      setFibu({ ...fibu, bestellDatum: date })
+                        <Form layout='vertical' form={form}>
+                          <Row>
+                            <Col sm={24} lg={12}>
+                              <Form.Item
+                                label='Purchase Price'
+                                style={{ position: 'relative' }}
+                              >
+                                <Input.Group compact>
+                                  <InputNumber
+                                    formatter={value =>
+                                      `${value}`.replace(
+                                        /\B(?=(\d{3})+(?!\d))/g,
+                                        ','
+                                      )
                                     }
-                                  />
-                                </Form.Item>
-                              </Col>
-                            </Row>
-                            <Row justify='space-between'>
-                              <Col span={7}>
-                                <Form.Item label='Inventory Nr.'>
-                                  <Input
-                                    name='fibu-inventory'
-                                    value={fibu.inventory}
-                                    onChange={event =>
-                                      setFibu({
-                                        ...fibu,
-                                        inventory: event.target.value,
+                                    parser={value =>
+                                      value.replace(/\$\s?|(,*)/g, '')
+                                    }
+                                    value={item.purchase_price}
+                                    onChange={price =>
+                                      setItem({
+                                        ...item,
+                                        purchase_price: price,
                                       })
                                     }
+                                    style={{ width: 'calc( 95% - 80px)' }}
                                   />
-                                </Form.Item>
-                              </Col>
-                              <Col span={7}>
-                                <Form.Item label='Account Nr.'>
-                                  <Input
-                                    name='fibu-account'
-                                    value={fibu.account}
-                                    onChange={event =>
-                                      setFibu({
-                                        ...fibu,
-                                        account: event.target.value,
-                                      })
-                                    }
-                                  />
-                                </Form.Item>
-                              </Col>
-                              <Col span={7}>
-                                <Form.Item label='Serial Nr.'>
-                                  <Input
-                                    name='fibu-serial'
-                                    value={fibu.serialNo}
-                                    onChange={event =>
-                                      setFibu({
-                                        ...fibu,
-                                        serialNo: event.target.value,
-                                      })
-                                    }
-                                  />
-                                </Form.Item>
-                              </Col>
-                            </Row>
-                          </Form>
-                        </Card>
-                      </Space>
+                                  <Select
+                                    style={{ width: 80 }}
+                                    defaultValue='EUR'
+                                  >
+                                    <Option value='EUR'>EUR</Option>
+                                    <Option value='USD'>USD</Option>
+                                  </Select>
+                                </Input.Group>
+                              </Form.Item>
+                            </Col>
+                            <Col sm={24} lg={12}>
+                              <Form.Item
+                                label='Purchase Date'
+                                style={{ position: 'relative' }}
+                              >
+                                <Tooltip title='Bestelldatum'>
+                                  <a
+                                    href='#API'
+                                    style={{
+                                      position: 'absolute',
+                                      top: '-30px',
+                                      right: '10px',
+                                    }}
+                                  >
+                                    <QuestionCircleOutlined />
+                                  </a>
+                                </Tooltip>
+                                <DatePicker
+                                  style={{ width: '100%' }}
+                                  value={dayjs(fibu.bestellDatum || undefined)}
+                                  onChange={date =>
+                                    setFibu({ ...fibu, bestellDatum: date })
+                                  }
+                                />
+                              </Form.Item>
+                            </Col>
+                          </Row>
+                          <Row justify='space-between'>
+                            <Col span={7}>
+                              <Form.Item label='Inventory Nr.'>
+                                <Input
+                                  name='fibu-inventory'
+                                  value={fibu.inventory}
+                                  onChange={event =>
+                                    setFibu({
+                                      ...fibu,
+                                      inventory: event.target.value,
+                                    })
+                                  }
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col span={7}>
+                              <Form.Item label='Account Nr.'>
+                                <Input
+                                  name='fibu-account'
+                                  value={fibu.account}
+                                  onChange={event =>
+                                    setFibu({
+                                      ...fibu,
+                                      account: event.target.value,
+                                    })
+                                  }
+                                />
+                              </Form.Item>
+                            </Col>
+                            <Col span={7}>
+                              <Form.Item label='Serial Nr.'>
+                                <Input
+                                  name='fibu-serial'
+                                  value={fibu.serialNo}
+                                  onChange={event =>
+                                    setFibu({
+                                      ...fibu,
+                                      serialNo: event.target.value,
+                                    })
+                                  }
+                                />
+                              </Form.Item>
+                            </Col>
+                          </Row>
+                        </Form>
+                      </Card>
                     </Col>
                   </Row>
+                  <Row gutter={16}>
+                    <Col span={24}></Col>
+                  </Row>
+                </TabPane>
+                <TabPane tab='Finance' key='2'>
                   <Card
                     title='Finance Continued'
                     style={{ width: '100%' }}
@@ -997,7 +1046,7 @@ const ItemEdit = () => {
                               <DatePicker
                                 name='fibu-ahk-datum'
                                 style={{ width: '100%' }}
-                                value={fibu.ahkDatum}
+                                value={dayjs(fibu.ahkDatum)}
                                 onChange={date =>
                                   setFibu({
                                     ...fibu,
@@ -1163,7 +1212,7 @@ const ItemEdit = () => {
                               <DatePicker
                                 name='fibu-abgang'
                                 style={{ width: '100%' }}
-                                value={fibu.abgang}
+                                value={dayjs(fibu.abgang)}
                                 onChange={date =>
                                   setFibu({
                                     ...fibu,
@@ -1177,9 +1226,6 @@ const ItemEdit = () => {
                       </Form>
                     </Carousel>
                   </Card>
-                  <Row gutter={16}>
-                    <Col span={24}></Col>
-                  </Row>
                 </TabPane>
               </Tabs>
             </PageHeader>

@@ -151,63 +151,66 @@ const Settings = () => {
   const [parseLoading, setParseLoading] = useState(false)
   const [csvData, setCsvData] = useState([])
   const [fields, setFields] = useState([])
-  const [createItem] = useMutation(addItemMutation, {
-    update(cache, { data }) {
-      console.log(data)
-      cache.modify({
-        fields: {
-          items(existingItems = []) {
-            const newItemRef = cache.writeFragment({
-              id: `Item:${data.createOneItem.id}`,
-              data: data.createOneItem,
-              fragment: gql`
-                fragment NewItem on Item {
-                  id
-                  title
-                  serialNo
-                  inventarNr
-                  kontoNr
-                  date_added
-                  date_updated
-                  updated_by
-                  ahk_date
-                  ahk_wj_ende
-                  buchw_wj_ende
-                  n_afa_wj_ende
-                  sonder_abs_wj_ende
-                  nutzungsdauer
-                  afa_art
-                  afa_percent
-                  kost1
-                  kost2
-                  filiale
-                  lieferantNr
-                  anlag_lieferant
-                  ahk_wj_beginn
-                  buchwert_wj_beginn
-                  n_afa_wj_beginn
-                  sonder_abs_wj_beginn
-                  sonder_abs_art
-                  sonder_abs_percent
-                  restbeguenstigung
-                  sonder_abs_verteil
-                  abgang
-                  lebenslaufakte
-                  bestelldatum
-                  erl_afa_art
-                  herkunftsart
-                  wkn_isin
-                  erfassungsart
-                }
-              `,
-            })
-            console.log(newItemRef)
-            return [...existingItems, newItemRef]
+  const [createItem, { loading: createLoading }] = useMutation(
+    addItemMutation,
+    {
+      update(cache, { data }) {
+        console.log(data)
+        cache.modify({
+          fields: {
+            items(existingItems = []) {
+              const newItemRef = cache.writeFragment({
+                id: `Item:${data.createOneItem.id}`,
+                data: data.createOneItem,
+                fragment: gql`
+                  fragment NewItem on Item {
+                    id
+                    title
+                    serialNo
+                    inventarNr
+                    kontoNr
+                    date_added
+                    date_updated
+                    updated_by
+                    ahk_date
+                    ahk_wj_ende
+                    buchw_wj_ende
+                    n_afa_wj_ende
+                    sonder_abs_wj_ende
+                    nutzungsdauer
+                    afa_art
+                    afa_percent
+                    kost1
+                    kost2
+                    filiale
+                    lieferantNr
+                    anlag_lieferant
+                    ahk_wj_beginn
+                    buchwert_wj_beginn
+                    n_afa_wj_beginn
+                    sonder_abs_wj_beginn
+                    sonder_abs_art
+                    sonder_abs_percent
+                    restbeguenstigung
+                    sonder_abs_verteil
+                    abgang
+                    lebenslaufakte
+                    bestelldatum
+                    erl_afa_art
+                    herkunftsart
+                    wkn_isin
+                    erfassungsart
+                  }
+                `,
+              })
+              console.log(newItemRef)
+              return [...existingItems, newItemRef]
+            },
           },
-        },
-      })
-    },
-  })
+        })
+      },
+    }
+  )
 
   const onDrop = data => {
     console.log(data)
@@ -458,6 +461,7 @@ const Settings = () => {
                             key='1'
                             onClick={() => onImport()}
                             type='primary'
+                            loading={createLoading}
                           >
                             Import
                           </Button>,
