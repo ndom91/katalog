@@ -50,7 +50,6 @@ schema.objectType({
     t.model.images()
     t.model.location()
     t.model.locationId()
-    t.model.status()
     t.model.statusId()
     t.field('total', {
       type: 'Int',
@@ -92,7 +91,6 @@ schema.objectType({
   definition(t) {
     t.model.id()
     t.model.name()
-    t.model.color()
     t.model.item()
   },
 })
@@ -159,7 +157,7 @@ schema.queryType({
     t.list.field('allStatuses', {
       type: 'Status',
       resolve(_parent, _args, ctx) {
-        return ctx.db.status.findMany({})
+        return ctx.db.status.findMany()
       },
     })
 
