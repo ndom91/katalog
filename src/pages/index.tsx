@@ -49,11 +49,11 @@ const ItemQuery = gql`
       type
       date_added
       updated_by
-      status {
-        name
-      }
       location {
         description
+      }
+      status {
+        name
       }
       total
     }

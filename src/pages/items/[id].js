@@ -814,7 +814,7 @@ const ItemEdit = () => {
                         href='https://www.datev.de/dnlexom/client/app/index.html#/document/9211235'
                         target='_blank'
                       >
-                        <span>FiBu Help</span>
+                        <a>FiBu Help</a>
                       </Link>
                     }
                   >

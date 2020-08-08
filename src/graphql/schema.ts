@@ -47,10 +47,14 @@ schema.objectType({
     t.model.herkunftsart()
     t.model.wkn_isin()
     t.model.erfassungsart()
+    t.model.note()
     t.model.images()
     t.model.location()
     t.model.locationId()
+    t.model.status()
     t.model.statusId()
+    t.model.company()
+    t.model.companyId()
     t.field('total', {
       type: 'Int',
       resolve: async (parent, args, ctx) => {
@@ -61,6 +65,32 @@ schema.objectType({
   },
 })
 
+schema.objectType({
+  name: 'Company',
+  definition(t) {
+    t.model.id()
+    t.model.name()
+    t.model.logoUrl()
+    t.model.description()
+    t.model.email()
+    t.model.note()
+    t.model.item()
+  },
+})
+schema.objectType({
+  name: 'Warehouse',
+  definition(t) {
+    t.model.id()
+    t.model.name()
+    t.model.description()
+    t.model.street1()
+    t.model.street2()
+    t.model.city()
+    t.model.zip()
+    t.model.country()
+    t.model.location()
+  },
+})
 schema.objectType({
   name: 'Image',
   definition(t) {
@@ -76,6 +106,10 @@ schema.objectType({
   definition(t) {
     t.model.id()
     t.model.description()
+    t.model.parent()
+    t.model.warehouse()
+    t.model.warehouseId()
+    t.model.item()
     t.field('total', {
       type: 'Int',
       resolve: async (parent, args, ctx) => {
@@ -127,6 +161,24 @@ schema.queryType({
 
     t.crud.item()
     t.crud.items({ filtering: true, ordering: true })
+    t.list.field('allCompanies', {
+      type: 'Company',
+      resolve(_parent, _args, ctx) {
+        return ctx.db.company.findMany({})
+      },
+    })
+
+    t.crud.company()
+    t.crud.companies({ filtering: true, ordering: true })
+    t.list.field('allWarehouses', {
+      type: 'Warehouse',
+      resolve(_parent, _args, ctx) {
+        return ctx.db.warehouse.findMany({})
+      },
+    })
+
+    t.crud.warehouse()
+    t.crud.warehouses({ filtering: true, ordering: true })
     t.list.field('allImages', {
       type: 'Image',
       resolve(_parent, _args, ctx) {
@@ -135,7 +187,7 @@ schema.queryType({
     })
 
     t.crud.image()
-    t.crud.images()
+    t.crud.images({ filtering: true, ordering: true })
     t.list.field('allLocations', {
       type: 'Location',
       resolve(_parent, _args, ctx) {
@@ -187,6 +239,32 @@ schema.mutationType({
     t.crud.deleteManyItem()
     t.crud.updateOneItem()
     t.crud.updateManyItem()
+    t.field('deleteCompanies', {
+      type: 'String',
+      async resolve(_parent, _args, ctx) {
+        const { count } = await ctx.db.company.deleteMany({})
+        return `${count} company(s) deleted.`
+      },
+    })
+
+    t.crud.createOneCompany()
+    t.crud.deleteOneCompany()
+    t.crud.deleteManyCompany()
+    t.crud.updateOneCompany()
+    t.crud.updateManyCompany()
+    t.field('deleteWarehouses', {
+      type: 'String',
+      async resolve(_parent, _args, ctx) {
+        const { count } = await ctx.db.warehouse.deleteMany({})
+        return `${count} warehouse(s) deleted.`
+      },
+    })
+
+    t.crud.createOneWarehouse()
+    t.crud.deleteOneWarehouse()
+    t.crud.deleteManyWarehouse()
+    t.crud.updateOneWarehouse()
+    t.crud.updateManyWarehouse()
     t.field('deleteImages', {
       type: 'String',
       async resolve(_parent, _args, ctx) {

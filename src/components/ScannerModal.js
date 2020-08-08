@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { useVibrate } from 'react-use'
 import { Modal, Spin, Row, Col, Form, InputNumber, Button } from 'antd'
-import { QrcodeOutlined, PlusCircleOutlined, MinusCircleOutlined } from '@ant-design/icons'
-import { useQuery, useMutation, gql } from '@apollo/client'
+import {
+  QrcodeOutlined,
+  PlusCircleOutlined,
+  MinusCircleOutlined,
+} from '@ant-design/icons'
+import { useQuery, gql } from '@apollo/client'
 
 const getItemQuery = gql`
   query getItem($id: Int!) {
@@ -110,16 +114,35 @@ const ScannerModal = ({ itemDetails, visible, handleConfirm, toggleModal }) => {
               </p>
               <Form>
                 <Form.Item title='Quantity'>
-                  <InputNumber value={requestQty} min={0} max={data && data.qty} size='large' />
+                  <InputNumber
+                    value={requestQty}
+                    min={0}
+                    max={data && data.qty}
+                    size='large'
+                  />
                 </Form.Item>
-                <Button type='text' onClick={() => setRequestQty(requestQty - 1)} size='large'>
+                <Button
+                  type='text'
+                  onClick={() => setRequestQty(requestQty - 1)}
+                  size='large'
+                >
                   <MinusCircleOutlined
-                    style={{ fontSize: '1.5rem', color: 'var(--primary-color)' }}
+                    style={{
+                      fontSize: '1.5rem',
+                      color: 'var(--primary-color)',
+                    }}
                   />
                 </Button>
-                <Button type='text' onClick={() => setRequestQty(requestQty + 1)} size='large'>
+                <Button
+                  type='text'
+                  onClick={() => setRequestQty(requestQty + 1)}
+                  size='large'
+                >
                   <PlusCircleOutlined
-                    style={{ fontSize: '1.5rem', color: 'var(--primary-color)' }}
+                    style={{
+                      fontSize: '1.5rem',
+                      color: 'var(--primary-color)',
+                    }}
                   />
                 </Button>
               </Form>

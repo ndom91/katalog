@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Router from 'next/router'
 import dynamic from 'next/dynamic'
 import ScannerModal from './ScannerModal'
-import { Modal, Button, Card, message, Select, Col, Row, Tabs } from 'antd'
-import { QrcodeOutlined } from '@ant-design/icons'
+import { Card, message, Select, Col, Row } from 'antd'
 
 const QrReader = dynamic(() => import('react-qr-scanner'), {
   ssr: false,
 })
 
-const { TabPane } = Tabs
 const { Option } = Select
 
 export default class Scanner extends React.Component {
@@ -99,14 +97,7 @@ export default class Scanner extends React.Component {
   }
 
   render() {
-    const {
-      result,
-      loading,
-      cameraId,
-      devices,
-      modalVisible,
-      itemDetails,
-    } = this.state
+    const { loading, cameraId, devices, modalVisible, itemDetails } = this.state
 
     return (
       <>
@@ -134,8 +125,8 @@ export default class Scanner extends React.Component {
             <Row>
               {!loading && cameraId && devices.length > 0 && (
                 <QrReader
-                  delay={100}
-                  style={{ height: 480, width: 320 }}
+                  delay={200}
+                  style={{ height: 480, width: 280 }}
                   onError={this.QrError}
                   onScan={this.QrSuccess}
                   facingMode='rear'
