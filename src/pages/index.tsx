@@ -89,7 +89,7 @@ const Homepage: React.FC = () => {
 
   return (
     <>
-      {!loading && !session ? (
+      {!session ? (
         <LoginRequired />
       ) : (
         <Wrapper>
