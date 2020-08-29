@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import aws from 'aws-sdk'
 import ImgCrop from 'antd-img-crop'
@@ -14,18 +14,34 @@ const s3 = new aws.S3({
 })
 
 const ViewCarousel = ({ files }) => {
+  const [imgList, setImgList] = useState(files)
+  useEffect(() => {
+    files.forEach(file => {
+      if (!file.b64) {
+        const reader = new FileReader()
+        reader.readAsDataURL(file.originFileObj)
+        reader.onload = () => {
+          file.b64 = reader.result
+          setImgList([...files, file])
+        }
+      }
+    })
+  }, [files])
+
   return (
     <Carousel effect='fade'>
-      {files &&
-        files.map(file => (
-          <div key={file.id}>
-            <img
-              src={file.url || file.thumbUrl}
-              alt={file.name}
-              style={{ maxHeight: '250px', margin: '0 auto' }}
-            />
-          </div>
-        ))}
+      {imgList &&
+        imgList.map(file => {
+          return (
+            <div key={file.id}>
+              <img
+                src={file.b64}
+                alt={file.name}
+                style={{ maxHeight: '250px', margin: '0 auto' }}
+              />
+            </div>
+          )
+        })}
     </Carousel>
   )
 }
@@ -38,13 +54,13 @@ const ImageUpload = () => {
     title: '',
   })
   const [fileList, setFileList] = useState([
-    {
-      uid: '-1',
-      name: 'dell_vostro.jpg',
-      status: 'done',
-      url:
-        'https://i.dell.com/sites/csimages/Video_Imagery/all/vostro-1471.jpg',
-    },
+    // {
+    //   uid: '-1',
+    //   name: 'dell_vostro.jpg',
+    //   status: 'done',
+    //   url:
+    //     'https://i.dell.com/sites/csimages/Video_Imagery/all/vostro-1471.jpg',
+    // },
   ])
 
   // const uploadS3 = data => {
@@ -96,7 +112,6 @@ const ImageUpload = () => {
 
   const beforeUpload = (file, fileList) => {
     const key = `${Date.now()}_${file.name}`
-    console.log(file)
     const params = {
       Bucket: 'nt-timeoff',
       Key: key,
