@@ -1,10 +1,17 @@
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import { Carousel, Upload, Modal } from 'antd'
+import aws from 'aws-sdk'
 import ImgCrop from 'antd-img-crop'
+import { Carousel, Upload, Modal } from 'antd'
 import { FileImageOutlined } from '@ant-design/icons'
 
 const { Dragger } = Upload
+
+const s3 = new aws.S3({
+  endpoint: new aws.Endpoint('fra1.digitaloceanspaces.com'),
+  accessKeyId: process.env.NEXT_PUBLIC_DO_SPACE_KEY,
+  secretAccessKey: process.env.NEXT_PUBLIC_DO_SPACE_SECRET,
+})
 
 const ViewCarousel = ({ files }) => {
   return (
@@ -24,6 +31,7 @@ const ViewCarousel = ({ files }) => {
 }
 
 const ImageUpload = () => {
+  const [signedUrl, setSignedUrl] = useState('')
   const [preview, setPreview] = useState({
     image: '',
     visible: false,
@@ -38,6 +46,27 @@ const ImageUpload = () => {
         'https://i.dell.com/sites/csimages/Video_Imagery/all/vostro-1471.jpg',
     },
   ])
+
+  // const uploadS3 = data => {
+  //   const key = `katalog/${Date.now()}_${data.file.name}`
+  //   const params = {
+  //     Bucket: 'nt-timeoff',
+  //     Key: key,
+  //     Body: data.file,
+  //     ACL: 'public-read',
+  //   }
+  //   s3.putObject(params, (err, data) => {
+  //     if (err) console.error(err, err.stack)
+  //     else {
+  //       this.props.handleFileUploadSuccess(
+  //         key,
+  //         file.name,
+  //         `https://nt-timeoff.fra1.digitaloceanspaces.com/${key}`
+  //       )
+  //       load(`https://nt-timeoff.fra1.digitaloceanspaces.com/${key}`)
+  //     }
+  //   })
+  // }
 
   const onChange = ({ fileList: newFileList }) => {
     setFileList(newFileList)
@@ -65,6 +94,21 @@ const ImageUpload = () => {
 
   const handleCancel = () => setPreview({ ...preview, visible: false })
 
+  const beforeUpload = (file, fileList) => {
+    const key = `${Date.now()}_${file.name}`
+    console.log(file)
+    const params = {
+      Bucket: 'nt-timeoff',
+      Key: key,
+      // Body: data.file,
+      ContentType: file.type,
+      ACL: 'public-read',
+    }
+    const url = s3.getSignedUrl('putObject', params)
+    setSignedUrl(url)
+    return true
+  }
+
   return (
     <Wrapper>
       {fileList && fileList.length > 0 && <ViewCarousel files={fileList} />}
@@ -72,7 +116,12 @@ const ImageUpload = () => {
         <Dragger
           name='file'
           multiple
-          action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+          // action='https://www.mocky.io/v2/5cc8019d300000980a055e76'
+          // action='https://nt-timeoff.fra1.digitaloceanspaces.com/katalog'
+          beforeUpload={beforeUpload}
+          action={signedUrl}
+          method='PUT'
+          // customRequest={uploadS3}
           onChange={onChange}
           onPreview={onPreview}
         >

@@ -199,7 +199,6 @@ const getLocationsQuery = gql`
     allStatuses {
       id
       name
-      color
     }
   }
 `
