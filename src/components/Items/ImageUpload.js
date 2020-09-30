@@ -29,7 +29,7 @@ const ViewCarousel = ({ files }) => {
   }, [files])
 
   return (
-    <Carousel effect='fade'>
+    <Carousel autoplay effect='fade'>
       {imgList &&
         imgList.map(file => {
           return (
