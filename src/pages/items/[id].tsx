@@ -262,8 +262,51 @@ const ItemEdit = () => {
   const [session, loading] = useSession()
   const [form] = Form.useForm()
   const [fibuCurrentStep, setFibuCurrentStep] = useState(0)
-  const [item, setItem] = useState({})
-  const [fibu, setFibu] = useState({})
+  const [item, setItem] = useState({
+    id: 0,
+    qty: 0,
+    title: '',
+    description: '',
+    type: '',
+    updated_by: '',
+    location: '',
+    status: '',
+    purchase_price: 0.0,
+  })
+  const [fibu, setFibu] = useState({
+    serialNo: '',
+    inventory: '',
+    currency: '',
+    account: '',
+    ahkDatum: '',
+    ahkWjEnde: '',
+    buchWjEnde: '',
+    nAfaWjEnde: '',
+    sAbschrWjEnde: '',
+    nutzungsDauer: '',
+    afaArt: '',
+    afaPerc: '',
+    kost1: 0,
+    kost2: 0,
+    filiale: '',
+    lieferantNr: '',
+    anlagLieferant: '',
+    ahkWjBeginn: '',
+    buchWjBeginn: '',
+    nAfaWjBeginn: '',
+    sAbschrWjBeginn: '',
+    sAbschrArt: '',
+    sAbschrPerc: '',
+    restbeguenstigung: '',
+    sAbschrVerteil: false,
+    abgang: '',
+    lebenslaufAkte: false,
+    bestellDatum: '',
+    erlAfaArt: '',
+    herkunftsart: '',
+    wknIsin: '',
+    erfassungsart: '',
+  })
   const [stepStatus, setStepStatus] = useState({
     stamm: 'wait',
     afaVorschau: 'wait',
@@ -271,10 +314,10 @@ const ItemEdit = () => {
     sonder: 'wait',
     bewegung: 'wait',
   })
-  const carouselRef = useRef()
+  const carouselRef = useRef<Carousel>(null)
 
   const { loading: loadingItem, data } = useQuery(getItemQuery, {
-    variables: { id: parseInt(id) },
+    variables: { id: typeof id === 'string' && parseInt(id) },
   })
   const [updateItem, { loading: loadingUpdate }] = useMutation(
     UpdateItemMutation,
@@ -287,7 +330,7 @@ const ItemEdit = () => {
   useEffect(() => {
     if (data && data.item) {
       setItem({
-        id: id,
+        id: typeof id === 'string' && parseInt(id),
         qty: data.item.qty,
         title: data.item.title,
         description: data.item.description,
@@ -356,7 +399,7 @@ const ItemEdit = () => {
         status: item.status,
         location: item.location,
         currency: fibu.currency,
-        serialNo: fibu.serial,
+        serialNo: fibu.serialNo,
         inventarNr: fibu.inventory,
         kontoNr: fibu.account,
         ahk_date: fibu.ahkDatum,
@@ -367,10 +410,10 @@ const ItemEdit = () => {
         nutzungsdauer: fibu.nutzungsDauer,
         afa_art: fibu.afaArt,
         afa_percent: fibu.afaPerc,
-        kost1: parseInt(fibu.kost1),
-        kost2: parseInt(fibu.kost2),
+        kost1: fibu.kost1,
+        kost2: fibu.kost2,
         filiale: fibu.filiale,
-        lieferantNr: fibu.lieferant,
+        lieferantNr: fibu.lieferantNr,
         anlag_lieferant: fibu.anlagLieferant,
         ahk_wj_beginn: fibu.ahkWjBeginn,
         buchwert_wj_beginn: fibu.buchWjBeginn,
@@ -389,26 +432,57 @@ const ItemEdit = () => {
         erfassungsart: fibu.erfassungsart,
         date_updated: date.toISOString(),
         updated_by: currentUser.split('@')[0],
-        id: parseInt(id),
+        id: typeof id === 'string' && parseInt(id),
       },
     })
   }
 
   const clearForm = () => {
-    setItem({})
-    setFibu({})
-  }
-
-  const sonderabschreibungFormChange = data => {
-    console.log(data)
-    if (
-      fibu.sAbschrWjBeginn &&
-      fibu.sAbschrArt &&
-      fibu.sAbschrPerc &&
-      fibu.restbeg
-    ) {
-      setStepStatus({ ...stepStatus, sonder: 'finished' })
-    }
+    setItem({
+      id: 0,
+      qty: 0,
+      title: '',
+      description: '',
+      type: '',
+      updated_by: '',
+      location: '',
+      status: '',
+      purchase_price: 0.0,
+    })
+    setFibu({
+      serialNo: '',
+      inventory: '',
+      currency: '',
+      account: '',
+      ahkDatum: '',
+      ahkWjEnde: '',
+      buchWjEnde: '',
+      nAfaWjEnde: '',
+      sAbschrWjEnde: '',
+      nutzungsDauer: '',
+      afaArt: '',
+      afaPerc: '',
+      kost1: 0,
+      kost2: 0,
+      filiale: '',
+      lieferantNr: '',
+      anlagLieferant: '',
+      ahkWjBeginn: '',
+      buchWjBeginn: '',
+      nAfaWjBeginn: '',
+      sAbschrWjBeginn: '',
+      sAbschrArt: '',
+      sAbschrPerc: '',
+      restbeguenstigung: '',
+      sAbschrVerteil: false,
+      abgang: '',
+      lebenslaufAkte: false,
+      bestellDatum: '',
+      erlAfaArt: '',
+      herkunftsart: '',
+      wknIsin: '',
+      erfassungsart: '',
+    })
   }
 
   return (
@@ -442,7 +516,7 @@ const ItemEdit = () => {
                 </>,
               ]}
             >
-              <Row>
+              <Row justify='space-between'>
                 <Col span={8} style={{ padding: '10px 0px' }}>
                   <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <div
@@ -508,7 +582,10 @@ const ItemEdit = () => {
                     </div>
                   </div>
                 </Col>
-                <Col span={8} align='end'>
+                <Col
+                  style={{ display: 'flex', justifyContent: 'flex-end' }}
+                  span={8}
+                >
                   <QRCode
                     value={JSON.stringify({
                       id: item.id,
@@ -627,7 +704,12 @@ const ItemEdit = () => {
                                   min={1}
                                   style={{ width: '95%' }}
                                   value={item.qty}
-                                  onChange={qty => setItem({ ...item, qty })}
+                                  onChange={(qty: any) =>
+                                    setItem({
+                                      ...item,
+                                      qty: qty,
+                                    })
+                                  }
                                 />
                               </Form.Item>
                             </Col>
@@ -707,12 +789,12 @@ const ItemEdit = () => {
                                       value.replace(/\$\s?|(,*)/g, '')
                                     }
                                     value={item.purchase_price}
-                                    onChange={price =>
+                                    onChange={(price: any) => {
                                       setItem({
                                         ...item,
                                         purchase_price: price,
                                       })
-                                    }
+                                    }}
                                     style={{ width: 'calc( 95% - 80px)' }}
                                   />
                                   <Select
@@ -746,7 +828,10 @@ const ItemEdit = () => {
                                   style={{ width: '100%' }}
                                   value={dayjs(fibu.bestellDatum || undefined)}
                                   onChange={date =>
-                                    setFibu({ ...fibu, bestellDatum: date })
+                                    setFibu({
+                                      ...fibu,
+                                      bestellDatum: date.toDate().toString(),
+                                    })
                                   }
                                 />
                               </Form.Item>
@@ -823,19 +908,18 @@ const ItemEdit = () => {
                       size='small'
                       current={fibuCurrentStep}
                       onChange={step => {
-                        carouselRef.current.slick.slickGoTo(step)
+                        if (carouselRef.current !== null)
+                          //@ts-ignore
+                          carouselRef.current.slick.slickGoTo(step)
                         setFibuCurrentStep(step)
                       }}
                       className='site-navigation-steps'
                     >
-                      <Step status='stamm' title='Stamm'></Step>
-                      <Step status='afaVorschau' title='AfA-Vorschau'></Step>
-                      <Step status='abschreibung' title='Abschreibung'></Step>
-                      <Step
-                        status='sonderabschreibung'
-                        title='Sonderabschreibung'
-                      ></Step>
-                      <Step status='bewegung' title='Bewegung'></Step>
+                      <Step title='Stamm'></Step>
+                      <Step title='AfA-Vorschau'></Step>
+                      <Step title='Abschreibung'></Step>
+                      <Step title='Sonderabschreibung'></Step>
+                      <Step title='Bewegung'></Step>
                     </Steps>
                     <Carousel
                       ref={carouselRef}
@@ -852,7 +936,7 @@ const ItemEdit = () => {
                                 onChange={event =>
                                   setFibu({
                                     ...fibu,
-                                    kost1: event.target.value,
+                                    kost1: parseFloat(event.target.value),
                                   })
                                 }
                               />
@@ -864,7 +948,7 @@ const ItemEdit = () => {
                                 onChange={event =>
                                   setFibu({
                                     ...fibu,
-                                    kost2: event.target.value,
+                                    kost2: parseFloat(event.target.value),
                                   })
                                 }
                               />
@@ -886,11 +970,11 @@ const ItemEdit = () => {
                             <Form.Item label='Lieferanten Nr.'>
                               <Input
                                 name='fibu-lieferant'
-                                value={fibu.lieferant}
+                                value={fibu.lieferantNr}
                                 onChange={event =>
                                   setFibu({
                                     ...fibu,
-                                    lieferant: event.target.value,
+                                    lieferantNr: event.target.value,
                                   })
                                 }
                               />
@@ -909,8 +993,7 @@ const ItemEdit = () => {
                             </Form.Item>
                             <Form.Item label='Lebenslaufakte'>
                               <Switch
-                                name='fibu-lebenslaufakte'
-                                checked={fibu.lebenslaufAkte}
+                                checked={!!fibu.lebenslaufAkte}
                                 onChange={value =>
                                   setFibu({ ...fibu, lebenslaufAkte: value })
                                 }
@@ -1050,7 +1133,7 @@ const ItemEdit = () => {
                                 onChange={date =>
                                   setFibu({
                                     ...fibu,
-                                    ahkDatum: date,
+                                    ahkDatum: date.toDate().toString(),
                                   })
                                 }
                               />
@@ -1134,13 +1217,7 @@ const ItemEdit = () => {
                           </Col>
                         </Row>
                       </Form>
-                      <Form
-                        layout='vertical'
-                        labelAlign='left'
-                        colon={false}
-                        status={stepStatus.sonder}
-                        onFieldsChange={() => sonderabschreibungFormChange()}
-                      >
+                      <Form layout='vertical' labelAlign='left' colon={false}>
                         <Row gutter={[128, 32]}>
                           <Col span={6}>
                             <Form.Item label='Sonderabschreibung Wj-Beginn'>
@@ -1184,18 +1261,17 @@ const ItemEdit = () => {
                             <Form.Item label='Restbeguenstigung'>
                               <Input
                                 name='fibu-restbeguenst'
-                                value={fibu.restbeg}
+                                value={fibu.restbeguenstigung}
                                 onChange={event =>
                                   setFibu({
                                     ...fibu,
-                                    restbeg: event.target.value,
+                                    restbeguenstigung: event.target.value,
                                   })
                                 }
                               />
                             </Form.Item>
                             <Form.Item label='Sonderabschreib Verteilung'>
                               <Switch
-                                name='fibu-sonderabschr-verteil'
                                 checked={fibu.sAbschrVerteil}
                                 onChange={value =>
                                   setFibu({ ...fibu, sAbschrVerteil: value })
@@ -1216,7 +1292,7 @@ const ItemEdit = () => {
                                 onChange={date =>
                                   setFibu({
                                     ...fibu,
-                                    abgang: date,
+                                    abgang: date.toDate().toString(),
                                   })
                                 }
                               />
