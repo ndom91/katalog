@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react'
 import Head from 'next/head'
 import Router from 'next/router'
-import Link from 'next/link'
 import { useSession } from 'next-auth/client'
 import dayjs from 'dayjs'
 import 'dayjs/locale/de'
@@ -231,8 +230,8 @@ const Settings = () => {
     }
     setParseLoading(false)
   }
-  const onComplete = data => {
-    console.log(data)
+  const onComplete = (results, file) => {
+    console.log(results, file)
   }
   const onError = (err, file, inputEl, reason) => {
     console.log(err, file, inputEl, reason)
@@ -244,12 +243,14 @@ const Settings = () => {
   const handleOpenDialog = e => {
     // Note that the ref is set async, so it might be null at some point
     if (buttonRef.current) {
+      //@ts-ignore
       buttonRef.current.open(e)
     }
   }
   const handleRemoveFile = e => {
     // Note that the ref is set async, so it might be null at some point
     if (buttonRef.current) {
+      //@ts-ignore
       buttonRef.current.removeFile(e)
     }
   }

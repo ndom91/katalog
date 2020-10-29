@@ -8,7 +8,7 @@ import LoginRequired from '../../components/LoginRequired'
 import './items.module.css'
 import { withApollo } from '../../../apollo/client'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import gql from graphql - tag
+import gql from 'graphql-tag'
 import {
   Row,
   Col,
@@ -209,15 +209,49 @@ const ItemsAdd = () => {
   const [form] = Form.useForm()
   const initialItem = {
     title: '',
-    desc: '',
+    description: '',
     type: '',
     qty: 1,
     location: '',
     purchase_price: 0,
     status: '',
   }
+  const initialFibu = {
+    serialNo: '',
+    inventory: '',
+    currency: '',
+    account: '',
+    ahkDatum: '',
+    ahkWjEnde: '',
+    buchWjEnde: '',
+    nAfaWjEnde: '',
+    sAbschrWjEnde: '',
+    nutzungsDauer: '',
+    afaArt: '',
+    afaPerc: '',
+    kost1: 0,
+    kost2: 0,
+    filiale: '',
+    lieferantNr: '',
+    anlagLieferant: '',
+    ahkWjBeginn: '',
+    buchWjBeginn: '',
+    nAfaWjBeginn: '',
+    sAbschrWjBeginn: '',
+    sAbschrArt: '',
+    sAbschrPerc: '',
+    restbeguenstigung: '',
+    sAbschrVerteil: false,
+    abgang: '',
+    lebenslaufAkte: false,
+    bestellDatum: '',
+    erlAfaArt: '',
+    herkunftsart: '',
+    wknIsin: '',
+    erfassungsart: '',
+  }
   const [item, setItem] = useState(initialItem)
-  const [fibu, setFibu] = useState({})
+  const [fibu, setFibu] = useState(initialFibu)
   const [fibuCurrentStep, setFibuCurrentStep] = useState(0)
   const carouselRef = useRef()
 
@@ -243,7 +277,7 @@ const ItemsAdd = () => {
         location: item.location,
         purchase_price: item.purchase_price,
         status: item.status,
-        serialNo: fibu.serial,
+        serialNo: fibu.serialNo,
         currency: fibu.currency,
         inventarNr: fibu.inventory,
         kontoNr: fibu.account,
@@ -255,10 +289,10 @@ const ItemsAdd = () => {
         nutzungsdauer: fibu.nutzungsDauer,
         afa_art: fibu.afaArt,
         afa_percent: fibu.afaPerc,
-        kost1: parseInt(fibu.kost1),
-        kost2: parseInt(fibu.kost2),
+        kost1: fibu.kost1,
+        kost2: fibu.kost2,
         filiale: fibu.filiale,
-        lieferantNr: fibu.lieferant,
+        lieferantNr: fibu.lieferantNr,
         anlag_lieferant: fibu.anlagLieferant,
         ahk_wj_beginn: fibu.ahkWjBeginn,
         buchwert_wj_beginn: fibu.buchWjBeginn,
@@ -284,7 +318,7 @@ const ItemsAdd = () => {
 
   const clearForm = () => {
     setItem(initialItem)
-    setFibu({})
+    setFibu(initialFibu)
   }
 
   return (
@@ -411,7 +445,9 @@ const ItemsAdd = () => {
                                   min={1}
                                   style={{ width: '95%' }}
                                   value={item.qty}
-                                  onChange={qty => setItem({ ...item, qty })}
+                                  onChange={(qty: number) =>
+                                    setItem({ ...item, qty })
+                                  }
                                 />
                               </Form.Item>
                             </Col>
@@ -422,7 +458,10 @@ const ItemsAdd = () => {
                                   placeholder='Select a location'
                                   optionFilterProp='children'
                                   onChange={value =>
-                                    setItem({ ...item, location: value })
+                                    setItem({
+                                      ...item,
+                                      location: value.toString(),
+                                    })
                                   }
                                   filterOption={(input, option) =>
                                     option.children
@@ -446,9 +485,12 @@ const ItemsAdd = () => {
                           <Form.Item label='Description'>
                             <Input
                               placeholder=''
-                              value={item.desc}
+                              value={item.description}
                               onChange={event =>
-                                setItem({ ...item, desc: event.target.value })
+                                setItem({
+                                  ...item,
+                                  description: event.target.value,
+                                })
                               }
                             />
                           </Form.Item>
@@ -488,7 +530,7 @@ const ItemsAdd = () => {
                                         value.replace(/\$\s?|(,*)/g, '')
                                       }
                                       value={item.purchase_price}
-                                      onChange={price =>
+                                      onChange={(price: number) =>
                                         setItem({
                                           ...item,
                                           purchase_price: price,
@@ -533,7 +575,10 @@ const ItemsAdd = () => {
                                   <DatePicker
                                     style={{ width: '100%' }}
                                     onChange={date =>
-                                      setFibu({ ...fibu, bestellDatum: date })
+                                      setFibu({
+                                        ...fibu,
+                                        bestellDatum: date.toString(),
+                                      })
                                     }
                                   />
                                 </Form.Item>
@@ -572,11 +617,11 @@ const ItemsAdd = () => {
                                 <Form.Item label='Serial Nr.'>
                                   <Input
                                     name='fibu-serial'
-                                    value={fibu.serial}
+                                    value={fibu.serialNo}
                                     onChange={event =>
                                       setFibu({
                                         ...fibu,
-                                        serial: event.target.value,
+                                        serialNo: event.target.value,
                                       })
                                     }
                                   />
@@ -606,19 +651,17 @@ const ItemsAdd = () => {
                       size='small'
                       current={fibuCurrentStep}
                       onChange={step => {
+                        //@ts-ignore
                         carouselRef.current.slick.slickGoTo(step)
                         setFibuCurrentStep(step)
                       }}
                       className='site-navigation-steps'
                     >
-                      <Step status='stamm' title='Stamm'></Step>
-                      <Step status='afaVorschau' title='AfA-Vorschau'></Step>
-                      <Step status='abschreibung' title='Abschreibung'></Step>
-                      <Step
-                        status='sonderabschreibung'
-                        title='Sonderabschreibung'
-                      ></Step>
-                      <Step status='bewegung' title='Bewegung'></Step>
+                      <Step title='Stamm'></Step>
+                      <Step title='AfA-Vorschau'></Step>
+                      <Step title='Abschreibung'></Step>
+                      <Step title='Sonderabschreibung'></Step>
+                      <Step title='Bewegung'></Step>
                     </Steps>
                     <Carousel
                       ref={carouselRef}
@@ -635,7 +678,7 @@ const ItemsAdd = () => {
                                 onChange={event =>
                                   setFibu({
                                     ...fibu,
-                                    kost1: event.target.value,
+                                    kost1: parseFloat(event.target.value),
                                   })
                                 }
                               />
@@ -647,7 +690,7 @@ const ItemsAdd = () => {
                                 onChange={event =>
                                   setFibu({
                                     ...fibu,
-                                    kost2: event.target.value,
+                                    kost2: parseFloat(event.target.value),
                                   })
                                 }
                               />
@@ -669,11 +712,11 @@ const ItemsAdd = () => {
                             <Form.Item label='Lieferanten Nr.'>
                               <Input
                                 name='fibu-lieferant'
-                                value={fibu.lieferant}
+                                value={fibu.lieferantNr}
                                 onChange={event =>
                                   setFibu({
                                     ...fibu,
-                                    lieferant: event.target.value,
+                                    lieferantNr: event.target.value,
                                   })
                                 }
                               />
@@ -692,7 +735,6 @@ const ItemsAdd = () => {
                             </Form.Item>
                             <Form.Item label='Lebenslaufakte'>
                               <Switch
-                                name='fibu-lebenslaufakte'
                                 checked={fibu.lebenslaufAkte}
                                 onChange={value =>
                                   setFibu({ ...fibu, lebenslaufAkte: value })
@@ -829,11 +871,12 @@ const ItemsAdd = () => {
                               <DatePicker
                                 name='fibu-ahk-datum'
                                 style={{ width: '100%' }}
+                                //@ts-ignore
                                 value={fibu.ahkDatum}
                                 onChange={date =>
                                   setFibu({
                                     ...fibu,
-                                    ahkDatum: date,
+                                    ahkDatum: date.toString(),
                                   })
                                 }
                               />
@@ -917,13 +960,7 @@ const ItemsAdd = () => {
                           </Col>
                         </Row>
                       </Form>
-                      <Form
-                        layout='vertical'
-                        labelAlign='left'
-                        colon={false}
-                        status={fibuCurrentStep.sonder}
-                        onFieldsChange={() => sonderabschreibungFormChange()}
-                      >
+                      <Form layout='vertical' labelAlign='left' colon={false}>
                         <Row gutter={[128, 32]}>
                           <Col span={6}>
                             <Form.Item label='Sonderabschreibung Wj-Beginn'>
@@ -967,18 +1004,17 @@ const ItemsAdd = () => {
                             <Form.Item label='Restbeguenstigung'>
                               <Input
                                 name='fibu-restbeguenst'
-                                value={fibu.restbeg}
+                                value={fibu.restbeguenstigung}
                                 onChange={event =>
                                   setFibu({
                                     ...fibu,
-                                    restbeg: event.target.value,
+                                    restbeguenstigung: event.target.value,
                                   })
                                 }
                               />
                             </Form.Item>
                             <Form.Item label='Sonderabschreib Verteilung'>
                               <Switch
-                                name='fibu-sonderabschr-verteil'
                                 checked={fibu.sAbschrVerteil}
                                 onChange={value =>
                                   setFibu({ ...fibu, sAbschrVerteil: value })
@@ -995,11 +1031,12 @@ const ItemsAdd = () => {
                               <DatePicker
                                 name='fibu-abgang'
                                 style={{ width: '100%' }}
+                                //@ts-ignore
                                 value={fibu.abgang}
                                 onChange={date =>
                                   setFibu({
                                     ...fibu,
-                                    abgang: date,
+                                    abgang: date.toString(),
                                   })
                                 }
                               />

@@ -1,5 +1,6 @@
 import { asNexusMethod } from '@nexus/schema'
-import { objectType, queryType, mutationType } from 'nexus-prisma'
+// import { objectType, queryType, mutationType } from 'nexus-plugin-prisma'
+import { objectType, queryType, mutationType } from '@nexus/schema'
 import { GraphQLDate } from 'graphql-iso-date'
 
 export const GQLDate = asNexusMethod(GraphQLDate, 'date')

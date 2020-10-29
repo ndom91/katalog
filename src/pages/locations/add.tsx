@@ -27,6 +27,13 @@ const { Title } = Typography
 const { Option } = Select
 const { DirectoryTree } = Tree
 
+export interface DataNode {
+  title: string
+  key: string
+  isLeaf?: boolean
+  children?: DataNode[]
+}
+
 const addLocationMutation = gql`
   mutation CreateLocationMutation($description: String) {
     createOneLocation(data: { description: $description }) {
@@ -48,7 +55,7 @@ const LocationsAdd = () => {
   const [form] = Form.useForm()
   const [session, loading] = useSession()
   const [location, setLocation] = useState({ description: '', parent: 0 })
-  const [treeData, setTreeData] = useState({})
+  const [treeData, setTreeData] = useState<DataNode[]>(null)
   const { data } = useQuery(getLocationsQuery)
   const [createLocation] = useMutation(addLocationMutation, {
     onCompleted: data => {
@@ -123,7 +130,7 @@ const LocationsAdd = () => {
                             showSearch
                             placeholder='Parent'
                             optionFilterProp='children'
-                            onChange={value =>
+                            onChange={(value: number) =>
                               setLocation({ ...location, parent: value })
                             }
                             filterOption={(input, option) =>

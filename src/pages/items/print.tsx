@@ -88,6 +88,7 @@ const ItemsLoader = () => {
               size='small'
               current={currentStep}
               onChange={step => {
+                //@ts-ignore
                 carouselRef.current.slick.slickGoTo(step)
                 setCurrentStep(step)
               }}
@@ -103,6 +104,7 @@ const ItemsLoader = () => {
                   <Button
                     onClick={() => {
                       fetchSelectedKeys()
+                      //@ts-ignore
                       carouselRef.current.slick.slickGoTo(1)
                       setCurrentStep(1)
                     }}
@@ -223,7 +225,7 @@ const Page = styled.div`
     }
   }
 
-  @page {
+  @media page {
     size: auto;
     margin: 20mm;
   }
@@ -232,7 +234,7 @@ const PrintRow = styled.div`
   width: 80%;
   display: flex;
   justify-content: space-between;
-  height: ;
+  height: auto;
   margin: 0 auto;
 `
 
