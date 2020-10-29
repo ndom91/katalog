@@ -111,7 +111,10 @@ export default ({ csrfToken, session, providers }: Props) => {
           ) : (
             <KatalogLogo style={{ height: '85px', marginBottom: '20px' }} />
           )}
-          <Card bordered={false} style={isMobile ? { marginTop: '120px' } : { width: '100%' }}>
+          <Card
+            bordered={false}
+            style={isMobile ? { marginTop: '120px' } : { width: '100%' }}
+          >
             <Form
               form={form}
               name='login'
@@ -149,7 +152,10 @@ export default ({ csrfToken, session, providers }: Props) => {
                   if (provider.name === 'Email') return null
                   return (
                     <Form.Item key={provider.name} style={{ marginBottom: 0 }}>
-                      <a href={provider.signinUrl} onClick={e => e.preventDefault()}>
+                      <a
+                        href={provider.signinUrl}
+                        onClick={e => e.preventDefault()}
+                      >
                         <Button
                           type='default'
                           block
@@ -157,7 +163,11 @@ export default ({ csrfToken, session, providers }: Props) => {
                           size='large'
                         >
                           Sign in with{' '}
-                          {provider.name === 'Google' ? <GoogleOutlined /> : provider.name}
+                          {provider.name === 'Google' ? (
+                            <GoogleOutlined />
+                          ) : (
+                            provider.name
+                          )}
                         </Button>
                       </a>
                     </Form.Item>

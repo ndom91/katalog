@@ -7,12 +7,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator docs {
-  provider = "node node_modules/prisma-docs-generator"
-}
-
 model Item {
-  id                   Int       @default(autoincrement()) @id
+  id                   Int       @id @default(autoincrement())
   qty                  Int?
   title                String
   description          String?
@@ -55,42 +51,44 @@ model Item {
   erfassungsart        String?
   note                 String?
   images               Image[]   @relation(references: [id])
-  status               Status? @relation(fields: [statusId], references: [id])
+  status               Status?   @relation(fields: [statusId], references: [id])
   statusId             Int?
   location             Location? @relation(fields: [locationId], references: [id])
   locationId           Int?
-  company              Company? @relation(fields: [companyId], references: [id])
+  company              Company?  @relation(fields: [companyId], references: [id])
   companyId            Int?
 }
 
 model Company {
-  id          Int    @default(autoincrement()) @id
+  id          Int     @id @default(autoincrement())
   name        String
   description String?
   email       String?
   logoUrl     String?
   note        String?
-  item        Item[] 
+  item        Item[]
 }
 
 model Image {
-  id    Int    @default(autoincrement()) @id
+  id    Int     @id @default(autoincrement())
   url   String
   title String?
-  item  Item[] 
+  item  Item[]
 }
 
 model Location {
-  id          Int    @default(autoincrement()) @id
-  parent      Location?
+  id          Int        @id @default(autoincrement())
+  parent      Location?  @relation("LocationToLocation", fields: [locationId], references: [id])
   description String
   warehouseId Int?
   warehouse   Warehouse? @relation(fields: [warehouseId], references: [id])
-  item        Item[] 
+  item        Item[]
+  Location    Location[] @relation("LocationToLocation")
+  locationId  Int?
 }
 
 model Warehouse {
-  id          Int    @default(autoincrement()) @id
+  id          Int        @id @default(autoincrement())
   name        String
   description String?
   street1     String?
@@ -102,20 +100,20 @@ model Warehouse {
 }
 
 model Status {
-  id          Int    @default(autoincrement()) @id
-  name        StatusName?
-  item        Item[]
+  id   Int         @id @default(autoincrement())
+  name StatusName?
+  item Item[]
 }
 
 model Shipment {
-  id           Int       @default(autoincrement()) @id
+  id           Int        @id @default(autoincrement())
   direction    Direction? @default(INBOUND)
   provider     String?
   trackingNr   String?
   date_added   DateTime
-  date_updated DateTime @default(now())
+  date_updated DateTime   @default(now())
   updated_by   String
-  arrived      Boolean   @default(false)
+  arrived      Boolean    @default(false)
 }
 
 enum Direction {

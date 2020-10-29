@@ -1,9 +1,10 @@
-import { schema, use } from 'nexus'
-import { prisma } from 'nexus-plugin-prisma'
+import { asNexusMethod } from '@nexus/schema'
+import { objectType, queryType, mutationType } from 'nexus-prisma'
+import { GraphQLDate } from 'graphql-iso-date'
 
-use(prisma({ features: { crud: true } }))
+export const GQLDate = asNexusMethod(GraphQLDate, 'date')
 
-schema.objectType({
+export const Item = objectType({
   name: 'Item',
   definition(t) {
     t.model.id()
@@ -65,7 +66,7 @@ schema.objectType({
   },
 })
 
-schema.objectType({
+export const Company = objectType({
   name: 'Company',
   definition(t) {
     t.model.id()
@@ -77,7 +78,7 @@ schema.objectType({
     t.model.item()
   },
 })
-schema.objectType({
+export const Warehouse = objectType({
   name: 'Warehouse',
   definition(t) {
     t.model.id()
@@ -91,7 +92,7 @@ schema.objectType({
     t.model.location()
   },
 })
-schema.objectType({
+export const Image = objectType({
   name: 'Image',
   definition(t) {
     t.model.id()
@@ -101,7 +102,7 @@ schema.objectType({
   },
 })
 
-schema.objectType({
+export const Location = objectType({
   name: 'Location',
   definition(t) {
     t.model.id()
@@ -120,7 +121,7 @@ schema.objectType({
   },
 })
 
-schema.objectType({
+export const Status = objectType({
   name: 'Status',
   definition(t) {
     t.model.id()
@@ -129,7 +130,7 @@ schema.objectType({
   },
 })
 
-schema.objectType({
+export const Shipment = objectType({
   name: 'Shipment',
   definition(t) {
     t.model.id()
@@ -150,7 +151,7 @@ schema.objectType({
   },
 })
 
-schema.queryType({
+export const Mutations = queryType({
   definition(t) {
     t.list.field('allItems', {
       type: 'Item',
@@ -224,7 +225,7 @@ schema.queryType({
   },
 })
 
-schema.mutationType({
+export const Crud = mutationType({
   definition(t) {
     t.field('deleteItems', {
       type: 'String',

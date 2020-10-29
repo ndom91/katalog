@@ -6,11 +6,12 @@ import { useSession } from 'next-auth/client'
 import LoginRequired from '../../components/LoginRequired'
 import Wrapper from '../../components/Layout'
 import { CSVLink } from 'react-csv'
-import RecentsTable from '../../components/Dashboard/Table.tsx'
+import RecentsTable from '../../components/Dashboard/Table'
 import { Row, Col, Card, PageHeader, Button } from 'antd'
 
 import { withApollo } from '../../../apollo/client'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 
 const ItemQuery = gql`
   query ItemQuery {

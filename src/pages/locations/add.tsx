@@ -19,7 +19,8 @@ import {
   Tree,
 } from 'antd'
 import { withApollo } from '../../../apollo/client'
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 
 const { TabPane } = Tabs
 const { Title } = Typography

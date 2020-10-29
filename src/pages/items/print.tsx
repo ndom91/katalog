@@ -5,7 +5,8 @@ import Router from 'next/router'
 import Wrapper from '../../components/Layout'
 import { useSession } from 'next-auth/client'
 import { withApollo } from '../../../apollo/client'
-import { useLazyQuery, gql } from '@apollo/client'
+import { useLazyQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 import LoginRequired from '../../components/LoginRequired'
 import {
   Skeleton,

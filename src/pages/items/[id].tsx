@@ -10,7 +10,8 @@ import ImageUpload from '../../components/Items/ImageUpload'
 import LoginRequired from '../../components/LoginRequired'
 import DatePicker from '../../components/DatePicker'
 import { withApollo } from '../../../apollo/client'
-import { useQuery, useMutation, gql } from '@apollo/client'
+import { useQuery, useMutation } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 import './items.module.css'
 import {
   Row,

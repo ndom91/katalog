@@ -25,7 +25,8 @@ import {
 } from '@ant-design/icons'
 
 import { withApollo } from '../../apollo/client'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 
 type ItemType = {
   id: number
