@@ -2,7 +2,7 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Provider } from 'next-auth/client'
 import React, { FunctionComponent } from 'react'
-import '../style/lagerify.less'
+import '../style/katalog.less'
 
 const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
   const { session } = pageProps
