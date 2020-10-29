@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import difference from 'lodash/difference'
-import { useQuery, gql } from '@apollo/client'
+import { useQuery } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 import { Skeleton, Card, Transfer, Table } from 'antd'
 
 const ItemQuery = gql`

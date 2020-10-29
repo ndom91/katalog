@@ -5,7 +5,8 @@ import {
   QuestionCircleOutlined,
   SearchOutlined,
 } from '@ant-design/icons'
-import { gql, useMutation } from '@apollo/client'
+import { useMutation } from '@apollo/react-hooks'
+import gql from 'graphql-tag'
 import { Button, Input, message, Popconfirm, Space, Table, Tag } from 'antd'
 import dayjs from 'dayjs'
 import Link from 'next/link'
