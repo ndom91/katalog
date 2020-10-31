@@ -1,6 +1,5 @@
 import { makeSchema } from '@nexus/schema'
 import { nexusPrisma } from 'nexus-plugin-prisma'
-import { nexusSchemaPrisma } from 'nexus-plugin-prisma/schema'
 import { ApolloServer } from 'apollo-server-micro'
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
