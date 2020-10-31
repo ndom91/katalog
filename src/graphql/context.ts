@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-export type Context = {
-  db: PrismaClient
+
+export interface Context {
+  prisma: PrismaClient
 }

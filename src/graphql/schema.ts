@@ -1,3 +1,5 @@
+/// <reference path="./nexus-typegen.ts" />
+
 import {
   asNexusMethod,
   objectType,
