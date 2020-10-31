@@ -1,5 +1,6 @@
 /// <reference path="./nexus-typegen.ts" />
 
+import { PrismaClient } from '@prisma/client'
 import {
   asNexusMethod,
   objectType,
@@ -9,6 +10,9 @@ import {
 import { GraphQLDate } from 'graphql-iso-date'
 
 export const GQLDate = asNexusMethod(GraphQLDate, 'date')
+export interface Context {
+  prisma: PrismaClient
+}
 
 export const Item = objectType({
   name: 'Item',
@@ -65,7 +69,7 @@ export const Item = objectType({
     t.field('total', {
       type: 'Int',
       resolve: async (parent, args, ctx) => {
-        let count = await ctx.db.item.count()
+        let count = await ctx.prisma.item.count()
         return count
       },
     })
@@ -120,7 +124,7 @@ export const Location = objectType({
     t.field('total', {
       type: 'Int',
       resolve: async (parent, args, ctx) => {
-        let count = await ctx.db.location.count()
+        let count = await ctx.prisma.location.count()
         return count
       },
     })
@@ -150,7 +154,7 @@ export const Shipment = objectType({
     t.field('total', {
       type: 'Int',
       resolve: async (parent, args, ctx) => {
-        let count = await ctx.db.shipment.count()
+        let count = await ctx.prisma.shipment.count()
         return count
       },
     })
@@ -162,7 +166,7 @@ export const Mutations = queryType({
     t.list.field('allItems', {
       type: 'Item',
       resolve(_parent, _args, ctx) {
-        return ctx.db.item.findMany({})
+        return ctx.prisma.item.findMany({})
       },
     })
 
@@ -171,7 +175,7 @@ export const Mutations = queryType({
     t.list.field('allCompanies', {
       type: 'Company',
       resolve(_parent, _args, ctx) {
-        return ctx.db.company.findMany({})
+        return ctx.prisma.company.findMany({})
       },
     })
 
@@ -180,7 +184,7 @@ export const Mutations = queryType({
     t.list.field('allWarehouses', {
       type: 'Warehouse',
       resolve(_parent, _args, ctx) {
-        return ctx.db.warehouse.findMany({})
+        return ctx.prisma.warehouse.findMany({})
       },
     })
 
@@ -189,7 +193,7 @@ export const Mutations = queryType({
     t.list.field('allImages', {
       type: 'Image',
       resolve(_parent, _args, ctx) {
-        return ctx.db.image.findMany({})
+        return ctx.prisma.image.findMany({})
       },
     })
 
@@ -198,7 +202,7 @@ export const Mutations = queryType({
     t.list.field('allLocations', {
       type: 'Location',
       resolve(_parent, _args, ctx) {
-        return ctx.db.location.findMany({})
+        return ctx.prisma.location.findMany({})
       },
     })
 
@@ -207,7 +211,7 @@ export const Mutations = queryType({
     t.list.field('allStatuses', {
       type: 'Status',
       resolve(_parent, _args, ctx) {
-        return ctx.db.status.findMany({})
+        return ctx.prisma.status.findMany({})
       },
     })
 
@@ -216,7 +220,7 @@ export const Mutations = queryType({
     t.list.field('allStatuses', {
       type: 'Status',
       resolve(_parent, _args, ctx) {
-        return ctx.db.status.findMany()
+        return ctx.prisma.status.findMany()
       },
     })
 
@@ -225,7 +229,7 @@ export const Mutations = queryType({
     t.list.field('allShipments', {
       type: 'Shipment',
       resolve(_parent, _args, ctx) {
-        return ctx.db.shipment.findMany({})
+        return ctx.prisma.shipment.findMany({})
       },
     })
   },
@@ -236,7 +240,7 @@ export const Crud = mutationType({
     t.field('deleteItems', {
       type: 'String',
       async resolve(_parent, _args, ctx) {
-        const { count } = await ctx.db.item.deleteMany({})
+        const { count } = await ctx.prisma.item.deleteMany({})
         return `${count} items(s) deleted.`
       },
     })
@@ -249,7 +253,7 @@ export const Crud = mutationType({
     t.field('deleteCompanies', {
       type: 'String',
       async resolve(_parent, _args, ctx) {
-        const { count } = await ctx.db.company.deleteMany({})
+        const { count } = await ctx.prisma.company.deleteMany({})
         return `${count} company(s) deleted.`
       },
     })
@@ -262,7 +266,7 @@ export const Crud = mutationType({
     t.field('deleteWarehouses', {
       type: 'String',
       async resolve(_parent, _args, ctx) {
-        const { count } = await ctx.db.warehouse.deleteMany({})
+        const { count } = await ctx.prisma.warehouse.deleteMany({})
         return `${count} warehouse(s) deleted.`
       },
     })
@@ -275,7 +279,7 @@ export const Crud = mutationType({
     t.field('deleteImages', {
       type: 'String',
       async resolve(_parent, _args, ctx) {
-        const { count } = await ctx.db.image.deleteMany({})
+        const { count } = await ctx.prisma.image.deleteMany({})
         return `${count} image(s) deleted.`
       },
     })
@@ -288,7 +292,7 @@ export const Crud = mutationType({
     t.field('deleteLocations', {
       type: 'String',
       async resolve(_parent, _args, ctx) {
-        const { count } = await ctx.db.location.deleteMany({})
+        const { count } = await ctx.prisma.location.deleteMany({})
         return `${count} location(s) deleted.`
       },
     })
@@ -301,7 +305,7 @@ export const Crud = mutationType({
     t.field('deleteStatuses', {
       type: 'String',
       async resolve(_parent, _args, ctx) {
-        const { count } = await ctx.db.status.deleteMany({})
+        const { count } = await ctx.prisma.status.deleteMany({})
         return `${count} status(es) deleted.`
       },
     })
@@ -314,7 +318,7 @@ export const Crud = mutationType({
     t.field('deleteShipments', {
       type: 'String',
       async resolve(_parent, _args, ctx) {
-        const { count } = await ctx.db.shipment.deleteMany({})
+        const { count } = await ctx.prisma.shipment.deleteMany({})
         return `${count} shipment(s) deleted.`
       },
     })

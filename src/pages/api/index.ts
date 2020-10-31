@@ -11,7 +11,7 @@ const schema = makeSchema({
   typegenAutoConfig: {
     sources: [
       {
-        source: require.resolve('../../graphql/context.ts'),
+        source: require.resolve('../../graphql/schema.ts'),
         alias: 'types'
       },
       {

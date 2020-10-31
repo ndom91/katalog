@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as types from './src/graphql/context'
+import * as types from './src/graphql/schema'
 
 declare global {
   interface NexusGenCustomOutputProperties<TypeName extends string> {
