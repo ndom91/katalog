@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "prisma:studio": "npx prisma studio --experimental",
+    "prebuild": "npm -s run generate",
     "postinstall": "npm -s run generate",
     "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
     "generate:prisma": "prisma generate",

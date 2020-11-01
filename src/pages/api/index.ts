@@ -48,18 +48,18 @@ const schema = makeSchema({
       experimentalCRUD: true,
     }),
   ],
-  nonNullDefaults: {
-    input: false,
-    output: false,
-  },
+  // nonNullDefaults: {
+  //   input: false,
+  //   output: false,
+  // },
   outputs: {
-    typegen: path.join(
-      process.cwd(),
-      'src',
-      'pages',
-      'api',
-      'nexus-typegen.ts',
-    ),
+    // typegen: path.join(
+    //   process.cwd(),
+    //   'src',
+    //   'pages',
+    //   'api',
+    //   'nexus-typegen.ts',
+    // ),
     schema: path.join(process.cwd(), 'src', 'pages', 'api', 'schema.graphql'),
   },
 })
