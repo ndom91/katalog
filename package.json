@@ -1,0 +1,99 @@
+{
+  "name": "katalog",
+  "version": "0.6.1",
+  "description": "",
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "prisma:studio": "npx prisma studio --experimental",
+    "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
+    "generate:prisma": "prisma generate",
+    "generate:nexus": "ts-node --transpile-only -P nexus.tsconfig.json src/pages/api",
+    "prisma:migrate:save": "prisma migrate save --name katalog --experimental",
+    "prisma:migrate:up": "prisma migrate up --experimental",
+    "db:update": "npm run generate && npm run prisma:migrate:save && npm run prisma:migrate:up",
+    "prettier": "prettier --config .prettierrc --check \"**/*.{js,jsx,ts,tsx,css,html}\"",
+    "prettier:fix": "prettier --config .prettierrc --write \"**/*.{js,jsx,ts,tsx,css,html}\""
+  },
+  "homepage": "https://github.com/ndom91/katalog",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ndom91/katalog"
+  },
+  "bugs": {
+    "url": "https://github.com/ndom91/katalog/issues"
+  },
+  "keywords": [
+    "warehouse",
+    "inventory",
+    "management"
+  ],
+  "author": "Nico Domino <yo@ndo.dev>",
+  "license": "MIT",
+  "dependencies": {
+    "@ant-design/icons": "^4.2.2",
+    "@apollo/react-hooks": "4.0.0",
+    "@apollo/react-ssr": "4.0.0",
+    "@loadable/component": "^5.14.1",
+    "@loadable/server": "^5.14.0",
+    "@nexus/schema": "0.17.0",
+    "@prisma/client": "2.10.1",
+    "@zeit/next-css": "^1.0.1",
+    "@zeit/next-less": "^1.0.1",
+    "antd": "^4.7.3",
+    "antd-img-crop": "^3.13.1",
+    "apollo-boost": "0.4.9",
+    "apollo-link-http": "1.5.17",
+    "apollo-link-schema": "1.2.5",
+    "apollo-server-micro": "2.19.0",
+    "aws-sdk": "^2.780.0",
+    "dayjs": "^1.9.4",
+    "express": "4.17.1",
+    "graphql": "15.4.0",
+    "graphql-iso-date": "3.6.1",
+    "graphql-tag": "2.11.0",
+    "lodash.difference": "^4.5.0",
+    "next": "^10.0.0",
+    "next-auth": "^3.1.0",
+    "qrcode.react": "^1.0.0",
+    "rc-picker": "^2.3.3",
+    "react": "16.14.0",
+    "react-apollo": "3.1.5",
+    "react-csv": "^2.0.3",
+    "react-dom": "16.14.0",
+    "react-markdown": "5.0.2",
+    "react-papaparse": "^3.9.0",
+    "react-qr-scanner": "0.0.10",
+    "react-sizeme": "^2.6.12",
+    "react-to-print": "^2.10.3",
+    "react-use": "^15.3.4",
+    "styled-components": "^5.2.0",
+    "styled-media-query": "^2.1.2"
+  },
+  "devDependencies": {
+    "@loadable/babel-plugin": "^5.13.2",
+    "@prisma/cli": "2.10.1",
+    "@types/graphql": "14.5.0",
+    "@types/node": "13.13.30",
+    "@types/papaparse": "^5.2.4",
+    "@types/react": "16.9.55",
+    "@types/react-slick": "^0.23.4",
+    "@types/styled-components": "^5.1.4",
+    "babel-plugin-styled-components": "^1.11.1",
+    "copy-webpack-plugin": "^6.2.1",
+    "husky": "^4.3.0",
+    "less": "^3.12.2",
+    "next-react-svg": "^1.1.2",
+    "nexus-plugin-prisma": "^0.23.1",
+    "prettier": "^2.1.2",
+    "pretty-quick": "^3.1.0",
+    "ts-node": "^9.0.0",
+    "typescript": "4.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}
