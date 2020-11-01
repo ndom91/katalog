@@ -11,7 +11,7 @@ import LoginRequired from '../../components/LoginRequired'
 import DatePicker from '../../components/DatePicker'
 import { withApollo } from '../../../apollo/client'
 import { useQuery, useMutation } from '@apollo/react-hooks'
-import { UpdateItemMutation, getItemQuery } from './graphql'
+import { UpdateItemMutation, getItemQuery } from '../../lib/graphql'
 import './items.module.css'
 import {
   Row,
