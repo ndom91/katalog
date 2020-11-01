@@ -18,3 +18,11 @@ migrations/
 experimental/**/*.db
 .next
 .vscode/
+node_modules/*
+.next
+public/themes/*.min.css
+api/
+.env
+.nexus
+api.graphql
+prisma/docs/
