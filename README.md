@@ -1,6 +1,6 @@
 # 📦 Katalog
 
-All in one Warehouse / Inventory Management Application
+All-in-one Warehouse / Inventory Management Application
 
 ## 💻 Screenshot
 
