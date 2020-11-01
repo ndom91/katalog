@@ -11,6 +11,7 @@ import gql from 'graphql-tag'
 import LoginRequired from '../../components/LoginRequired'
 import Wrapper from '../../components/Layout'
 import { withApollo } from '../../../apollo/client'
+import type {} from 'styled-components/cssprop'
 import {
   Button,
   Col,
