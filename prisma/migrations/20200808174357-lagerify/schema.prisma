@@ -1,0 +1,105 @@
+datasource db {
+  provider = "mysql"
+  url = "***"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator docs {
+  provider = "node node_modules/prisma-docs-generator"
+}
+
+model Item {
+  id                   Int       @default(autoincrement()) @id
+  qty                  Int?
+  title                String
+  description          String?
+  type                 String?
+  currency             String?
+  purchase_price       String?
+  serialNo             String?
+  inventarNr           String?
+  kontoNr              String?
+  date_added           DateTime
+  date_updated         DateTime  @default(now())
+  updated_by           String
+  ahk_date             DateTime?
+  ahk_wj_ende          String?
+  buchw_wj_ende        String?
+  n_afa_wj_ende        String?
+  sonder_abs_wj_ende   String?
+  nutzungsdauer        String?
+  afa_art              String?
+  afa_percent          String?
+  kost1                Int?
+  kost2                Int?
+  filiale              String?
+  lieferantNr          String?
+  anlag_lieferant      String?
+  ahk_wj_beginn        String?
+  buchwert_wj_beginn   String?
+  n_afa_wj_beginn      String?
+  sonder_abs_wj_beginn String?
+  sonder_abs_art       String?
+  sonder_abs_percent   String?
+  restbeguenstigung    String?
+  sonder_abs_verteil   Boolean?
+  abgang               DateTime?
+  lebenslaufakte       Boolean?
+  bestelldatum         DateTime?
+  erl_afa_art          String?
+  herkunftsart         String?
+  wkn_isin             String?
+  erfassungsart        String?
+  images               Image[]   @relation(references: [id])
+  status               Status? @relation(fields: [statusId], references: [id])
+  statusId             Int?
+  location             Location? @relation(fields: [locationId], references: [id])
+  locationId           Int?
+}
+
+model Image {
+  id    Int    @default(autoincrement()) @id
+  url   String
+  title String
+  item  Item[] @relation(references: [id])
+}
+
+model Location {
+  id          Int    @default(autoincrement()) @id
+  description String
+  item        Item[]
+}
+
+model Status {
+  id          Int    @default(autoincrement()) @id
+  name        StatusName @default(READY_TO_DEPLOY)
+  item        Item[]
+}
+
+model Shipment {
+  id          Int       @default(autoincrement()) @id
+  direction   Direction? @default(INBOUND)
+  provider    String?
+  trackingNr  String?
+  date_added  DateTime
+  date_updated DateTime @default(now())
+  updated_by  String
+  arrived     Boolean   @default(false)
+}
+
+enum Direction {
+  INBOUND
+  OUTBOUND
+}
+
+enum StatusName {
+  READY_TO_DEPLOY
+  STORAGE
+  SHIPPED
+  PENDING
+  DEPLOYED
+  ARCHIVED
+}

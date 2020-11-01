@@ -1,0 +1,67 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Item",
+      "field": "locationId",
+      "type": "Int",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Item",
+      "field": "location",
+      "arity": "Optional"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Item",
+          "field": "location"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Item",
+          "field": "location"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[locationId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Item",
+          "field": "location"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Location",
+      "field": "item"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Location",
+      "field": "itemId"
+    }
+  ]
+}

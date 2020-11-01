@@ -1,0 +1,161 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "inventarNr",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "kontoNr",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "ahk_date",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "ahk_wj_ende",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "buchw_wj_ende",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "n_afa_wj_ende",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "sonder_abs_wj_ende",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "nutzungsdauer",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "afa_art",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "afa_percent",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "lieferantNr",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "ahk_wj_beginn",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "buchwert_wj_beginn",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "n_afa_wj_beginn",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "sonder_abs_wj_beginn",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "sonder_abs_art",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "sonder_abs_percent",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "restbeguenstigung",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "sonder_abs_verteil",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "abgang",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "lebenslaufakte",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "bestelldatum",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "erl_afa_art",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "herkunftsart",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "wkn_isin",
+      "arity": "Optional"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "items",
+      "field": "erfassungsart",
+      "arity": "Optional"
+    }
+  ]
+}

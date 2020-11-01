@@ -1,0 +1,53 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateEnum",
+      "enum": "StatusName",
+      "values": [
+        "READY_TO_DEPLOY",
+        "STORAGE",
+        "SHIPPED",
+        "PENDING",
+        "DEPLOYED",
+        "ARCHIVED"
+      ]
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Status",
+      "field": "color"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Status",
+      "field": "name",
+      "type": "StatusName"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Status",
+          "field": "name"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Status",
+          "field": "name"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "READY_TO_DEPLOY"
+    }
+  ]
+}
