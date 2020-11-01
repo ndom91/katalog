@@ -1,11 +1,36 @@
+import React, { useEffect, FunctionComponent } from 'react'
 import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Provider } from 'next-auth/client'
-import React, { FunctionComponent } from 'react'
+import * as Sentry from '@sentry/react'
+import getConfig from 'next/config'
+import { RewriteFrames } from '@sentry/integrations'
+import { Integrations } from '@sentry/tracing'
 import '../style/katalog.less'
 
-const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
+if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
+  const config = getConfig()
+  const distDir = `${config.serverRuntimeConfig.rootDir}/.next`
+  Sentry.init({
+    enabled: process.env.NODE_ENV === 'production',
+    integrations: [
+      new RewriteFrames({
+        iteratee: frame => {
+          frame.filename = frame.filename.replace(distDir, 'app:///_next')
+          return frame
+        },
+      }),
+      new Integrations.BrowserTracing(),
+    ],
+    tracesSampleRate: 1.0,
+    dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  })
+}
+
+const App: FunctionComponent<AppProps> = props => {
+  const { Component, pageProps } = props
   const { session } = pageProps
+  const err = (props as any).err
 
   return (
     <>
@@ -47,7 +72,7 @@ const App: FunctionComponent<AppProps> = ({ Component, pageProps }) => {
         />
       </Head>
       <Provider session={session}>
-        <Component {...pageProps} />
+        <Component {...pageProps} err={err} />
       </Provider>
     </>
   )
