@@ -3,7 +3,7 @@
  * Do not make changes to this file directly
  */
 
-import * as types from "./src/pages/api/schema"
+import * as types from "./schema"
 
 
 
