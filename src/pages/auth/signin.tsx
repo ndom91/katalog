@@ -85,7 +85,7 @@ type Props = {
   providers: { id: number; name: string; signinUrl: string }[]
 }
 
-export default ({ csrfToken, session, providers }: Props) => {
+const SignIn = ({ csrfToken, session, providers }: Props) => {
   const [form] = Form.useForm()
   const [isMobile, setIsMobile] = useState(false)
   if (typeof window !== 'undefined' && session) {
@@ -181,6 +181,8 @@ export default ({ csrfToken, session, providers }: Props) => {
     </div>
   )
 }
+
+export default SignIn
 
 export async function getServerSideProps(context) {
   return {
