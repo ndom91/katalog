@@ -6,6 +6,7 @@ import * as Sentry from '@sentry/react'
 // import getConfig from 'next/config'
 // import { RewriteFrames } from '@sentry/integrations'
 import { Integrations } from '@sentry/tracing'
+import { CaptureConsole } from '@sentry/integrations'
 import '../style/katalog.less'
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
@@ -21,6 +22,7 @@ if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
       //   },
       // }),
       new Integrations.BrowserTracing(),
+      new CaptureConsole(),
     ],
     tracesSampleRate: 1.0,
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
