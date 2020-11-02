@@ -3,27 +3,13 @@ import { AppProps } from 'next/app'
 import Head from 'next/head'
 import { Provider } from 'next-auth/client'
 import * as Sentry from '@sentry/react'
-// import getConfig from 'next/config'
-// import { RewriteFrames } from '@sentry/integrations'
 import { Integrations } from '@sentry/tracing'
-import { CaptureConsole } from '@sentry/integrations'
 import '../style/katalog.less'
 
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
-  // const config = getConfig()
-  // const distDir = `${config.serverRuntimeConfig.rootDir}/.next`
   Sentry.init({
     enabled: process.env.NODE_ENV === 'production',
-    integrations: [
-      // new RewriteFrames({
-      //   iteratee: frame => {
-      //     frame.filename = frame.filename.replace(distDir, 'app:///_next')
-      //     return frame
-      //   },
-      // }),
-      new Integrations.BrowserTracing(),
-      new CaptureConsole(),
-    ],
+    integrations: [new Integrations.BrowserTracing()],
     tracesSampleRate: 1.0,
     dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   })
