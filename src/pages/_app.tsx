@@ -6,6 +6,8 @@ import * as Sentry from '@sentry/react'
 import { Integrations } from '@sentry/tracing'
 import '../style/katalog.less'
 
+console.log(process.env)
+
 if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   Sentry.init({
     enabled: process.env.NODE_ENV === 'production',
