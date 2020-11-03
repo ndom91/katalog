@@ -85,6 +85,7 @@ const Homepage: React.FC = () => {
     data && setLocationCount(data.locations[0].total)
     data && setItemsCount(data.items[0].total)
   }, [data])
+  console.log(process.env)
 
   !session && typeof window !== 'undefined' && Router.push('/auth/signin')
 
