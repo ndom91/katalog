@@ -16,6 +16,7 @@ import {
 import path from 'path'
 
 const prisma = new PrismaClient()
+console.log(process.env)
 
 const schema = makeSchema({
   typegenAutoConfig: {

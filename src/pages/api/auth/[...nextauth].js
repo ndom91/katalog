@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth'
 import Providers from 'next-auth/providers'
 
+console.log(process.env)
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
 const options = {
