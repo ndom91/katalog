@@ -3,7 +3,7 @@
   "version": "0.6.1",
   "description": "",
   "scripts": {
-    "dev": "next",
+    "dev": "next --port 3002",
     "build": "next build",
     "start": "next start",
     "prisma:studio": "npx prisma studio --experimental",
