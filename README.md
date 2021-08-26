@@ -2,6 +2,8 @@
 
 All-in-one Warehouse / Inventory Management Application
 
+> NOTE: This was a work project that got cancelled half-way through, therefore this repo is in a half-baked stage. Some basics work, but many things aren't implemented yet. Proceed with caution if you stumble upon this repo 😅
+
 ## 💻 Screenshot
 
 <img src="https://imgur.com/2CbygkP.png" alt="Screenshot Dashboard" height="450" />
